@@ -1,0 +1,11 @@
+*{
+    margin: 0;
+    align-items: center;
+}
+
+.maincontainer{
+    height: 100vh;
+    .maincontent{
+        background: red;
+    }
+}
