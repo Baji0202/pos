@@ -1,101 +1,137 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-
-.login-page {
-  width: 360px;
-  padding: 8% 0 0;
-  margin: auto;
+/* Resetting default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body{
+background-color: #2f3640;
+}
+/* Basic styling for the navigation */
+nav {
+  background-color: #2f3640;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f5f6fa; /* Add bottom border */
+  box-shadow: 0 12px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+nav ul {
+  list-style-type: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+
+}
+.text_logo{  
+  font-weight: bold;
+  margin-left: 30px;
+  margin-top :6px;
+  font-size: 30px;
+  color: #fbcb45;
+  font-family: 'Inter', sans-serif;
+}
+/* Styling for the logo */
+.logo img {
+  margin-left: 80px;
+  height: auto;
+  width: 80px /* Adjust the width as needed */
+}
+
+/* Styling for the login page */
+.login-page {
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 36px;
+  padding: 100px;
+  margin: auto;
+  background-color: #353b48;
+}
+
+
+/* Styling for the login form */
 .form {
   position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
+  margin-left: 35%;
+  width:30%;
+  height: 458px;
+  background-image: linear-gradient(#f1f5fd, #d0dcf1);
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-BOTTOM: 30px;
+  padding-top: 40px;
+  border-radius: 38px;
+  box-shadow: 0 12px 4px rgba(0, 0, 0, 0.1), inset 0 4px 1px rgb(255, 255, 255);
+  align-content: center;
+}
+
+
+.form h1 {
+  margin-bottom: 40px;
   text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  font-weight: bold;
+  color:#2f3640;
+  font-size: 60px ;
+
 }
-.form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
+
+.form input[type="email"],
+.form input[type="password"],
+.form input[type="text"] {
   width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
+  margin-top: 2%;
+  padding: 14px;
+  margin-bottom: 24px;
+  border: none;
+  border-radius: 16px;
+  box-shadow: inset 0 3px 2px 1px rgba(0, 0, 0, 0.2);
+  background-color: #e8f0fe;
 }
-.form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
+
+.form input[type="submit"] {
+  margin-top: 8px;
+  margin-bottom: 10px;
   width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
+  padding: 10px 20px;
+  background-image: linear-gradient(to right,#fbcb45,  #e1b12c); /* Gradient background */
+  color: #353b48;
+  border: none;
+  border-radius: 40px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.1), inset 0 4px 4px 3px rgba(255, 255, 255, 0.3);
 }
-.form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
+
+.form input[type="submit"]:hover {
+  background-image: linear-gradient(to bottom, #e1b12c, #e1b12c); /* Gradient background */
 }
-.form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
+
+
+/* Add styles for the eye icon */
+.password-toggle {
+    position: relative;
+}
+
+.password-toggle .toggle-icon {
+    position: absolute;
+    right: 20px;
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+.error-message {
+  color: red;
   font-size: 12px;
-}
-.form .message a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-.form .register-form {
-  display: none;
-}
-.container {
-  position: relative;
-  z-index: 1;
-  max-width: 300px;
-  margin: 0 auto;
-}
-.container:before, .container:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-.container .info {
-  margin: 50px auto;
+  position: absolute;
+  top: calc(80% + 10px); /* Position it just below the form elements */
+  left: 0;
+  width: 100%;
+  padding: 10px 20px;
   text-align: center;
 }
-.container .info h1 {
-  margin: 0 0 15px;
-  padding: 0;
-  font-size: 36px;
-  font-weight: 300;
-  color: #1a1a1a;
-}
-.container .info span {
-  color: #4d4d4d;
-  font-size: 12px;
-}
-.container .info span a {
-  color: #000000;
-  text-decoration: none;
-}
-.container .info span .fa {
-  color: #EF3B3A;
-}
-.button:hover{
-  background-color: rgb(141,194,111);
-}
-body {
-  background: #76b852; /* fallback for old browsers */
-  background: rgb(141,194,111);
-  background: linear-gradient(90deg, rgba(141,194,111,1) 0%, rgba(118,184,82,1) 50%);
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
-}
+
