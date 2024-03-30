@@ -21,41 +21,18 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Scanner</title>
-   <style>
-    *{
-    margin: 0;
-    align-items: center;
-}
-.header{
-    height: 10%;
-}
-.maincontainer{
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    .maincontent{
-        background: blue;
-        height: 100%;
-        width: 75%;
-    }
-    .sidebar{
-        background: red;
-        height: 100%;
-        width: 25%;
-        .receipt{
-            background: green;
-            height: 50%;
-        }
-    }
-    .buttons{
-display: flex;
-
-    }
-}
-   </style>
+    <link rel="icon" type="image/png" href="include\image\logo.png">
+    <link rel="stylesheet" href="include\styles\home.css">
 </head>
 <body>
-    <header><a href="logout.php">Logout</a></header>
+<nav>
+    <div class="logo">
+        <img src="include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <a href="logout.php" class="logout-btn">Logout</a>
+</nav>
+
 <div class="maincontainer">
     <div class="maincontent">
     Customer Name:
@@ -130,6 +107,9 @@ display: flex;
 <button id="print">Print</button>
 <button>Email</button>
 </div>
+
+
+
 </div class="qr">
 
     Barcode: <br>

@@ -7,6 +7,7 @@
 
 body{
 background-color: #2f3640;
+font-family: 'Inter', sans-serif;
 }
 /* Basic styling for the navigation */
 nav {
@@ -31,7 +32,7 @@ nav ul {
   margin-top :6px;
   font-size: 32px;
   color: #fbcb45;
-  font-family: 'Inter', sans-serif;
+
 }
 /* Styling for the logo */
 .logo img {
@@ -42,7 +43,7 @@ nav ul {
 
 /* Styling for the login page */
 .login-page {
-  font-family: 'Inter', sans-serif;
+
   margin-bottom: 36px;
   padding: 100px;
   margin: auto;
