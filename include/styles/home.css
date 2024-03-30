@@ -19,7 +19,7 @@ nav {
     padding: 12px 20px;
     border-bottom: 1px solid #f5f6fa; /* Add bottom border */
     box-shadow: 0 12px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
-    border-radius: 10px; /* Rounded corners */
+  
 }
 
 nav ul {
@@ -123,12 +123,12 @@ button {
 
 
 button:hover {
-    background-color: #2f3640;
+    background-color: #1d2025;
 }
 
 #total-button:hover{
 color: #202021;
-background-image: linear-gradient(to bottom, #e1b12c, #e1b12c); /* Gradient background */
+background-image: linear-gradient(to bottom, #d2a62c, #cca230); /* Gradient background */
 }
 
 
@@ -149,4 +149,13 @@ background-image: linear-gradient(to bottom, #e1b12c, #e1b12c); /* Gradient back
 
 #error {
     color: red;
+}
+
+
+
+
+.receipt {
+    text-align: center;
+    border: 2px solid black;
+    padding: 20px;
 }
