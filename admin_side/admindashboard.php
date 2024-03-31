@@ -5,28 +5,31 @@ if (!isset($_SESSION['user_id'])) {
     header("location: ..\index.php");
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="../include/styles/admin.css">
 </head>
 <body>
-    <nav>
-        <div class="logo">
-            <img src="your-logo.png" alt="Logo">
+    <div class="container">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
         </div>
-    </nav>
-
-    <div class="admin-links">
-        <a href="user_settings.php">User Settings</a>
-        <a href="cashmanagement.php">Cash Management</a>
-        <a href="audit_trail.php">History logs</a>
-        <a href="items_settings.php">Item Settings</a>
-        <a href="discount.php">Discounts</a>
-        <a href="../logout.php">Logout</a>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="user_settings.php">User Settings</a></li>
+                <li><a href="cashmanagement.php">Cash Management</a></li>
+                <li><a href="audit_trail.php">History logs</a></li>
+                <li><a href="items_settings.php">Item Settings</a></li>
+                <li><a href="discount.php">Discounts</a></li>
+                <li><a href="../logout.php">Logout</a></li>
+            </ul>
+        </nav>
     </div>
 </body>
 </html>
