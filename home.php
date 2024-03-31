@@ -53,20 +53,18 @@ try {
      
     </table> 
     <p id="total-value">Sub Total: ₱0.00</p>
-    discount:
-    <select name="discount" id="discount">
-        <option value="1">No Discount</option>
-        <?php
-        if ($stmt->rowCount()>0) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "<option value='" . $row['value'] . "'>" . $row['name']."</option>";
-                
-                        }
+    Discount:
+    <select name="discount" id="discount" class="custom-select">
+    <option value="1">No Discount</option>
+    <?php
+    if ($stmt->rowCount()>0) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<option value='" . $row['value'] . "'>" . $row['name']."</option>";
         }
-           
-        
-        ?>
-    </select>
+    }
+    ?>
+</select>
+
     <p>Tax: 12%</p>
     <p id="gtotal">Total: ₱0.00</p>
     <button id="total-button">Total</button>

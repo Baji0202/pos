@@ -1,0 +1,61 @@
+/* Resetting default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #2f3640;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  /* Basic styling for the navigation */
+  nav {
+    background-color: #2f3640;
+    padding: 12px 20px;
+    border-bottom: 1px solid #f5f6fa; /* Add bottom border */
+    box-shadow: 0 12px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+  }
+  
+  nav ul {
+    list-style-type: none;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .text_logo {
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 6px;
+    font-size: 32px;
+    color: #fbcb45;
+  }
+  
+  /* Styling for the logo */
+  .logo img {
+    margin-left: 80px;
+    height: auto;
+    width: 80px; /* Adjust the width as needed */
+  }
+  
+  /* Styling for the admin dashboard links */
+  .admin-links {
+    padding: 20px;
+  }
+  
+  .admin-links a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 0;
+    transition: background-color 0.3s ease;
+  }
+  
+  .admin-links a:hover {
+    background-color: #4b4e5a;
+  }
+  

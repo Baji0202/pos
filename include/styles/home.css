@@ -159,3 +159,45 @@ background-image: linear-gradient(to bottom, #d2a62c, #cca230); /* Gradient back
     border: 2px solid black;
     padding: 20px;
 }
+
+
+
+.custom-select {
+    position: relative;
+    width: 200px; /* Adjust width as needed */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid  #f5f6fa   ;
+    background-color: #e8f0fe;
+    border-radius: 5px;
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none; /* Safari and Chrome */
+    -moz-appearance: none; /* Firefox */
+  }
+  
+  .custom-select::after {
+    content: '\25BC'; /* Unicode for down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+
+  }
+  
+  /* Hover effect */
+  .custom-select:hover {
+    border-color: #999;
+  }
+  
+  /* Focus effect */
+  .custom-select:focus {
+    outline: none;
+    border-color: #333;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for dropdown options */
+  .custom-select option {
+    padding: 10px;
+  }
+  
