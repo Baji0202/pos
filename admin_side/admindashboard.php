@@ -14,8 +14,10 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../include/styles/admin.css">
+    <link rel="icon" type="image/png" href="include\image\logo.png">
 </head>
 <body>
+    
     <div class="container">
         <div class="header">
             <h1>Admin Dashboard</h1>
