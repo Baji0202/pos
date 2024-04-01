@@ -300,6 +300,9 @@ const rowData = [];
 const customerName = document.getElementById('cfname').value;
 const customerEmail = document.getElementById('cemail').value;
 document.getElementById('cdetails').textContent = customerName+"  "+customerEmail;
+document.getElementById('mop').textContent = "Pay thru: Cash";
+        document.getElementById('amp').textContent = "Amount paid: ₱"+payment;
+document.getElementById('pchange').textContent = "Change: "+cchange;
 // Get the selected value of the discount dropdown
 const selectElement = document.getElementById('discount');
 
@@ -383,9 +386,7 @@ changecalc.addEventListener("click", () => {
             // Calculate and display the change
             const change = payment - gt;
             const cchange = document.getElementById('cchange').textContent = "₱" + parseFloat(change).toFixed(2);
-            document.getElementById('mop').textContent = "Pay thru: Cash";
-        document.getElementById('amp').textContent = "Amount paid: ₱"+payment;
-document.getElementById('pchange').textContent = "Change: "+cchange;
+            
         }
         
     } else {
