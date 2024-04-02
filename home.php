@@ -339,8 +339,6 @@ rowData.forEach(data => {
         <p>Product Name: ${data.productName}</p>
         <p>Price: ₱${data.productPrice.toFixed(2)}</p>
         <p>Quantity: ${data.quantity}</p>
-        <p>Discount:      </p>
-        
     `;
 
     // Append the itemDiv to the display container
