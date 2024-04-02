@@ -86,7 +86,7 @@ try {
 <h3>***************************</h3>
 <h2>DILAW CLOTHING</h2>
 <h3>***************************</h3>
-            <p>Date: <?php echo date('Y-m-d H:i:s'); ?></p>
+            <p id="curdate">Date:</p>
             <p id="cdetails"></p>
 <h3>***************************</h3>
     <div id="tabless"></div>
@@ -431,7 +431,20 @@ clearButton.addEventListener('click', () => {
     document.getElementById("pchange").innerText = "";
 });
 
+function updateDate() {
+    var currentDateElement = document.getElementById("curdate");
+    var currentDate = new Date();
+    var formattedDate = currentDate.getFullYear() + '-' + 
+                        ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + 
+                        ('0' + currentDate.getDate()).slice(-2) + ' ' + 
+                        ('0' + currentDate.getHours()).slice(-2) + ':' + 
+                        ('0' + currentDate.getMinutes()).slice(-2) + ':' + 
+                        ('0' + currentDate.getSeconds()).slice(-2);
+    currentDateElement.innerText = "Date: " + formattedDate;
+}
 
+updateDate();
+setInterval(updateDate, 1000);
     </script>
    
 </body>
