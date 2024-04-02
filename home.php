@@ -38,7 +38,7 @@ try {
     Customer Name:
     <input type="text" name="cfname" id="cfname"><br>
     Customer Email:
-    <input type="email" name="cemail" id="cemail"><br>
+    <input type="email" name="cemail" id="cemail" placeholder="N/A"> <br>
 <div>
     <table>
         <thead>
@@ -73,7 +73,7 @@ try {
     Cash Payment:
     <input type="text" id="cpayment" pattern="[0-9]*">
     <button id="changebtn">Change</button>
-    <p id="cchange"></p>
+    <p id="cchange">Change:</p>
     <button id="make-receipt">Make a receipt</button>
 <button>Pay Later</button>
 <button>Gcash</button>
@@ -104,6 +104,7 @@ try {
 <div class="buttons">
 <button id="print">Print</button>
 <button>Email</button>
+<button id="clear-receipt">Clear</button>
 </div>
 
 
@@ -174,6 +175,7 @@ try {
            barsearch = document.getElementById('barsearch').value;
            sendBarcodeToPHP(barsearch);
             barsearch.value = "";
+            document.getElementById('barsearch').value = '';
         });
         
   
@@ -299,8 +301,17 @@ makereceipt.addEventListener("click", () => {
 const rowData = [];
 const customerName = document.getElementById('cfname').value;
 const customerEmail = document.getElementById('cemail').value;
-document.getElementById('cdetails').textContent = customerName+"  "+customerEmail;
+if (customerName.trim() === '' && customerEmail.trim() === '') {
+    alert("Please fill in the customer details! If email is not applicable, put N/A");
+} else {
 
+
+document.getElementById('cdetails').textContent = customerName+"  "+customerEmail;
+document.getElementById('mop').textContent = "Pay thru: Cash";
+const paid = document.getElementById('cpayment').value;
+document.getElementById('amp').textContent = "Amount paid: ₱" + paid;
+const cuschange = document.getElementById('cchange').textContent;
+document.getElementById('pchange').textContent = cuschange;
 // Get the selected value of the discount dropdown
 const selectElement = document.getElementById('discount');
 
@@ -353,7 +364,20 @@ document.getElementById('tot').textContent = gTotalElement;
 rowData.length = 0;
 });
 
-console.log(rowData);
+    // Clear input values
+    document.getElementById('cfname').value = '';
+    document.getElementById('cemail').value = '';
+    selectElement.selectedIndex = 0;
+
+    // Clear total and grand total
+    document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
+document.getElementById('gtotal').textContent = 'Total: ₱0.00';
+document.getElementById('cchange').textContent = "Change: ";
+    // Clear rowData
+    document.getElementById('product-table-body').innerHTML = '';
+    document.getElementById('cpayment').value = '';
+    rowData.length = 0
+}
 
 });
 
@@ -381,10 +405,10 @@ changecalc.addEventListener("click", () => {
         } else {
             // Calculate and display the change
             const change = payment - gt;
-            const cchange = document.getElementById('cchange').textContent = "₱" + parseFloat(change).toFixed(2);
-            document.getElementById('mop').textContent = "Pay thru: Cash";
-        document.getElementById('amp').textContent = "Amount paid: ₱"+payment;
-document.getElementById('pchange').textContent = "Change: "+cchange;
+            const cchange = document.getElementById('cchange').textContent = "Change: ₱" + parseFloat(change).toFixed(2);
+           
+//         document.getElementById('amp').textContent = "Amount paid: ₱"+payment;
+// document.getElementById('pchange').textContent = "Change: "+cchange;
         }
         
     } else {
@@ -392,7 +416,20 @@ document.getElementById('pchange').textContent = "Change: "+cchange;
     }
 });
 
+const clearButton = document.getElementById('clear-receipt');
 
+// Add a click event listener to the clear button
+clearButton.addEventListener('click', () => {
+
+    document.getElementById("cdetails").innerText = "";
+    document.getElementById("tabless").innerHTML = "";
+    document.getElementById("subtot").innerText = "Sub Total: ₱0.00";
+    document.getElementById("disc").innerText = "Discount: ";
+    document.getElementById("tot").innerText = "Total: ₱0.00";
+    document.getElementById("mop").innerText = "Pay thru: ";
+    document.getElementById("amp").innerText = "Amount paid:";
+    document.getElementById("pchange").innerText = "";
+});
 
 
     </script>
