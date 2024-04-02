@@ -84,7 +84,7 @@ try {
     <div class="sidebar">
 <div class="receipt">
 <h3>***************************</h3>
-<h2>DILAW CLOTHING</h2>
+<h2>BANANA CLOTHING</h2>
 <h3>***************************</h3>
             <p id="curdate">Date:</p>
             <p id="cdetails"></p>
