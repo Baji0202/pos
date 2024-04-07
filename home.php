@@ -43,6 +43,7 @@ try {
     <table>
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Quantity</th>
@@ -75,7 +76,7 @@ try {
     <button id="changebtn">Change</button>
     <p id="cchange">Change:</p>
     <button id="make-receipt">Make a receipt</button>
-<button>Pay Later</button>
+<button id="paylater">Pay Later</button>
 <button>Gcash</button>
 
     </div>
@@ -189,9 +190,9 @@ try {
         console.log('Response from PHP:', data);
 
  
-        const [productName, priceStr] = data.split(' ₱');
-        const productPrice = parseFloat(priceStr);
-
+        const [id, rest] = data.split(' - '); 
+const [productName, priceStr] = rest.split(' ₱');
+const productPrice = parseFloat(priceStr); 
 
         const existingProductRow = document.querySelector(`#product-table-body tr[data-product-name="${productName}"]`);
         if (existingProductRow) {
@@ -208,6 +209,10 @@ try {
             
             const tableRow = document.createElement('tr');
             tableRow.dataset.productName = productName;
+
+            const idCell = document.createElement('td');
+            idCell.textContent = id;
+            tableRow.appendChild(idCell);
 
             const productNameCell = document.createElement('td');
             productNameCell.textContent = productName;
@@ -263,10 +268,9 @@ totalButton.addEventListener('click', () => {
   
     document.querySelectorAll('#product-table-body tr').forEach(row => {
   
-        const price = parseFloat(row.querySelector('td:nth-child(2)').textContent.replace('₱', ''));
+        const price = parseFloat(row.querySelector('td:nth-child(3)').textContent.replace('₱', ''));
         const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
          
-      
         total += price * quantity;
     });
 
@@ -294,7 +298,34 @@ print.addEventListener("click", () =>{
         printWindow.close(); 
     }, 1000);
 });
+const productIds = [];
+function bill(name,email,productId,sub_total,discount,total) {
+    const bills = {
+        customerName: name,
+        customerEmail: email,
+        productIds: productId,
+        totalValueElement: sub_total,
+        selectedOptionText: discount,
+        gTotalElement: total
+    };
 
+console.log(bills);
+    
+    fetch('process.php', {
+        method: 'POST',
+        body: JSON.stringify( bills),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        console.log('Response from PHP:', responseData);
+        
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+   
+};
 const makereceipt = document.getElementById('make-receipt');
 makereceipt.addEventListener("click", () => {
     const tableRows = document.querySelectorAll('#product-table-body tr');
@@ -327,10 +358,18 @@ const gTotalElement = document.getElementById('gtotal').textContent;
 
 
 tableRows.forEach(row => {
-    const productName = row.cells[0].textContent; // Get product name from the first cell
-    const priceString = row.cells[1].textContent.replace('₱', ''); // Get price string from the second cell and remove currency symbol
-    const productPrice = parseFloat(priceString); // Convert price string to a floating-point number
-    const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
+    const productName = row.cells[1].textContent;
+const idString = row.cells[0].textContent;
+const id = parseInt(idString.trim()); 
+
+const priceString = row.cells[2].textContent.replace('₱', ''); 
+const productPrice = parseFloat(priceString); 
+const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
+productIds.push({
+      id: id,
+      quantity: quantity
+    });
+ 
 
     // Push the extracted data into the rowData array
     rowData.push({
@@ -354,6 +393,7 @@ rowData.forEach(data => {
 
     // Append the itemDiv to the display container
     displayContainer.appendChild(itemDiv);
+
     
 });
 
@@ -364,7 +404,9 @@ document.getElementById('tot').textContent = gTotalElement;
 rowData.length = 0;
 });
 
-    // Clear input values
+bill(customerName,customerEmail,productIds,totalValueElement,selectedOptionText,gTotalElement);
+
+
     document.getElementById('cfname').value = '';
     document.getElementById('cemail').value = '';
     selectElement.selectedIndex = 0;
@@ -406,14 +448,12 @@ changecalc.addEventListener("click", () => {
             // Calculate and display the change
             const change = payment - gt;
             const cchange = document.getElementById('cchange').textContent = "Change: ₱" + parseFloat(change).toFixed(2);
-           
-//         document.getElementById('amp').textContent = "Amount paid: ₱"+payment;
-// document.getElementById('pchange').textContent = "Change: "+cchange;
         }
         
     } else {
         alert("Invalid input for payment amount");
     }
+
 });
 
 const clearButton = document.getElementById('clear-receipt');
@@ -445,6 +485,28 @@ function updateDate() {
 
 updateDate();
 setInterval(updateDate, 1000);
+
+const paylaterbtn = document.getElementById('paylater');
+    
+paylaterbtn.addEventListener('click', () => {
+    const cusname = document.getElementById('cfname').value;
+    const cemail = document.getElementById('cemail').value;
+    const total = document.getElementById('tot').innerText;
+    console.log(productIds);
+    // Fetch IDs from the table
+    // const table = document.getElementById('product-table-body');
+    // const ids = [];
+    // table.querySelectorAll('tr').forEach(row => {
+    //     const idCell = row.cells[0];
+    //     const idText = idCell.textContent.trim();
+    //     const productId = parseInt(idText);
+    //     ids.push(productId);
+    // });
+
+    // // Prepare data object to send
+    
+});
+
     </script>
    
 </body>

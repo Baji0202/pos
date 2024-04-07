@@ -19,15 +19,22 @@ if (isset($_POST['barcode'])) {
         $count=$stmt->rowCount();
         if ($count==0) {
             echo"Undefined Item ₱0" ;
-        }
-        foreach ($row as $rows) {
-            echo"{$rows['ItemName']} ₱{$rows['Price']} ";
-        }
-      
+        }else 
+        
+        $cart = [];
+
+foreach ($row as $rows) {
+  echo" {$rows['id']} - {$rows['ItemName']} ₱{$rows['Price']} ";
+  array_push($cart, $rows['Barcode']);
+}
+
+
+          
     } catch (PDOException $e) {
         die("error fetch").$e->getMessage();
     }
     
 }
+
 
 ?>
