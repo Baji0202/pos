@@ -1,45 +1,89 @@
 <?php
-// session_start();
-// require_once "include\connect\dbcon.php";
+require_once "include\connect\dbcon.php";
+$billsJson = file_get_contents("php://input");
+// var_dump($billsJson);
 
-if (isset($_POST)) {
-    $postData = file_get_contents("php://input");
+$bills = json_decode($billsJson, true);
 
-    $data = json_decode($postData, true);
-        // echo json_encode($data);
+function calculateSubtotal($itemprice,$itemquan){
 
+    $price = $itemprice;
+    $quantity = $itemquan;
 
+    return $price*$quantity;
 
-        // $cname = $data['customerName'];
-        // $cmail = $data['customerEmail'];
+};
+function generateUniqueInvoiceId() {
+    $now = new DateTime('now');
+    $dateStr = $now->format('Ymd');
+    $timeStr = $now->format('His');
+    $random = str_pad(random_int(1000, 9999), 4, '0', STR_PAD_LEFT);  // Generate a 4-digit random number
+    return "INV{$dateStr}{$timeStr}{$random}";
+  };
 
-        // $nsubtot = $data['totalValueElement'];
-        // $subtot = explode("₱", $nsubtot);
-        
-      
+if ($bills !== null) {
 
-        // $discount = $data['selectedOptionText'];
+    $name = $bills['name'];
+    $email = $bills['email'];
+    $productIds = $bills['productIds'];
+    $subtot = $bills['subtot'];
+    $discount = $bills['discount'];
+    $tot = $bills['tot'];
 
-        // $ntot= $data['gTotalElement'];
-        // $tot = explode("₱", $ntot);
-
-        // $productId = $data['productIds'];
-
-        // foreach ($productIds as $product) {
-        //     $id = $product['id'];
-        //     $quantity = $product['quantity'];
-        // };
-        
-        // echo $cname.$cmail.$subtot.$discount.$tot;
-    // $query_cust = "INSERT INTO `customer`(`customer_fname`, `email`) VALUES (?,?) ";
-    // $prepare = $pdoConnect->prepare($query_cust);
-    // $prepare->execute($cname, $cmail);
-    
-   
-    //$query_bill = "INSERT INTO `bill`(`order_id`, `discount_id`, `sub_total`, `total_amount`, `date_time`) VALUES (?, ?, ?, ?, ?)";
-    //$prepare2 = $pdoConnect->prepare($query_bill);
-}else {
-   
-    echo json_encode(array('success' => false, 'message' => 'Invalid request method'));
+    $sql = "SELECT * FROM discount WHERE name = ?";
+    $stmt = $pdoConnect->prepare($sql);
+    $stmt->execute([$discount]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($stmt->rowCount()>0) {
+    $discountid = $row['discount_id'];
+} else {
+    $discountid = 1;
 }
+
+
+    $sql = "INSERT INTO customer (`cname`, `email`) VALUES (?,?)";
+    $stmt = $pdoConnect->prepare($sql);
+    $stmt->execute([$name,$email]);
+    $lastInsertedcustomer = $pdoConnect->lastInsertId();
+
+    $currentDate = date('Y-m-d');
+
+    $sql = "INSERT INTO `orders`(`customer_id`, `order_date`) VALUES (?,?)";
+    $stmt = $pdoConnect->prepare($sql);
+    $stmt->execute([$lastInsertedcustomer, $currentDate]);
+    $lastInsertedOrderId = $pdoConnect->lastInsertId();
+
+    $sql = "INSERT INTO `order_item` (`order_id`, `item_id`, `quantity`, `subtotal`) VALUES (?, ?, ?, ?)";
+    $stmt = $pdoConnect->prepare($sql);
+    
+    foreach ($productIds as $item) {
+      $itemId = $item['id'];
+      $quantity = $item['quantity'];
+      $subTotal = calculateSubtotal($item['productPrice'], $quantity); // Replace with your logic to calculate subtotal
+    
+      // Bind values for each iteration
+      $stmt->bindParam(1, $lastInsertedOrderId); // Bind order_id (assuming you have this value)
+      $stmt->bindParam(2, $itemId);
+      $stmt->bindParam(3, $quantity);
+      $stmt->bindParam(4, $subTotal);
+      $stmt->execute();
+    }
+
+$uniqueinv = generateUniqueInvoiceId();
+$dtnow = date('Y-m-d H:i:s');
+    $sql = "INSERT INTO `bill`(`invcode`, `order_id`, `subtotal`, `discount_id`, `total_amount`, `date_time`) VALUES (?,?,?,?,?,?)";
+    $stmt = $pdoConnect->prepare($sql);
+    $stmt->execute([$uniqueinv,$lastInsertedcustomer, $subtot,$discountid,$tot, $dtnow]);
+    $lastInsertedbill = $pdoConnect->lastInsertId();
+
+    echo $lastInsertedbill;
+
+    
+} else {
+    
+    echo "Failed to decode JSON data";
+}
+?>
+
+
 

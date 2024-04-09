@@ -56,7 +56,6 @@ try {
     <p id="total-value">Sub Total: ₱0.00</p>
     Discount:
     <select name="discount" id="discount" class="custom-select">
-    <option value="1">No Discount</option>
     <?php
     if ($stmt->rowCount()>0) {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -297,35 +296,39 @@ print.addEventListener("click", () =>{
         printWindow.print();
         printWindow.close(); 
     }, 1000);
+
+    
 });
 const productIds = [];
-function bill(name,email,productId,sub_total,discount,total) {
-    const bills = {
-        customerName: name,
-        customerEmail: email,
-        productIds: productId,
-        totalValueElement: sub_total,
-        selectedOptionText: discount,
-        gTotalElement: total
-    };
 
-console.log(bills);
-    
-    fetch('process.php', {
-        method: 'POST',
-        body: JSON.stringify( bills),
-        headers: { 'Content-Type': 'application/json' }
-    })
-    .then(response => response.json())
-    .then(responseData => {
-        console.log('Response from PHP:', responseData);
-        
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
-   
-};
+
+function getbills(name, email, productIds, subTotal, dis, total) {
+  let subValue = parseFloat(subTotal.split("₱")[1]);
+  let totalValue = parseFloat(total.split("₱")[1]);
+
+  const bills = {
+    name: name,
+    email: email,
+    productIds: productIds,
+    subtot: subValue,
+    discount: dis,
+    tot: totalValue
+  };
+  
+  console.log(bills); // Logging the bills object before stringifying
+
+  return JSON.stringify(bills); // Stringify the bills object before returning
+}
+
+// function sendlink(bills) {
+//   let queryString = `billsJson=${encodeURIComponent(bills)}`; // Use 'billsJson' parameter name
+
+//   let url = "paylater.php?" + queryString;
+
+//   window.location.href = url;
+// }
+
+let bill;
 const makereceipt = document.getElementById('make-receipt');
 makereceipt.addEventListener("click", () => {
     const tableRows = document.querySelectorAll('#product-table-body tr');
@@ -367,7 +370,8 @@ const productPrice = parseFloat(priceString);
 const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
 productIds.push({
       id: id,
-      quantity: quantity
+      quantity: quantity,
+      productPrice: productPrice
     });
  
 
@@ -404,9 +408,9 @@ document.getElementById('tot').textContent = gTotalElement;
 rowData.length = 0;
 });
 
-bill(customerName,customerEmail,productIds,totalValueElement,selectedOptionText,gTotalElement);
-
-
+bill = getbills(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement);
+console.log(bill);
+sendbill(bill);
     document.getElementById('cfname').value = '';
     document.getElementById('cemail').value = '';
     selectElement.selectedIndex = 0;
@@ -489,13 +493,33 @@ setInterval(updateDate, 1000);
 const paylaterbtn = document.getElementById('paylater');
     
 paylaterbtn.addEventListener('click', () => {
-    const cusname = document.getElementById('cfname').value;
-    const cemail = document.getElementById('cemail').value;
-    const total = document.getElementById('tot').innerText;
-    console.log(productIds);
-    
+    let url;
+    if (fetchedbill) {
+               
+        url = "paylater.php?id="+ fetchedbill;;
+            } else {
+                console.log('No data fetched yet.');
+            }
+  window.location.href = url;
 });
-
+let fetchedbill;
+function sendbill (billinfo) {
+    fetch('process.php', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: billinfo
+})
+.then(response => response.text())
+.then(data => {
+    fetchedbill = data;
+    console.log(fetchedbill);
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+}
     </script>
    
 </body>
