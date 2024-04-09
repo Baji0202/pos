@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 include_once "log.php";
 if (isset($_POST['add'])) {
     $name = $_POST['name'];
-    $type = $_POST['type'];
     $value = $_POST['value'];
     if (empty($name)&&empty($type)&&empty($value)) {
         echo"All fields are required";
@@ -47,11 +46,7 @@ if (isset($_POST['add'])) {
     <form action="" method="post">
 Name:
 <input type="text" value="" name="name"> <br>
-Type:
-<select name="type" value="" >
-    <option value="amount">Amount</option>
-    <option value="percent">Percent</option>
-</select>
+
 Value:
 <input type="text" value="" name="value"> <br>
 

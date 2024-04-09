@@ -56,6 +56,7 @@ CREATE TABLE `cash_management` (
 --
 
 CREATE TABLE `clothingitems` (
+  `id` int AUTO_INCREMENT PRIMARY KEY NOT NULL,
   `Barcode` varchar(20) NOT NULL,
   `ItemName` varchar(255) NOT NULL,
   `Brand` varchar(255) DEFAULT NULL,
@@ -71,17 +72,17 @@ CREATE TABLE `clothingitems` (
 -- Dumping data for table `clothingitems`
 --
 
-INSERT INTO `clothingitems` (`Barcode`, `ItemName`, `Brand`, `Size`, `Color`, `Material`, `Category`, `Style`, `Price`) VALUES
-('001122334455', 'White Canvas Sneakers', 'Sole Mates', '40', 'White', 'Canvas', 'Shoes', 'Sneakers', 999.75),
-('112233445566', 'Black Fitness Leggings', 'FitActive', 'Small', 'Black', 'Polyester-Spandex Blend', 'Pants', 'Leggings', 499.95),
-('123456789012', 'Red Cotton T-Shirt', 'ActiveWear Co.', 'Medium', 'Red', '100% Cotton', 'Shirt', 'Crewneck', 199.99),
-('221133445566', 'Black Beanie Hat', 'Headwear Co.', 'One Size', 'Black', 'Acrylic Knit', 'Accessory', 'Beanie', 199.75),
-('334455667788', 'White Button-Up Shirt', 'Formal Wear', 'Medium', 'White', 'Cotton-Polyester Blend', 'Shirt', 'Button-Up', 599.99),
-('445566778899', 'Blue Denim Jacket', 'Denim & Co.', 'Medium', 'Blue', 'Denim', 'Jacket', 'Trucker Jacket', 1499.99),
-('556677889900', 'Khaki Chino Shorts', 'Leisure Wear', 'Large', 'Khaki', 'Cotton Twill', 'Shorts', 'Chino', 349.95),
-('778899001122', 'Floral Print Dress', 'Summer Styles', 'Large', 'Multicolor', 'Rayon', 'Dress', 'A-Line', 1299.50),
-('889900112233', 'Pink Sports Bra', 'FitActive', 'Medium', 'Pink', 'Nylon-Spandex Blend', 'Activewear', 'Sports Bra', 799.95),
-('987654321098', 'Blue Denim Jeans', 'Denim & Co.', '32', 'Blue', 'Cotton Blend', 'Pants', 'Straight Leg', 899.75);
+INSERT INTO `clothingitems` (`id`,`Barcode`, `ItemName`, `Brand`, `Size`, `Color`, `Material`, `Category`, `Style`, `Price`) VALUES
+('1','001122334455', 'White Canvas Sneakers', 'Sole Mates', '40', 'White', 'Canvas', 'Shoes', 'Sneakers', 999.75),
+('2','112233445566', 'Black Fitness Leggings', 'FitActive', 'Small', 'Black', 'Polyester-Spandex Blend', 'Pants', 'Leggings', 499.95),
+('3','123456789012', 'Red Cotton T-Shirt', 'ActiveWear Co.', 'Medium', 'Red', '100% Cotton', 'Shirt', 'Crewneck', 199.99),
+('4','221133445566', 'Black Beanie Hat', 'Headwear Co.', 'One Size', 'Black', 'Acrylic Knit', 'Accessory', 'Beanie', 199.75),
+('5','334455667788', 'White Button-Up Shirt', 'Formal Wear', 'Medium', 'White', 'Cotton-Polyester Blend', 'Shirt', 'Button-Up', 599.99),
+('6','445566778899', 'Blue Denim Jacket', 'Denim & Co.', 'Medium', 'Blue', 'Denim', 'Jacket', 'Trucker Jacket', 1499.99),
+('7','556677889900', 'Khaki Chino Shorts', 'Leisure Wear', 'Large', 'Khaki', 'Cotton Twill', 'Shorts', 'Chino', 349.95),
+('8','778899001122', 'Floral Print Dress', 'Summer Styles', 'Large', 'Multicolor', 'Rayon', 'Dress', 'A-Line', 1299.50),
+('9','889900112233', 'Pink Sports Bra', 'FitActive', 'Medium', 'Pink', 'Nylon-Spandex Blend', 'Activewear', 'Sports Bra', 799.95),
+('10','987654321098', 'Blue Denim Jeans', 'Denim & Co.', '32', 'Blue', 'Cotton Blend', 'Pants', 'Straight Leg', 899.75);
 
 -- --------------------------------------------------------
 

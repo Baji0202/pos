@@ -50,11 +50,18 @@ nav ul {
   background-color: #353b48;
 }
 
+/*aayusin*/
+.picture {
+  flex-direction: column;
+  margin-right: 65%;
+  width:30%;
+  padding-top: 20%;
+}
 
 /* Styling for the login form */
 .form {
   position: relative;
-  margin-left: 35%;
+  margin-left: 65%;
   width:30%;
   height: 458px;
   background-image: linear-gradient(#f1f5fd, #d0dcf1);

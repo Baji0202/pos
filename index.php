@@ -76,6 +76,8 @@ try {
    
         <div class="content">
         </div>
+
+        <div class="picture"><img src="include\image\picture.png" alt="rami"></div>
         <div class="form">
         <h1>Log In</h1>
  

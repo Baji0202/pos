@@ -24,7 +24,7 @@ if (isset($_POST['barcode'])) {
         $cart = [];
 
 foreach ($row as $rows) {
-  echo" {$rows['id']} - {$rows['ItemName']} ₱{$rows['Price']} ";
+  echo" {$rows['item_id']} - {$rows['ItemName']} ₱{$rows['Price']} ";
   array_push($cart, $rows['Barcode']);
 }
 

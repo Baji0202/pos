@@ -77,7 +77,7 @@ try {
     <p id="cchange">Change:</p>
     <button id="make-receipt">Make a receipt</button>
 <button id="paylater">Pay Later</button>
-<button>Gcash</button>
+<button id="gcash">Gcash</button>
 
     </div>
 
@@ -104,7 +104,7 @@ try {
 <h3>THANK YOU</h3>
 <div class="buttons">
 <button id="print">Print</button>
-<button>Email</button>
+<button id ="email">Email</button>
 <button id="clear-receipt">Clear</button>
 </div>
 
@@ -149,7 +149,7 @@ try {
             }
         };
         const config = {
-            fps: 100,
+            fps: 1,
             qrbox: {
                 width: 250,
                 height: 250,
@@ -493,17 +493,6 @@ paylaterbtn.addEventListener('click', () => {
     const cemail = document.getElementById('cemail').value;
     const total = document.getElementById('tot').innerText;
     console.log(productIds);
-    // Fetch IDs from the table
-    // const table = document.getElementById('product-table-body');
-    // const ids = [];
-    // table.querySelectorAll('tr').forEach(row => {
-    //     const idCell = row.cells[0];
-    //     const idText = idCell.textContent.trim();
-    //     const productId = parseInt(idText);
-    //     ids.push(productId);
-    // });
-
-    // // Prepare data object to send
     
 });
 
