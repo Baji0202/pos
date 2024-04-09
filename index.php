@@ -77,7 +77,7 @@ try {
         <div class="content">
         </div>
 
-        <div class="picture"><img src="include\image\picture.png" alt="rami"></div>
+        <!-- <div class="picture"><img src="include\image\picture.png" alt="rami"></div> -->
         <div class="form">
         <h1>Log In</h1>
  
@@ -96,8 +96,12 @@ try {
             ?>
             </div>
         </form>
+        
+
         </div>
-    
+            
+        <img class="background-image" src="include/image/bg.jpg" alt="rami">
+
 </div>
 </body>
 
