@@ -1,0 +1,57 @@
+/* Resetting default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #2f3640;
+    font-family: 'Inter', sans-serif;
+    color: #f5f6fa; /* Set text color */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #f5f6fa; /* Set table background color */
+    border-radius: 10px;
+    /* Additional styles for centering the table */
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+th, td {
+    border-bottom: 1px solid #dcdde1;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #2f3640; /* Set table header background color */
+}
+
+tr:nth-child(even) {
+    background-color: #f5f6fa; /* Set alternate row background color */
+}
+
+tr:hover {
+    background-color: #dcdde1; /* Set hover row background color */
+}
+
+a {
+    color: #fbcb45; /* Set link color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
