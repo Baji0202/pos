@@ -51,6 +51,17 @@ if (isset($_POST['update'])) {
 <body>
 
 
+<nav>
+    <div class="logo">
+        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <nav><a href="javascript:history.back()">BACK</a>
+</nav>
+
+</nav>
+
+
     <form action="" method="post">
 Name:
 <input type="text" value="<?php echo $row[0]['name'];?>" name="name"> <br>

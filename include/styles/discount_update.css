@@ -58,3 +58,39 @@ form input[type="submit"]:hover {
     color: green;
     margin-top: 10px;
 }
+
+/* Basic styling for the navigation */
+nav {
+    display: flex;
+    justify-content: space-between; /* Align items horizontally */
+    align-items: center; /* Align items vertically */
+    background-color: #2f3640;
+    padding: 12px 20px;
+    border-bottom: 1px solid #f5f6fa; /* Add bottom border */
+    box-shadow: 0 12px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+  
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.text_logo {
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 6px;
+    font-size: 32px;
+    color: #fbcb45;
+}
+/* Styling for the logo */
+.logo img {
+    margin-left: 80px;
+    height: auto;
+    width: 80px /* Adjust the width as needed */
+  }
+  
