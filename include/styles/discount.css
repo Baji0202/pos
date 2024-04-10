@@ -60,26 +60,8 @@ a {
 }
 
 a:hover {
-    color:#2f3640;
-    text-decoration: underline;
-}
-
-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #fbcb45;
-    color: #2f3640;
+    color: #f5f6fa;
     text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-button:hover {
-    background-color: #f5f6fa;
-    color: #2f3640;
 }
 
 
