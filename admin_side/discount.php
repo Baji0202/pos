@@ -16,7 +16,8 @@ if (!isset($_SESSION['user_id'])){
     <title>Discounts</title>
 </head>
 <body>
-<a href='discount_add.php?id=$discount_id'>Add</a> 
+<a href="discount_add.php?id=<?php echo $discount_id; ?>" target="_blank"><button>Add Discount</button></a>
+
 
 <table border='1' cellpadding='7'>
     <tr>

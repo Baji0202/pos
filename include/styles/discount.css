@@ -54,15 +54,19 @@ a:hover {
 
 
 
+
+
 button {
+    display: inline-block;
+    padding: 10px 20px;
     background-color: #fbcb45;
     color: #2f3640;
+    text-decoration: none;
     border: none;
-    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 button:hover {
