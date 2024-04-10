@@ -25,6 +25,9 @@ if (!isset($_SESSION['user_id'])){
         <div class="text_logo">POS System</div>
     </div>
     <div> <a href='discount_add.php?id=$discount_id'>Add</a> 
+    
+</div>
+<div><a href="admindashboard.php">Back</a>
 </div>
 
 </nav>
