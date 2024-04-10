@@ -1,0 +1,75 @@
+/* Global Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color:#2f3640;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #2f3640;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #2f3640;
+}
+
+th, td {
+    padding: 10px;
+}
+
+th {
+    background-color: #fbcb45;
+    color: #2f3640;
+}
+
+td {
+    background-color: #fff;
+    color: #2f3640;
+}
+
+a {
+    color: #2f3640;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fbcb45;
+    text-decoration: underline;
+}
+
+
+
+
+
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fbcb45;
+    color: #2f3640;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #f5f6fa;
+    color: #2f3640;
+}

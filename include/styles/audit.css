@@ -1,0 +1,59 @@
+/* Resetting default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #2f3640; /* Black background */
+  color: #fbc531; /* Yellow text */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  border-radius: 10px; /* Smooth border radius */
+  background-color: #353b48; /* White background */
+  color: #fbc531; /* Black text */
+  padding: 20px;
+  text-align: center;
+}
+
+.table-container {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #fbc531; /* Yellow border */
+}
+
+table th {
+  background-color: #353b48; /* Dark background */
+  color: #fbc531; /* Yellow text */
+}
+
+table tr:nth-child(even) {
+  background-color: #2f3640; /* Darker background */
+}
+
+table tr:hover {
+  background-color: #3b3f4a; /* Darker background on hover */
+}
+
+table th,
+table td {
+  text-align: left;
+}

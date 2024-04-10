@@ -11,10 +11,13 @@ if (!isset($_SESSION['user_id'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="..\include\image\logo.png">
+    <link rel="stylesheet" href="../include/styles/discount.css">
     <title>Discounts</title>
 </head>
 <body>
-<a href='discount_add.php?id=$discount_id'>Add</a> 
+<a href="discount_add.php?id=<?php echo $discount_id; ?>" target="_blank"><button>Add Discount</button></a>
+
 
 <table border='1' cellpadding='7'>
     <tr>
