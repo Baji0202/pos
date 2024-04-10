@@ -67,17 +67,16 @@ try {
 
     <p>Tax: 12%</p>
     <p id="gtotal">Total: ₱0.00</p>
-    <button id="total-button">Total</button>
+    <button id="total-button" >Total</button>
     </div>
-   
+    <button id="paylater" disabled>Pay Later</button>
     Cash Payment:
-    <input type="text" id="cpayment" pattern="[0-9]*">
-    <button id="changebtn">Change</button>
+    <input type="text" id="cpayment" pattern="[0-9]*" disabled>
+    <button id="changebtn" disabled>Change</button>
     <p id="cchange">Change:</p>
-    <button id="make-receipt">Make a receipt</button>
-<button id="paylater">Pay Later</button>
-<button id="gcash">Gcash</button>
-
+    <button id="gcash" disabled>Gcash</button>
+    <button id="make-receipt" disabled>Make a receipt</button>
+    
     </div>
 
 
@@ -102,7 +101,7 @@ try {
 
 <h3>THANK YOU</h3>
 <div class="buttons">
-<button id="print">Print</button>
+<button id="print" disabled>Print</button>
 <button id ="email">Email</button>
 <button id="clear-receipt">Clear</button>
 </div>
@@ -225,12 +224,6 @@ const productPrice = parseFloat(priceStr);
             quantityCell.innerHTML = `<input type="number" name="productQuantity" value="1" min="1">`;
             tableRow.appendChild(quantityCell);
 
-            // const totalPriceCell = document.createElement('td');
-            // totalPriceCell.classList.add('total-price');
-            // totalPriceCell.dataset.price = productPrice;
-            // totalPriceCell.textContent = '₱' + productPrice.toFixed(2);
-            // tableRow.appendChild(totalPriceCell);
-
             const actionCell = document.createElement('td');
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
@@ -278,7 +271,9 @@ totalButton.addEventListener('click', () => {
     document.getElementById('gtotal').textContent = 'Total: ₱' + (discount * total * (1 + 0.12)).toFixed(2);
 
     document.getElementById('total-value').textContent = 'Sub Total: ₱' + total.toFixed(2);
-    
+    document.getElementById('cpayment').disabled = false;
+    document.getElementById('changebtn').disabled = false;
+    document.getElementById('paylater').disabled = false;
    
 });
 
@@ -300,8 +295,92 @@ print.addEventListener("click", () =>{
     
 });
 const productIds = [];
+let receipt;
+function sendbill (receipt) {
+    fetch('process.php', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: receipt
+})
+.then(response => response.text())
+.then(data => {
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+}
+// function fetchLastInsertedId() {
+//     return fetch('process.php')
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json(); // Parse the response as JSON
+//         })
+//         .then(data => {
+//             // Check if the response contains the last inserted ID
+//             if (data.hasOwnProperty('last_inserted_id')) {
+//                 const bill_id = data.last_inserted_id;
+//                 console.log('Last inserted ID:', bill_id);
+//                 return bill_id; // Return the last inserted ID
+//             } else {
+//                 throw new Error('Last inserted ID not found in response');
+//             }
+//         })
+//         .catch(error => {
+//             console.error('There was a problem with the fetch operation:', error);
+//         });
+// }
+// function getreceipt(pay, amount, cchange) {
+    
+//             const receipt = {
+//                 bill: fetchedbill,
+//                 pay: pay,
+//                 amount: amount,
+//                 cchange: cchange
+//             };
+//             console.log(receipt);
+//             return JSON.stringify(receipt);
+       
+// }
 
+// function sendreceipt(receipt) {
+//     fetch('receipt.php', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json'
+//   },
+//   body: receipt
+// })
+// .then(response => response.text())
+// .then(data => {
+// })
+// .catch(error => {
+//   console.error('Error:', error);
+// });
+// }
 
+function getreceipt(name, email, productIds, subTotal, dis, total,pay,amount,cchange) {
+    let subValue = parseFloat(subTotal.split("₱")[1]);
+  let totalValue = parseFloat(total.split("₱")[1]);
+  let cchangeValue = parseFloat(total.split("₱")[1]);
+    const receipts = {
+    name: name,
+    email: email,
+    productIds: productIds,
+    subtot: subValue,
+    discount: dis,
+    tot: totalValue,
+    pay:pay,
+    amount:amount,
+    cchange:cchangeValue
+  };
+  console.log(receipts); // Logging the bills object before stringifying
+
+  return JSON.stringify(receipts);
+}
 function getbills(name, email, productIds, subTotal, dis, total) {
   let subValue = parseFloat(subTotal.split("₱")[1]);
   let totalValue = parseFloat(total.split("₱")[1]);
@@ -320,145 +399,138 @@ function getbills(name, email, productIds, subTotal, dis, total) {
   return JSON.stringify(bills); // Stringify the bills object before returning
 }
 
-// function sendlink(bills) {
-//   let queryString = `billsJson=${encodeURIComponent(bills)}`; // Use 'billsJson' parameter name
+function sendlink(bills) {
 
-//   let url = "paylater.php?" + queryString;
+  const encodedBillsJson = encodeURIComponent(bills);
 
-//   window.location.href = url;
-// }
+  const url = `paylater.php?billsJson=${encodedBillsJson}`;
+  
+  window.location.href = url;
+}
 
-let bill;
-const makereceipt = document.getElementById('make-receipt');
-makereceipt.addEventListener("click", () => {
+
+const makeReceipt = document.getElementById('make-receipt');
+
+makeReceipt.addEventListener("click", () => {
     const tableRows = document.querySelectorAll('#product-table-body tr');
-const rowData = [];
-const customerName = document.getElementById('cfname').value;
-const customerEmail = document.getElementById('cemail').value;
-if (customerName.trim() === '' && customerEmail.trim() === '') {
-    alert("Please fill in the customer details! If email is not applicable, put N/A");
-} else {
+    const rowData = [];
+    const customerName = document.getElementById('cfname').value;
+    const customerEmail = document.getElementById('cemail').value;
+    const selectElement = document.getElementById('discount');
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const selectedOptionText = selectedOption.textContent;
+    const totalValueElement = document.getElementById('total-value').textContent;
+    const gTotalElement = document.getElementById('gtotal').textContent;
+    const paid = document.getElementById('cpayment').value;
+    const cuschange = document.getElementById('cchange').textContent;
 
+    // Process receipt
+    tableRows.forEach(row => {
+        const productName = row.cells[1].textContent;
+        const idString = row.cells[0].textContent;
+        const id = parseInt(idString.trim()); 
+        const priceString = row.cells[2].textContent.replace('₱', ''); 
+        const productPrice = parseFloat(priceString); 
+        const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
 
-document.getElementById('cdetails').textContent = customerName+"  "+customerEmail;
-document.getElementById('mop').textContent = "Pay thru: Cash";
-const paid = document.getElementById('cpayment').value;
-document.getElementById('amp').textContent = "Amount paid: ₱" + paid;
-const cuschange = document.getElementById('cchange').textContent;
-document.getElementById('pchange').textContent = cuschange;
-// Get the selected value of the discount dropdown
-const selectElement = document.getElementById('discount');
+        productIds.push({
+            id: id,
+            quantity: quantity,
+            productPrice: productPrice
+        });
 
-// Get the selected option
-const selectedOption = selectElement.options[selectElement.selectedIndex];
+        // Push the extracted data into the rowData array
+        rowData.push({
+            productName: productName,
+            productPrice: productPrice,
+            quantity: quantity
+        });
 
-// Get the text content of the selected option
-const selectedOptionText = selectedOption.textContent;
+        const displayContainer = document.getElementById('tabless');
 
-// Get the total and sub total elements
-const totalValueElement = document.getElementById('total-value').textContent;
-const gTotalElement = document.getElementById('gtotal').textContent;
+        // Loop through the rowData array
+        rowData.forEach(data => {
+            // Create a div element for each item
+            const itemDiv = document.createElement('div');
 
+            // Set the inner HTML of the div to display the data
+            itemDiv.innerHTML = `
+                <p>Product Name: ${data.productName}</p>
+                <p>Price: ₱${data.productPrice.toFixed(2)}</p>
+                <p>Quantity: ${data.quantity}</p>
+            `;
 
-tableRows.forEach(row => {
-    const productName = row.cells[1].textContent;
-const idString = row.cells[0].textContent;
-const id = parseInt(idString.trim()); 
-
-const priceString = row.cells[2].textContent.replace('₱', ''); 
-const productPrice = parseFloat(priceString); 
-const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
-productIds.push({
-      id: id,
-      quantity: quantity,
-      productPrice: productPrice
+            // Append the itemDiv to the display container
+            displayContainer.appendChild(itemDiv);
+        });
     });
- 
 
-    // Push the extracted data into the rowData array
-    rowData.push({
-        productName: productName,
-        productPrice: productPrice,
-        quantity: quantity
-    });
-    const displayContainer = document.getElementById('tabless');
+    // Display customer and payment details
+    document.getElementById('cdetails').textContent = customerName + "  " + customerEmail;
+    document.getElementById('mop').textContent = "Pay thru: Cash";
+    document.getElementById('amp').textContent = "Amount paid: ₱" + paid;
+    document.getElementById('pchange').textContent = cuschange;
+    document.getElementById('subtot').textContent = totalValueElement;
+    document.getElementById('disc').textContent = selectedOptionText;
+    document.getElementById('tot').textContent = gTotalElement;
 
-// Loop through the rowData array
-rowData.forEach(data => {
-    // Create a div element for each item
-    const itemDiv = document.createElement('div');
+    // Generate and send bill
+    receipt = getreceipt(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement,"Cash",paid,cuschange);
+    console.log(receipt);
+    sendbill(receipt);
 
-    // Set the inner HTML of the div to display the data
-    itemDiv.innerHTML = `
-        <p>Product Name: ${data.productName}</p>
-        <p>Price: ₱${data.productPrice.toFixed(2)}</p>
-        <p>Quantity: ${data.quantity}</p>
-    `;
-
-    // Append the itemDiv to the display container
-    displayContainer.appendChild(itemDiv);
-
-    
-});
-
-document.getElementById('subtot').textContent = totalValueElement;
-document.getElementById('disc').textContent = selectedOptionText;
-document.getElementById('tot').textContent = gTotalElement;
-
-rowData.length = 0;
-});
-
-bill = getbills(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement);
-console.log(bill);
-sendbill(bill);
+    // Reset form inputs and states
     document.getElementById('cfname').value = '';
     document.getElementById('cemail').value = '';
     selectElement.selectedIndex = 0;
-
-    // Clear total and grand total
     document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
-document.getElementById('gtotal').textContent = 'Total: ₱0.00';
-document.getElementById('cchange').textContent = "Change: ";
-    // Clear rowData
+    document.getElementById('gtotal').textContent = 'Total: ₱0.00';
+    document.getElementById('cchange').textContent = "Change: ";
     document.getElementById('product-table-body').innerHTML = '';
     document.getElementById('cpayment').value = '';
-    rowData.length = 0
-}
-
+    document.getElementById('print').disabled = false;
+    document.getElementById('cpayment').disabled = true;
+    document.getElementById('changebtn').disabled = true;
+    document.getElementById('paylater').disabled = true;
+    document.getElementById('make-receipt').disabled = true;
 });
 
+
 const changecalc = document.getElementById('changebtn');
+
 changecalc.addEventListener("click", () => {
-    // Retrieve the total amount to be paid
+
     const gtText = document.getElementById('gtotal').textContent;
     
-    // Split the text at the Peso sign (₱)
+   
     const parts = gtText.split('₱');
     
-    // Get the second part of the resulting array
+ 
     const gt = parseFloat(parts[1]);
     
-    // Retrieve the payment amount entered by the user
-    const paymentInput = document.getElementById('cpayment').value;
+  
+    const paymentInput = document.getElementById('cpayment').value.trim();
 
-    // Check if the payment input is a valid number
-    if (!isNaN(paymentInput)) {
+    if (paymentInput === "") {
+        alert("Please enter an amount");
+    } else if (!isNaN(paymentInput)) {
         const payment = parseFloat(paymentInput);
 
-        // Check if the payment is insufficient
+       
         if (gt > payment) {
             alert("Insufficient balance");
         } else {
-            // Calculate and display the change
+            
             const change = payment - gt;
-            const cchange = document.getElementById('cchange').textContent = "Change: ₱" + parseFloat(change).toFixed(2);
+            const cchange = document.getElementById('cchange');
+            cchange.textContent = "Change: ₱" + change.toFixed(2);
         }
-        
     } else {
-        alert("Invalid input for payment amount");
+        alert("Please enter a valid amount");
     }
-
+    document.getElementById('make-receipt').disabled = false;
 });
+
 
 const clearButton = document.getElementById('clear-receipt');
 
@@ -473,6 +545,8 @@ clearButton.addEventListener('click', () => {
     document.getElementById("mop").innerText = "Pay thru: ";
     document.getElementById("amp").innerText = "Amount paid:";
     document.getElementById("pchange").innerText = "";
+
+    document.getElementById('print').disabled = true;
 });
 
 function updateDate() {
@@ -493,33 +567,50 @@ setInterval(updateDate, 1000);
 const paylaterbtn = document.getElementById('paylater');
     
 paylaterbtn.addEventListener('click', () => {
-    let url;
-    if (fetchedbill) {
-               
-        url = "paylater.php?id="+ fetchedbill;;
-            } else {
-                console.log('No data fetched yet.');
-            }
-  window.location.href = url;
+    const tableRows = document.querySelectorAll('#product-table-body tr');
+const rowData = [];
+    const customerName = document.getElementById('cfname').value;
+const customerEmail = document.getElementById('cemail').value;
+
+const selectElement = document.getElementById('discount');
+const selectedOption = selectElement.options[selectElement.selectedIndex];
+const selectedOptionText = selectedOption.textContent;
+
+const totalValueElement = document.getElementById('total-value').textContent;
+const gTotalElement = document.getElementById('gtotal').textContent;
+
+tableRows.forEach(row => {
+    const productName = row.cells[1].textContent;
+const idString = row.cells[0].textContent;
+const id = parseInt(idString.trim()); 
+
+const priceString = row.cells[2].textContent.replace('₱', ''); 
+const productPrice = parseFloat(priceString); 
+const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
+productIds.push({
+      id: id,
+      quantity: quantity,
+      productPrice: productPrice
+    });
+
 });
-let fetchedbill;
-function sendbill (billinfo) {
-    fetch('process.php', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: billinfo
-})
-.then(response => response.text())
-.then(data => {
-    fetchedbill = data;
-    console.log(fetchedbill);
-})
-.catch(error => {
-  console.error('Error:', error);
+    bill = getbills(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement);
+    
+
+    document.getElementById('cfname').value = '';
+    document.getElementById('cemail').value = '';
+    selectElement.selectedIndex = 0;
+
+    // Clear total and grand total
+    document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
+document.getElementById('gtotal').textContent = 'Total: ₱0.00';
+document.getElementById('cchange').textContent = "Change: ";
+    // Clear rowData
+    document.getElementById('product-table-body').innerHTML = '';
+    document.getElementById('cpayment').value = '';
+    rowData.length = 0
+    sendlink(bill);
 });
-}
     </script>
    
 </body>

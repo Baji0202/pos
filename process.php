@@ -29,6 +29,9 @@ if ($bills !== null) {
     $subtot = $bills['subtot'];
     $discount = $bills['discount'];
     $tot = $bills['tot'];
+    $pay = $bills['pay'];
+    $amount = $bills['amount'];
+    $cchange = $bills['cchangeValue'];
 
     $sql = "SELECT * FROM discount WHERE name = ?";
     $stmt = $pdoConnect->prepare($sql);
@@ -76,8 +79,12 @@ $dtnow = date('Y-m-d H:i:s');
     $stmt->execute([$uniqueinv,$lastInsertedcustomer, $subtot,$discountid,$tot, $dtnow]);
     $lastInsertedbill = $pdoConnect->lastInsertId();
 
-    echo $lastInsertedbill;
-
+    $sql = "INSERT INTO `receipt`(`datetime`, `payment_method`, `amount`, `cchange`, `bill_id`) VALUES (?,?,?,?,?)";
+    $stmt = $pdoConnect->prepare($sql);
+    $stmt->execute([$dtnow,$pay,$amount,$cchange,$lastInsertedbill]);
+  
+    
+echo "php".$dtnow.$pay.$amount.$cchange.$lastInsertedbill;
     
 } else {
     
