@@ -1,57 +1,71 @@
-/* Resetting default margin and padding */
-* {
+/* Global Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color:#2f3640;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #2f3640;
-    font-family: 'Inter', sans-serif;
-    color: #f5f6fa; /* Set text color */
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #2f3640;
 }
 
 table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: #f5f6fa; /* Set table background color */
-    border-radius: 10px;
-    /* Additional styles for centering the table */
-    margin-top: auto;
-    margin-bottom: auto;
+}
+
+table, th, td {
+    border: 1px solid #2f3640;
 }
 
 th, td {
-    border-bottom: 1px solid #dcdde1;
-    padding: 12px;
-    text-align: left;
+    padding: 10px;
 }
 
 th {
-    background-color: #2f3640; /* Set table header background color */
+    background-color: #fbcb45;
+    color: #2f3640;
 }
 
-tr:nth-child(even) {
-    background-color: #f5f6fa; /* Set alternate row background color */
-}
-
-tr:hover {
-    background-color: #dcdde1; /* Set hover row background color */
+td {
+    background-color: #fff;
+    color: #2f3640;
 }
 
 a {
-    color: #fbcb45; /* Set link color */
+    color: #2f3640;
     text-decoration: none;
 }
 
 a:hover {
+    color: #fbcb45;
     text-decoration: underline;
+}
+
+
+
+button {
+    background-color: #fbcb45;
+    color: #2f3640;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #f5f6fa;
+    color: #2f3640;
 }
