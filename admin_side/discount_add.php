@@ -48,8 +48,8 @@ if (isset($_POST['add'])) {
         <img src="..\include\image\logo-black.png" alt="Company Logo">
         <div class="text_logo">POS System</div>
     </div>
-    <nav><a href="javascript:history.back()">Back</a>
-</nav>
+    <div><a href="discount.php">Back</a>
+</div>
 
 </nav>
 
