@@ -1,7 +1,7 @@
 <?php
 require_once "include\connect\dbcon.php";
 $billsJson = file_get_contents("php://input");
-// var_dump($billsJson);
+var_dump($billsJson);
 
 $bills = json_decode($billsJson, true);
 
@@ -31,7 +31,7 @@ if ($bills !== null) {
     $tot = $bills['tot'];
     $pay = $bills['pay'];
     $amount = $bills['amount'];
-    $cchange = $bills['cchangeValue'];
+    $cchange = $bills['cchange'];
 
     $sql = "SELECT * FROM discount WHERE name = ?";
     $stmt = $pdoConnect->prepare($sql);
@@ -78,7 +78,7 @@ $dtnow = date('Y-m-d H:i:s');
     $stmt = $pdoConnect->prepare($sql);
     $stmt->execute([$uniqueinv,$lastInsertedcustomer, $subtot,$discountid,$tot, $dtnow]);
     $lastInsertedbill = $pdoConnect->lastInsertId();
-
+echo $lastInsertedbill;
     $sql = "INSERT INTO `receipt`(`datetime`, `payment_method`, `amount`, `cchange`, `bill_id`) VALUES (?,?,?,?,?)";
     $stmt = $pdoConnect->prepare($sql);
     $stmt->execute([$dtnow,$pay,$amount,$cchange,$lastInsertedbill]);

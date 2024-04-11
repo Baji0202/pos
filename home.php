@@ -306,6 +306,7 @@ function sendbill (receipt) {
 })
 .then(response => response.text())
 .then(data => {
+    console.log(data);
 })
 .catch(error => {
   console.error('Error:', error);
@@ -377,7 +378,6 @@ function getreceipt(name, email, productIds, subTotal, dis, total,pay,amount,cch
     amount:amount,
     cchange:cchangeValue
   };
-  console.log(receipts); // Logging the bills object before stringifying
 
   return JSON.stringify(receipts);
 }
@@ -394,7 +394,7 @@ function getbills(name, email, productIds, subTotal, dis, total) {
     tot: totalValue
   };
   
-  console.log(bills); // Logging the bills object before stringifying
+  //console.log(bills); // Logging the bills object before stringifying
 
   return JSON.stringify(bills); // Stringify the bills object before returning
 }
@@ -476,7 +476,6 @@ makeReceipt.addEventListener("click", () => {
 
     // Generate and send bill
     receipt = getreceipt(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement,"Cash",paid,cuschange);
-    console.log(receipt);
     sendbill(receipt);
 
     // Reset form inputs and states
