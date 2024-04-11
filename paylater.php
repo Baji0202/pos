@@ -6,7 +6,7 @@ require_once "include/connect/dbcon.php"; // Use forward slashes for paths
 if(isset($_GET['billsJson'])) {
     // Retrieve the JSON string from the URL parameter
     $billsJson = $_GET['billsJson'];
-    var_dump($billsJson);
+    // var_dump($billsJson);
     $bills = json_decode($billsJson, true);
 
     function calculateSubtotal($itemprice, $itemquan) {
@@ -89,8 +89,22 @@ if(isset($_GET['billsJson'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pay Later</title>
+    <link rel="icon" type="image/png" href="..\include\image\logo.png">
+    <link rel="stylesheet" href="./include/styles/discount.css">
 </head>
 <body>
+
+
+<nav>
+    <div class="logo">
+        <img src=".\include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <div><a href="home.php">Back</a>
+</div>
+
+</nav>
+
 
 <table border='1' cellpadding='7'>
     <tr>
@@ -117,7 +131,7 @@ if(isset($_GET['billsJson'])) {
             echo "<td>" . $order_id . "</td>";
             echo "<td>" . $total_amount . "</td>";
             echo "<td>" . $status . "</td>";
-            echo "<td><button type='button'>Pay now</button></td>";
+            echo "<td><button type='button' id='button'>Pay now</button></td>";
             echo "</tr>";
         } else {
             echo "No Pending Customers";

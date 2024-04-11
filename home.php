@@ -147,7 +147,7 @@ try {
             }
         };
         const config = {
-            fps: 1,
+            fps: 0.1,
             qrbox: {
                 width: 250,
                 height: 250,
