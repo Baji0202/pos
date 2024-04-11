@@ -294,6 +294,65 @@ print.addEventListener("click", () =>{
 
     
 });
+const emailButton = document.getElementById('email');
+emailButton.addEventListener("click", () => {
+
+    const receiptContent = document.getElementsByClassName('receipt')[0].innerHTML;
+const customerEmail = email;
+const customerName = emailname;
+console.log(email,emailname);
+console.log(customerEmail,customerName);
+    if (customerEmail === '') {
+        alert("Please provide customer email");
+    } else {
+        // Generate PDF receipt content
+        const pdfContent = generatePDFContent(customerName, receiptContent);
+
+        // Send email with PDF content
+        sendEmail(customerName, customerEmail, pdfContent);
+    }
+});
+
+function generatePDFContent(customerName, receiptContent) {
+    // Generate PDF content here using a library like jsPDF or html2pdf
+    // For example:
+    const pdfContent = `
+        <h1>Receipt for ${customerName}</h1>
+        <p>${receiptContent}</p>
+    `;
+    return pdfContent;
+}
+
+function sendEmail(customerName, customerEmail, pdfContent) {
+    const emailInfo = {
+        name: customerName,
+        email: customerEmail,
+        pdfContent: pdfContent
+    };
+
+    fetch('sendmail.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emailInfo)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send email');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log(data);
+        alert("Email sent successfully");
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
 const productIds = [];
 let receipt;
 function sendbill (receipt) {
@@ -410,7 +469,8 @@ function sendlink(bills) {
 
 
 const makeReceipt = document.getElementById('make-receipt');
-
+let emailname;
+let email;
 makeReceipt.addEventListener("click", () => {
     const tableRows = document.querySelectorAll('#product-table-body tr');
     const rowData = [];
@@ -475,6 +535,8 @@ makeReceipt.addEventListener("click", () => {
     document.getElementById('tot').textContent = gTotalElement;
 
     // Generate and send bill
+    emailname = customerName;
+    email = customerEmail;
     receipt = getreceipt(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement,"Cash",paid,cuschange);
     sendbill(receipt);
 
