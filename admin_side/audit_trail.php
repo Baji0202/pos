@@ -11,12 +11,21 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="..\include\styles\audit.css">
     <link rel="icon" type="image/png" href="..\include\image\logo.png">
+    <link rel="stylesheet" href="../include/styles/discount.css">
     <title>Audit Trail</title>
 </head>
 <body>
-<div class="container">
+<nav>
+    <div class="logo">
+        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <div><a href="admindashboard.php">Back</a>
+</div>
+
+</nav>
+
 <table border='1' cellpadding='7'>
     <tr>
     <th>ID</th>
@@ -49,6 +58,6 @@ if (!isset($_SESSION['user_id'])) {
 
 
 </table>
-</div>
+
 </body>
 </html>

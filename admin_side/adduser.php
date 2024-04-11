@@ -51,7 +51,20 @@ $stmt->execute(["Inserted a new user,user_id: $lastId",$timestamp,$_SESSION['use
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="icon" type="image/png" href="..\include\image\logo.png">
+    <link rel="stylesheet" href="../include/styles/discount_update.css">
 </head>
+
+<nav>
+    <div class="logo">
+        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <div> 
+</div>
+<div><a href="user_settings.php">Back</a>
+</div>
+</nav>
 
 <body>
     <form method="post">

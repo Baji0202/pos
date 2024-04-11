@@ -10,11 +10,29 @@ if (!isset($_SESSION['user_id'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Settings</title>
+    <link rel="icon" type="image/png" href="..\include\image\logo.png">
+    <link rel="stylesheet" href="../include/styles/discount.css">
+
+
 </head>
 <body>
+
+<nav>
+    <div class="logo">
+        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <div> 
+    <a href="adduser.php">Add User</a><br>
+</div>
+<div><a href="admindashboard.php">Back</a>
+</div>
+</nav>
+
+
     <br>
 
-    <a href="adduser.php">Add User</a><br>
+
 <table border='1' cellpadding='7'>
     <tr>
     <th>id</th>
@@ -43,7 +61,7 @@ if (!isset($_SESSION['user_id'])){
         echo "<td>" . $fname ."</td>";
         echo "<td>" . $lname . "</td>";
         if ($role != 'admin') {
-            echo "<td><a href='update_user.php?id=$user_id'; ?>Update<a href='delete_user.php?id=$user_id'; ?>Delete</a></td>"; 
+            echo "<td class='modify'><a href='update_user.php?id=$user_id'; ?>Update </a> | <a href='delete_user.php?id=$user_id'; ?>Delete</a></td>"; 
         } else {
             echo "<td></td>";
         }

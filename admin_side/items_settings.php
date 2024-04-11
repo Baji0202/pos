@@ -11,9 +11,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="icon" type="image/png" href="..\include\image\logo.png">
+    <link rel="stylesheet" href="../include/styles/discount.css">
     <title>Document</title>
 </head>
+<nav>
+    <div class="logo">
+        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <div><a href="admindashboard.php">Back</a>
+</div>
+
+</nav>
+
 <body>  
     <?php
         $sql = "SELECT * FROM clothingitems";
@@ -35,7 +46,7 @@
             echo "</tr>";
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
-                echo "<td>" . $row["item_id"] . "</td>";
+                echo "<td>" . $row["id"] . "</td>";
                 echo "<td>" . $row["Barcode"] . "</td>";
                 echo "<td>" . $row["ItemName"] . "</td>";
                 echo "<td>" . $row["Brand"] . "</td>";
@@ -45,7 +56,7 @@
                 echo "<td>" . $row["Category"] . "</td>";
                 echo "<td>" . $row["Style"] . "</td>";
                 echo "<td>" . $row["Price"] . "</td>";
-                echo "<td><a href='#'>Update</a> <a href='#'>Delete</a></td>";
+                echo "<td><a href='#'>Update</a> | <a href='#'>Delete</a></td>";
                 echo "</tr>";
             }
             echo "</table>";

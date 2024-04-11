@@ -54,7 +54,7 @@ if (!isset($_SESSION['user_id'])){
         echo "<td>" . $discount_id . "</td>";
         echo "<td>" . $name . "</td>";
         echo "<td>" . $value . "</td>";
-        echo "<td><a href='discount_update.php?id=$discount_id'>Update</a> | <a href='discount_delete.php?id=$discount_id'>Delete</a></td>";
+        echo "<td class='modify'><a href='discount_update.php?id=$discount_id'>Update</a> | <a href='discount_delete.php?id=$discount_id'>Delete</a></td>";
 
         echo "</tr>";
     }

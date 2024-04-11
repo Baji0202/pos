@@ -99,4 +99,6 @@ nav ul {
     height: auto;
     width: 80px /* Adjust the width as needed */
   }
-  
+.modify{
+    text-align: center;
+}
