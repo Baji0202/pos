@@ -394,7 +394,7 @@ function getbills(name, email, productIds, subTotal, dis, total) {
     tot: totalValue
   };
   
-  console.log(bills); // Logging the bills object before stringifying
+  //console.log(bills); // Logging the bills object before stringifying
 
   return JSON.stringify(bills); // Stringify the bills object before returning
 }

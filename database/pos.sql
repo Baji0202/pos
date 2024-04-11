@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Mar 29, 2024 at 01:58 PM
+-- Generation Time: Apr 11, 2024 at 02:06 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,11 +29,23 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `bill` (
   `bill_id` int(11) NOT NULL,
+  `invcode` varchar(255) NOT NULL,
   `order_id` int(11) DEFAULT NULL,
+  `subtotal` decimal(10,2) NOT NULL,
   `discount_id` int(11) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `date_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bill`
+--
+
+INSERT INTO `bill` (`bill_id`, `invcode`, `order_id`, `subtotal`, `discount_id`, `total_amount`, `date_time`) VALUES
+(6, 'INV202404101431508952', 11, 499.95, 1, 559.94, '2024-04-10 14:31:50'),
+(7, 'INV202404101504047927', 12, 499.95, 1, 559.94, '2024-04-10 15:04:04'),
+(8, 'INV202404101509214414', 13, 499.95, 1, 559.94, '2024-04-10 15:09:21'),
+(9, 'INV202404101511125454', 14, 499.95, 1, 559.94, '2024-04-10 15:11:12');
 
 -- --------------------------------------------------------
 
@@ -56,7 +68,7 @@ CREATE TABLE `cash_management` (
 --
 
 CREATE TABLE `clothingitems` (
-  `id` int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `id` int(11) NOT NULL,
   `Barcode` varchar(20) NOT NULL,
   `ItemName` varchar(255) NOT NULL,
   `Brand` varchar(255) DEFAULT NULL,
@@ -72,17 +84,17 @@ CREATE TABLE `clothingitems` (
 -- Dumping data for table `clothingitems`
 --
 
-INSERT INTO `clothingitems` (`id`,`Barcode`, `ItemName`, `Brand`, `Size`, `Color`, `Material`, `Category`, `Style`, `Price`) VALUES
-('1','001122334455', 'White Canvas Sneakers', 'Sole Mates', '40', 'White', 'Canvas', 'Shoes', 'Sneakers', 999.75),
-('2','112233445566', 'Black Fitness Leggings', 'FitActive', 'Small', 'Black', 'Polyester-Spandex Blend', 'Pants', 'Leggings', 499.95),
-('3','123456789012', 'Red Cotton T-Shirt', 'ActiveWear Co.', 'Medium', 'Red', '100% Cotton', 'Shirt', 'Crewneck', 199.99),
-('4','221133445566', 'Black Beanie Hat', 'Headwear Co.', 'One Size', 'Black', 'Acrylic Knit', 'Accessory', 'Beanie', 199.75),
-('5','334455667788', 'White Button-Up Shirt', 'Formal Wear', 'Medium', 'White', 'Cotton-Polyester Blend', 'Shirt', 'Button-Up', 599.99),
-('6','445566778899', 'Blue Denim Jacket', 'Denim & Co.', 'Medium', 'Blue', 'Denim', 'Jacket', 'Trucker Jacket', 1499.99),
-('7','556677889900', 'Khaki Chino Shorts', 'Leisure Wear', 'Large', 'Khaki', 'Cotton Twill', 'Shorts', 'Chino', 349.95),
-('8','778899001122', 'Floral Print Dress', 'Summer Styles', 'Large', 'Multicolor', 'Rayon', 'Dress', 'A-Line', 1299.50),
-('9','889900112233', 'Pink Sports Bra', 'FitActive', 'Medium', 'Pink', 'Nylon-Spandex Blend', 'Activewear', 'Sports Bra', 799.95),
-('10','987654321098', 'Blue Denim Jeans', 'Denim & Co.', '32', 'Blue', 'Cotton Blend', 'Pants', 'Straight Leg', 899.75);
+INSERT INTO `clothingitems` (`id`, `Barcode`, `ItemName`, `Brand`, `Size`, `Color`, `Material`, `Category`, `Style`, `Price`) VALUES
+(1, '001122334455', 'White Canvas Sneakers', 'Sole Mates', '40', 'White', 'Canvas', 'Shoes', 'Sneakers', 999.75),
+(2, '112233445566', 'Black Fitness Leggings', 'FitActive', 'Small', 'Black', 'Polyester-Spandex Blend', 'Pants', 'Leggings', 499.95),
+(3, '123456789012', 'Red Cotton T-Shirt', 'ActiveWear Co.', 'Medium', 'Red', '100% Cotton', 'Shirt', 'Crewneck', 199.99),
+(4, '221133445566', 'Black Beanie Hat', 'Headwear Co.', 'One Size', 'Black', 'Acrylic Knit', 'Accessory', 'Beanie', 199.75),
+(5, '334455667788', 'White Button-Up Shirt', 'Formal Wear', 'Medium', 'White', 'Cotton-Polyester Blend', 'Shirt', 'Button-Up', 599.99),
+(6, '445566778899', 'Blue Denim Jacket', 'Denim & Co.', 'Medium', 'Blue', 'Denim', 'Jacket', 'Trucker Jacket', 1499.99),
+(7, '556677889900', 'Khaki Chino Shorts', 'Leisure Wear', 'Large', 'Khaki', 'Cotton Twill', 'Shorts', 'Chino', 349.95),
+(8, '778899001122', 'Floral Print Dress', 'Summer Styles', 'Large', 'Multicolor', 'Rayon', 'Dress', 'A-Line', 1299.50),
+(9, '889900112233', 'Pink Sports Bra', 'FitActive', 'Medium', 'Pink', 'Nylon-Spandex Blend', 'Activewear', 'Sports Bra', 799.95),
+(10, '987654321098', 'Blue Denim Jeans', 'Denim & Co.', '32', 'Blue', 'Cotton Blend', 'Pants', 'Straight Leg', 899.75);
 
 -- --------------------------------------------------------
 
@@ -92,9 +104,19 @@ INSERT INTO `clothingitems` (`id`,`Barcode`, `ItemName`, `Brand`, `Size`, `Color
 
 CREATE TABLE `customer` (
   `customer_id` int(50) NOT NULL,
-  `customer_fname` varchar(255) NOT NULL,
+  `cname` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`customer_id`, `cname`, `email`) VALUES
+(11, 'receipttest', 'receipttest@gmail.com'),
+(12, 'receipttesting101', 'receipttesting101@gmail.com'),
+(13, 'lastnato@gmail.com', ''),
+(14, 'aaa', '');
 
 -- --------------------------------------------------------
 
@@ -113,30 +135,8 @@ CREATE TABLE `discount` (
 --
 
 INSERT INTO `discount` (`discount_id`, `name`, `value`) VALUES
+(1, 'NO DISCOUNT', 1),
 (8, '20% Student Discount', 0.8);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item`
---
-
-CREATE TABLE `item` (
-  `item_id` int(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `color` varchar(255) NOT NULL,
-  `size` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `item`
---
-
-INSERT INTO `item` (`item_id`, `name`, `color`, `size`, `type`) VALUES
-(1, 'T-Shirt', 'Red', 'M', 'Shirt'),
-(2, 'Jeans', 'Blue', '32', 'Pants'),
-(3, 'Dress', 'Black', 'S', 'Dress');
 
 -- --------------------------------------------------------
 
@@ -208,7 +208,20 @@ INSERT INTO `log` (`id`, `action`, `timestamp`, `user_id`) VALUES
 (52, 'logged in', '2024-03-28 18:41:41', 11),
 (53, 'logged in', '2024-03-29 01:31:28', 11),
 (54, 'logged in', '2024-03-29 02:32:17', 11),
-(55, 'logged in', '2024-03-29 03:36:53', 11);
+(55, 'logged in', '2024-03-29 03:36:53', 11),
+(56, 'logged in', '2024-04-09 02:30:21', 11),
+(57, 'logged in', '2024-04-09 02:59:01', 11),
+(58, 'logged in', '2024-04-09 05:44:12', 11),
+(59, 'logged in', '2024-04-09 06:23:02', 11),
+(60, 'logged in', '2024-04-09 06:31:57', 11),
+(61, 'logged in', '2024-04-09 06:32:01', 11),
+(62, 'logged in', '2024-04-09 06:40:08', 11),
+(63, 'logged in', '2024-04-09 06:47:04', 11),
+(64, 'logged in', '2024-04-09 06:47:05', 11),
+(65, 'logged in', '2024-04-09 09:13:30', 11),
+(66, 'logged in', '2024-04-09 09:27:23', 11),
+(67, 'logged in', '2024-04-10 03:30:15', 11),
+(68, 'logged in', '2024-04-10 05:16:07', 11);
 
 -- --------------------------------------------------------
 
@@ -230,24 +243,43 @@ CREATE TABLE `open_ticket` (
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
-  `item_id` int(11) DEFAULT NULL,
-  `customer_id` int(11) DEFAULT NULL,
-  `date_time` datetime DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL
+  `customer_id` int(11) NOT NULL,
+  `order_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `customer_id`, `order_date`) VALUES
+(11, 11, '2024-04-10'),
+(12, 12, '2024-04-10'),
+(13, 13, '2024-04-10'),
+(14, 14, '2024-04-10');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payment_method`
+-- Table structure for table `order_item`
 --
 
-CREATE TABLE `payment_method` (
-  `payment_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL
+CREATE TABLE `order_item` (
+  `orderItem_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `subtotal` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_item`
+--
+
+INSERT INTO `order_item` (`orderItem_id`, `order_id`, `item_id`, `quantity`, `subtotal`) VALUES
+(12, 11, 2, 1, 499.95),
+(13, 12, 2, 1, 499.95),
+(14, 13, 2, 1, 499.95),
+(15, 14, 2, 1, 499.95);
 
 -- --------------------------------------------------------
 
@@ -257,8 +289,10 @@ CREATE TABLE `payment_method` (
 
 CREATE TABLE `receipt` (
   `receipt_id` int(11) NOT NULL,
-  `date` datetime DEFAULT NULL,
-  `payment_id` int(11) DEFAULT NULL,
+  `datetime` datetime DEFAULT NULL,
+  `payment_method` varchar(45) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `cchange` decimal(10,2) NOT NULL,
   `bill_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -310,6 +344,7 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `role`, `fname`, `lname`) VA
 --
 ALTER TABLE `bill`
   ADD PRIMARY KEY (`bill_id`),
+  ADD KEY `order_id` (`order_id`),
   ADD KEY `discount_id` (`discount_id`);
 
 --
@@ -322,7 +357,7 @@ ALTER TABLE `cash_management`
 -- Indexes for table `clothingitems`
 --
 ALTER TABLE `clothingitems`
-  ADD PRIMARY KEY (`Barcode`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `customer`
@@ -335,12 +370,6 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `discount`
   ADD PRIMARY KEY (`discount_id`);
-
---
--- Indexes for table `item`
---
-ALTER TABLE `item`
-  ADD PRIMARY KEY (`item_id`);
 
 --
 -- Indexes for table `log`
@@ -361,21 +390,22 @@ ALTER TABLE `open_ticket`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
-  ADD KEY `customer_id` (`customer_id`),
-  ADD KEY `item_id` (`item_id`);
+  ADD KEY `orders_ibfk_1` (`customer_id`);
 
 --
--- Indexes for table `payment_method`
+-- Indexes for table `order_item`
 --
-ALTER TABLE `payment_method`
-  ADD PRIMARY KEY (`payment_id`);
+ALTER TABLE `order_item`
+  ADD PRIMARY KEY (`orderItem_id`),
+  ADD KEY `item_id` (`item_id`),
+  ADD KEY `order_id` (`order_id`);
 
 --
 -- Indexes for table `receipt`
 --
 ALTER TABLE `receipt`
   ADD PRIMARY KEY (`receipt_id`),
-  ADD KEY `payment_id` (`payment_id`),
+  ADD KEY `payment_id` (`payment_method`),
   ADD KEY `bill_id` (`bill_id`);
 
 --
@@ -399,7 +429,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `cash_management`
@@ -408,10 +438,16 @@ ALTER TABLE `cash_management`
   MODIFY `transaction_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `clothingitems`
+--
+ALTER TABLE `clothingitems`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `customer_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `discount`
@@ -420,16 +456,28 @@ ALTER TABLE `discount`
   MODIFY `discount_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `item`
---
-ALTER TABLE `item`
-  MODIFY `item_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+
+--
+-- AUTO_INCREMENT for table `open_ticket`
+--
+ALTER TABLE `open_ticket`
+  MODIFY `oTicket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `orderItem_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `receipt`
@@ -457,7 +505,8 @@ ALTER TABLE `user`
 -- Constraints for table `bill`
 --
 ALTER TABLE `bill`
-  ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`discount_id`);
+  ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bill_ibfk_2` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`discount_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `log`
@@ -469,27 +518,26 @@ ALTER TABLE `log`
 -- Constraints for table `open_ticket`
 --
 ALTER TABLE `open_ticket`
-  ADD CONSTRAINT `open_ticket_ibfk_1` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`bill_id`);
+  ADD CONSTRAINT `open_ticket_ibfk_1` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`bill_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `clothingitems` (`id`),
+  ADD CONSTRAINT `order_item_ibfk_3` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
 
 --
 -- Constraints for table `receipt`
 --
 ALTER TABLE `receipt`
-  ADD CONSTRAINT `receipt_ibfk_2` FOREIGN KEY (`payment_id`) REFERENCES `payment_method` (`payment_id`),
-  ADD CONSTRAINT `receipt_ibfk_3` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`bill_id`);
-
---
--- Constraints for table `refunds`
---
-ALTER TABLE `refunds`
-  ADD CONSTRAINT `refunds_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+  ADD CONSTRAINT `receipt_ibfk_1` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`bill_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

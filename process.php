@@ -1,7 +1,7 @@
 <?php
 require_once "include\connect\dbcon.php";
 $billsJson = file_get_contents("php://input");
-// var_dump($billsJson);
+var_dump($billsJson);
 
 $bills = json_decode($billsJson, true);
 
