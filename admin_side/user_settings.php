@@ -12,6 +12,8 @@ if (!isset($_SESSION['user_id'])){
     <title>User Settings</title>
     <link rel="icon" type="image/png" href="..\include\image\logo.png">
     <link rel="stylesheet" href="../include/styles/discount.css">
+
+
 </head>
 <body>
 
@@ -20,7 +22,8 @@ if (!isset($_SESSION['user_id'])){
         <img src="..\include\image\logo-black.png" alt="Company Logo">
         <div class="text_logo">POS System</div>
     </div>
-    <div> <a href='discount_add.php?id=$discount_id'>Add</a> 
+    <div> 
+    <a href="adduser.php">Add User</a><br>
 </div>
 <div><a href="admindashboard.php">Back</a>
 </div>
