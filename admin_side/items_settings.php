@@ -56,7 +56,7 @@
                 echo "<td>" . $row["Category"] . "</td>";
                 echo "<td>" . $row["Style"] . "</td>";
                 echo "<td>" . $row["Price"] . "</td>";
-                echo "<td><a href='#'>Update</a> <a href='#'>Delete</a></td>";
+                echo "<td><a href='#'>Update</a> | <a href='#'>Delete</a></td>";
                 echo "</tr>";
             }
             echo "</table>";

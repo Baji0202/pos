@@ -61,7 +61,7 @@ if (!isset($_SESSION['user_id'])){
         echo "<td>" . $fname ."</td>";
         echo "<td>" . $lname . "</td>";
         if ($role != 'admin') {
-            echo "<td><a href='update_user.php?id=$user_id'; ?>Update<a href='delete_user.php?id=$user_id'; ?>Delete</a></td>"; 
+            echo "<td class='modify'><a href='update_user.php?id=$user_id'; ?>Update </a> | <a href='delete_user.php?id=$user_id'; ?>Delete</a></td>"; 
         } else {
             echo "<td></td>";
         }
