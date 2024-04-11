@@ -94,3 +94,10 @@ nav ul {
     width: 80px /* Adjust the width as needed */
   }
   
+
+  a {
+    margin-left: auto;
+    margin-right: auto;
+    color: #fbcb45;
+    text-decoration: none;
+}
