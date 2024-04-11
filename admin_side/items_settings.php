@@ -46,7 +46,7 @@
             echo "</tr>";
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
-                echo "<td>" . $row["item_id"] . "</td>";
+                echo "<td>" . $row["id"] . "</td>";
                 echo "<td>" . $row["Barcode"] . "</td>";
                 echo "<td>" . $row["ItemName"] . "</td>";
                 echo "<td>" . $row["Brand"] . "</td>";
