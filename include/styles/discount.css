@@ -1,7 +1,7 @@
 /* Global Styles */
 body {
     font-family: 'Inter', sans-serif;
-    background-color:#2f3640;
+    background-color:#c9ced6;
     margin: 0;
     padding: 0;
 }
@@ -19,12 +19,21 @@ h1 {
     color: #2f3640;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.table-container {
+    margin: 0 auto; /* Centering the table */
 }
 
+table {
+    margin-top: 4%;
+    width: 80%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 table, th, td {
+    
     border: 1px solid #2f3640;
 }
 
@@ -33,43 +42,61 @@ th, td {
 }
 
 th {
+
     background-color: #fbcb45;
     color: #2f3640;
 }
 
 td {
-    background-color: #fff;
-    color: #2f3640;
+    background-color: #2f3640;
+    color: #c9ced6;
 }
 
 a {
-    color: #2f3640;
+    margin-left: auto;
+    margin-right: auto;
+    color: #fbcb45;
     text-decoration: none;
 }
 
 a:hover {
-    color: #fbcb45;
-    text-decoration: underline;
-}
-
-
-
-
-
-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #fbcb45;
-    color: #2f3640;
+    color: #f5f6fa;
     text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
 }
 
-button:hover {
-    background-color: #f5f6fa;
-    color: #2f3640;
+
+/* Basic styling for the navigation */
+nav {
+    display: flex;
+    justify-content: space-between; /* Align items horizontally */
+    align-items: center; /* Align items vertically */
+    background-color: #2f3640;
+    padding: 12px 20px;
+    border-bottom: 1px solid #f5f6fa; /* Add bottom border */
+    box-shadow: 0 12px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+  
 }
+
+nav ul {
+    list-style-type: none;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.text_logo {
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 6px;
+    font-size: 32px;
+    color: #fbcb45;
+}
+/* Styling for the logo */
+.logo img {
+    margin-left: 80px;
+    height: auto;
+    width: 80px /* Adjust the width as needed */
+  }
+  

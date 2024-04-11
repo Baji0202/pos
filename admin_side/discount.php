@@ -15,10 +15,22 @@ if (!isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="../include/styles/discount.css">
     <title>Discounts</title>
 </head>
+
 <body>
-<a href="discount_add.php?id=<?php echo $discount_id; ?>" target="_blank"><button>Add Discount</button></a>
+  
 
+<nav>
+    <div class="logo">
+        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    <div> <a href='discount_add.php?id=$discount_id'>Add</a> 
+    
+</div>
+<div><a href="admindashboard.php">Back</a>
+</div>
 
+</nav>
 <table border='1' cellpadding='7'>
     <tr>
     <th>discount_id</th>
