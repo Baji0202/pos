@@ -40,13 +40,19 @@ try {
 
 
 .spinner {
-  width: 200px; 
-  height: 200px; 
+    width: 200px;
+  height: 200px;
   border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.3); 
-  border-top-color: yellow; 
+  border: 12px solid rgba(255, 255, 255, 0.3);
+  border-top-color: yellow;
   animation: spin 1s infinite linear;
-  position: relative; 
+  position: relative;
+  /* Add these styles for potential fixes */
+  margin-top: 300px;  /* Remove any unexpected margin */
+  margin-left: 650px;  /* Remove any unexpected margin */
+  padding: 0;  /* Remove any unexpected padding */
+  box-sizing: border-box;  /* Ensure border is included in size calculations */
+
 }
 
 @keyframes spin {
