@@ -109,7 +109,7 @@ button{
     background-color: #e8f0fe;
 }
 
-#total-button, #changebtn, #make-receipt,#paylater,#gcash,#barsearchbtn,#start-stop-button{
+#opentickets, #total-button, #changebtn, #make-receipt,#paylater,#gcash,#barsearchbtn,#start-stop-button{
     width: 100%;
 }
 

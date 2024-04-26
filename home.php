@@ -109,14 +109,14 @@ try {
     <p id="gtotal">Total: ₱0.00</p>
     <button id="total-button" >Total</button>
     </div>
-    <button id="paylater" disabled>Pay Later</button>
+    <button id="paylater" disabled>Add to Pay Later</button>
     Cash Payment:
     <input type="text" id="cpayment" pattern="[0-9]*" disabled>
     <button id="changebtn" disabled>Change</button>
     <p id="cchange">Change:</p>
     <button id="gcash" disabled>Gcash</button>
     <button id="make-receipt" disabled>Make a receipt</button>
-    
+    <button id="opentickets">View Open Tickets</button>
     </div>
 
 
@@ -710,6 +710,11 @@ document.getElementById('cchange').textContent = "Change: ";
     rowData.length = 0
     sendlink(bill);
 });
+
+const opentickets = document.getElementById('opentickets');
+opentickets.addEventListener('click', () =>{
+    window.location.href = 'paylater.php';
+})
     </script>
    
 </body>
