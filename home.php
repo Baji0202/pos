@@ -128,24 +128,24 @@ try {
 
     <div class="sidebar">
 <div class="receipt">
-<h3>***************************</h3>
-<h2>BANANA CLOTHING</h2>
-<h3>***************************</h3>
-            <p id="curdate">Date:</p>
-            <p id="cdetails"></p>
-<h3>***************************</h3>
-    <div id="tabless"></div>
-<h3>***************************</h3>
-    <p id="subtot">Sub Total: ₱0.00</p>
-    <p id="disc">Discount: </p>
-    <p id="tot">Total: ₱0.00</p>
-    <p>Tax: VAT 12%</p>
-    <p id="mop">Pay thru: </p>
-    <p id="amp">Amount paid:</p>
-    <p id="pchange"></p>
-<h3>***************************</h3>
+    <h3>***************************</h3>
+    <h2>BANANA CLOTHING</h2>
+    <h3>***************************</h3>
+                <p id="curdate">Date:</p>
+                <p id="cdetails"></p>
+    <h3>***************************</h3>
+        <div id="tabless"></div>
+    <h3>***************************</h3>
+        <p id="subtot">Sub Total: ₱0.00</p>
+        <p id="disc">Discount: </p>
+        <p id="tot">Total: ₱0.00</p>
+        <p>Tax: VAT 12%</p>
+        <p id="mop">Pay thru: </p>
+        <p id="amp">Amount paid:</p>
+        <p id="pchange"></p>
+    <h3>***************************</h3>
 
-<h3>THANK YOU</h3>
+    <h3>THANK YOU</h3>
 <div class="buttons">
 <button id="print" disabled>Print</button>
 <button id ="email">Email</button>
