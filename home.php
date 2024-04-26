@@ -23,6 +23,41 @@ try {
     <title>QR Code Scanner</title>
     <link rel="icon" type="image/png" href="include\image\logo.png">
     <link rel="stylesheet" href="include\styles\home.css">
+    <style>
+        #loadingIndicator {
+           
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.spinner {
+  width: 200px; 
+  height: 200px; 
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.3); 
+  border-top-color: yellow; 
+  animation: spin 1s infinite linear;
+  position: relative; 
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+    </style>
 </head>
 <body>
 <nav>
@@ -33,7 +68,12 @@ try {
     <a href="logout.php" class="logout-btn">Logout</a>
 </nav>
 
+<div id="loadingIndicator" style="display: none;">
+  <div class="spinner"></div>
+</div>
+
 <div class="maincontainer">
+
     <div class="maincontent">
     Customer Name:
     <input type="text" name="cfname" id="cfname"><br>
@@ -294,65 +334,63 @@ print.addEventListener("click", () =>{
 
     
 });
+
 const emailButton = document.getElementById('email');
+const loadingIndicator = document.getElementById('loadingIndicator');
+
 emailButton.addEventListener("click", () => {
+  const receiptContent = document.getElementsByClassName('receipt')[0].innerHTML;
+  const customerEmail = email;
+  const customerName = emailname;
 
-    const receiptContent = document.getElementsByClassName('receipt')[0].innerHTML;
-const customerEmail = email;
-const customerName = emailname;
-console.log(email,emailname);
-console.log(customerEmail,customerName);
-    if (customerEmail === '') {
-        alert("Please provide customer email");
+  if (customerEmail === '') {
+    alert("Please provide customer email");
+  } else {
+    // Check if element exists before showing
+    if (loadingIndicator) {
+      loadingIndicator.style.display = 'block';
     } else {
-        // Generate PDF receipt content
-        const pdfContent = generatePDFContent(customerName, receiptContent);
-
-        // Send email with PDF content
-        sendEmail(customerName, customerEmail, pdfContent);
+      console.warn("Loading indicator element not found");
     }
+
+    // Generate PDF receipt content
+    const pdfContent = receiptContent;
+
+    // Send email with PDF content
+    sendEmail(customerName, customerEmail, pdfContent);
+  }
 });
 
-function generatePDFContent(customerName, receiptContent) {
-    // Generate PDF content here using a library like jsPDF or html2pdf
-    // For example:
-    const pdfContent = `
-        <h1>Receipt for ${customerName}</h1>
-        <p>${receiptContent}</p>
-    `;
-    return pdfContent;
-}
-
 function sendEmail(customerName, customerEmail, pdfContent) {
-    const emailInfo = {
-        name: customerName,
-        email: customerEmail,
-        pdfContent: pdfContent
-    };
+  const emailInfo = {
+    name: customerName,
+    email: customerEmail,
+    pdfContent: pdfContent
+  };
 
-    fetch('sendmail.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(emailInfo)
-    })
+  fetch('sendmail.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(emailInfo)
+  })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to send email');
-        }
-        return response.text();
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+      return response.text();
     })
     .then(data => {
-        console.log(data);
-        alert("Email sent successfully");
+      console.log(data);
+      loadingIndicator.style.display = 'none';
+      alert("Email sent successfully");
     })
     .catch(error => {
-        console.error('Error:', error);
+      console.error('Error:', error);
+      loadingIndicator.style.display = 'none';
     });
 }
-
-
 const productIds = [];
 let receipt;
 function sendbill (receipt) {

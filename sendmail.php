@@ -11,7 +11,7 @@ require_once "include/connect/dbcon.php";
 
 
 $emailJson = file_get_contents("php://input");
-var_dump($emailJson);
+
 $emailData = json_decode($emailJson, true);
 
 
@@ -25,6 +25,7 @@ $customerName = $emailData['name'];
 $customerEmail = $emailData['email'];
 $pdfContent = $emailData['pdfContent'];
 
+var_dump($pdfContent);
 
 sendEmailWithAttachment($customerEmail, $customerName, $pdfContent);
 if (sendEmailWithAttachment($customerEmail, $customerName, $pdfContent)) {
@@ -47,11 +48,11 @@ function sendEmailWithAttachment($email, $name, $pdfContent) {
         $mail->addReplyTo('posbsite3e@gmail.com', 'BANANA WEAR?');
         $mail->isHTML(true);
         $mail->Subject = 'THANK YOU FOR YOUR PURCHASE FROM BANANA WEAR';
-        $mail->Body = 'Please find attached your receipt.';
+        $mail->Body = $pdfContent;
         $mail->AltBody = 'Please find attached your receipt.';
 
-        // Attach PDF
-        $mail->addStringAttachment($pdfContent, 'receipt.pdf', 'base64', 'application/pdf');
+        
+        // $mail->addStringAttachment($pdfContent, 'receipt.pdf', 'base64', 'application/pdf');
 
         // Send email
         $mail->send();
