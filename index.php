@@ -73,7 +73,7 @@ try {
 </nav>
 
 <div class="login-page">
-   
+   <div class="bg-color">
         <div class="content">
         </div>
 
@@ -103,6 +103,7 @@ try {
         <img class="background-image" src="include/image/bg.jpg" alt="rami">
 
 </div>
+        </div>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
