@@ -38,16 +38,20 @@ try {
   align-items: center;
 }
 
+
 .spinner {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 12px solid rgba(255, 255, 255, 0.3);
-  border-top-color: yellow;
-  animation: spin 1s infinite linear;
-  margin: auto; /* Center horizontally and vertically */
-  position: relative; /* Relative positioning to the parent */
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 12px solid rgba(255, 255, 255, 0.3);
+    border-top-color: yellow;
+    animation: spin 1s infinite linear;
+    position: absolute;
+    top: 30%;
+    left: 45%; /* patch lang 2 haha */
+    transform: translate(-50%, -50%);
 }
+
 
 @keyframes spin {
   0% {
@@ -60,6 +64,11 @@ try {
     </style>
 </head>
 <body>
+    
+<div id="loadingIndicator" style="display: none;">
+  <div class="spinner"></div>
+</div>
+
 <nav>
     <div class="logo">
         <img src="include\image\logo-black.png" alt="Company Logo">
@@ -67,10 +76,6 @@ try {
     </div>
     <a href="logout.php" class="logout-btn">Logout</a>
 </nav>
-
-<div id="loadingIndicator" style="display: none;">
-  <div class="spinner"></div>
-</div>
 
 <div class="maincontainer">
 
@@ -153,7 +158,7 @@ try {
     <button id="start-stop-button">Start Scanning</button>
 
 
-<div class="button">
+    <div class="button">
 <button id="print" disabled>Print</button>
 <button id ="email">Email</button>
 <button id="clear-receipt">Clear</button>
