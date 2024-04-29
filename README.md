@@ -1,7 +1,10 @@
 diko din gets code ko HAHa
 
 employee side acct
-j@gmail.com pass 123
-
+old:j@gmail.com pass 123
+new: cashier.@gmail.com pass 123
 admin side acct
-neil@gmail.com pass 123
+old: neil@gmail.com pass 123
+new: admin@gmail.com pass 123
+
+yung sql ata na naka upload is di updated

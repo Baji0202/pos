@@ -49,7 +49,7 @@ nav ul {
   margin-bottom: 36px;
   padding: 100px;
   margin: auto;
-  background-color: #353b48df;
+
 }
 
 
@@ -62,8 +62,8 @@ nav ul {
   z-index: -1; /* Ensure the image stays behind other content */
   object-fit: cover; /* Cover the entire element */
   object-position: center; /* Center the image within the element */
+  opacity: 0.2; /* Adjust the opacity (between 0 and 1) as needed */
 }
-
 
 
 /*aayusin*/

@@ -41,19 +41,17 @@ try {
 
 .spinner {
     width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 12px solid rgba(255, 255, 255, 0.3);
-  border-top-color: yellow;
-  animation: spin 1s infinite linear;
-  position: relative;
-  /* Add these styles for potential fixes */
-  margin-top: 300px;  /* Remove any unexpected margin */
-  margin-left: 650px;  /* Remove any unexpected margin */
-  padding: 0;  /* Remove any unexpected padding */
-  box-sizing: border-box;  /* Ensure border is included in size calculations */
-
+    height: 200px;
+    border-radius: 50%;
+    border: 12px solid rgba(255, 255, 255, 0.3);
+    border-top-color: yellow;
+    animation: spin 1s infinite linear;
+    position: absolute;
+    top: 30%;
+    left: 45%; /* patch lang 2 haha */
+    transform: translate(-50%, -50%);
 }
+
 
 @keyframes spin {
   0% {
@@ -66,6 +64,11 @@ try {
     </style>
 </head>
 <body>
+    
+<div id="loadingIndicator" style="display: none;">
+  <div class="spinner"></div>
+</div>
+
 <nav>
     <div class="logo">
         <img src="include\image\logo-black.png" alt="Company Logo">
@@ -73,10 +76,6 @@ try {
     </div>
     <a href="logout.php" class="logout-btn">Logout</a>
 </nav>
-
-<div id="loadingIndicator" style="display: none;">
-  <div class="spinner"></div>
-</div>
 
 <div class="maincontainer">
 
@@ -128,29 +127,24 @@ try {
 
     <div class="sidebar">
 <div class="receipt">
-    <h3>***************************</h3>
-    <h2>BANANA CLOTHING</h2>
-    <h3>***************************</h3>
-                <p id="curdate">Date:</p>
-                <p id="cdetails"></p>
-    <h3>***************************</h3>
-        <div id="tabless"></div>
-    <h3>***************************</h3>
-        <p id="subtot">Sub Total: ₱0.00</p>
-        <p id="disc">Discount: </p>
-        <p id="tot">Total: ₱0.00</p>
-        <p>Tax: VAT 12%</p>
-        <p id="mop">Pay thru: </p>
-        <p id="amp">Amount paid:</p>
-        <p id="pchange"></p>
-    <h3>***************************</h3>
+<h3>***************************</h3>
+<h2>BANANA CLOTHING</h2>
+<h3>***************************</h3>
+            <p id="curdate">Date:</p>
+            <p id="cdetails"></p>
+<h3>***************************</h3>
+    <div id="tabless"></div>
+<h3>***************************</h3>
+    <p id="subtot">Sub Total: ₱0.00</p>
+    <p id="disc">Discount: </p>
+    <p id="tot">Total: ₱0.00</p>
+    <p>Tax: VAT 12%</p>
+    <p id="mop">Pay thru: </p>
+    <p id="amp">Amount paid:</p>
+    <p id="pchange"></p>
+<h3>***************************</h3>
 
-    <h3>THANK YOU</h3>
-<div class="buttons">
-<button id="print" disabled>Print</button>
-<button id ="email">Email</button>
-<button id="clear-receipt">Clear</button>
-</div>
+<h3>THANK YOU</h3>
 
 
 
@@ -162,7 +156,17 @@ try {
 
 <div id="reader" style="width: 500px;" ></div>
     <button id="start-stop-button">Start Scanning</button>
+
+
+    <div class="button">
+<button id="print" disabled>Print</button>
+<button id ="email">Email</button>
+<button id="clear-receipt">Clear</button>
+</div>
+
     </div>
+
+    
 </div>
 
 

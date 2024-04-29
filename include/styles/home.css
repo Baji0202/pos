@@ -153,6 +153,7 @@ background-image: linear-gradient(to bottom, #d2a62c, #cca230); /* Gradient back
 
 .buttons {
     margin-top: 20px;
+    align-items: center;
 }
 
 #reader {
