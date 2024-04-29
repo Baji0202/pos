@@ -38,21 +38,15 @@ try {
   align-items: center;
 }
 
-
 .spinner {
-    width: 200px;
-  height: 200px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   border: 12px solid rgba(255, 255, 255, 0.3);
   border-top-color: yellow;
   animation: spin 1s infinite linear;
-  position: relative;
-  /* Add these styles for potential fixes */
-  margin-top: 300px;  /* Remove any unexpected margin */
-  margin-left: 650px;  /* Remove any unexpected margin */
-  padding: 0;  /* Remove any unexpected padding */
-  box-sizing: border-box;  /* Ensure border is included in size calculations */
-
+  margin: auto; /* Center horizontally and vertically */
+  position: relative; /* Relative positioning to the parent */
 }
 
 @keyframes spin {
@@ -146,11 +140,6 @@ try {
 <h3>***************************</h3>
 
 <h3>THANK YOU</h3>
-<div class="buttons">
-<button id="print" disabled>Print</button>
-<button id ="email">Email</button>
-<button id="clear-receipt">Clear</button>
-</div>
 
 
 
@@ -162,7 +151,17 @@ try {
 
 <div id="reader" style="width: 500px;" ></div>
     <button id="start-stop-button">Start Scanning</button>
+
+
+<div class="button">
+<button id="print" disabled>Print</button>
+<button id ="email">Email</button>
+<button id="clear-receipt">Clear</button>
+</div>
+
     </div>
+
+    
 </div>
 
 
