@@ -12,7 +12,7 @@ if (isset($_POST['barcode'])) {
 
     try {
         require_once "include\connect\dbcon.php";
-        $sql = "SELECT * FROM clothingitems WHERE Barcode = ?";
+        $sql = "SELECT * FROM groceryitems WHERE barcode = ?";
         $stmt=$pdoConnect->prepare($sql);
         $stmt->execute([$barcodeData]);
         $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -24,8 +24,8 @@ if (isset($_POST['barcode'])) {
         $cart = [];
 
 foreach ($row as $rows) {
-  echo" {$rows['id']} - {$rows['ItemName']} ₱{$rows['Price']} ";
-  array_push($cart, $rows['Barcode']);
+  echo" {$rows['id']} - {$rows['name']} ₱{$rows['price']} ";
+  array_push($cart, $rows['barcode']);
 }
 
 

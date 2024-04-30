@@ -2,8 +2,9 @@
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("location:index.php");
-}
 
+}
+$loggedemail = $_SESSION['email'];
 require_once "include\connect\dbcon.php";
 
 try {
@@ -72,7 +73,7 @@ try {
 <nav>
     <div class="logo">
         <img src="include\image\logo-black.png" alt="Company Logo">
-        <div class="text_logo">POS System</div>
+        <div class="text_logo">POS System | <?php echo  $loggedemail?></div>
     </div>
     <a href="logout.php" class="logout-btn">Logout</a>
 </nav>
@@ -80,10 +81,7 @@ try {
 <div class="maincontainer">
 
     <div class="maincontent">
-    Customer Name:
-    <input type="text" name="cfname" id="cfname"><br>
-    Customer Email:
-    <input type="email" name="cemail" id="cemail" placeholder="N/A"> <br>
+  
 <div>
     <table>
         <thead>
@@ -128,10 +126,9 @@ try {
     <div class="sidebar">
 <div class="receipt">
 <h3>***************************</h3>
-<h2>BANANA CLOTHING</h2>
+<h2>BANANA IS YELLOW</h2>
 <h3>***************************</h3>
             <p id="curdate">Date:</p>
-            <p id="cdetails"></p>
 <h3>***************************</h3>
     <div id="tabless"></div>
 <h3>***************************</h3>

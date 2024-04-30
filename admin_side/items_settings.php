@@ -27,35 +27,22 @@
 
 <body>  
     <?php
-        $sql = "SELECT * FROM clothingitems";
+        $sql = "SELECT * FROM groceryitems";
         $result = $pdoConnect->query($sql);
         if ($result->rowCount() > 0) {
             echo "<table border='5'>";
             echo "<tr>";
-            echo "<th>ID</th>";
-            echo "<th>Barcode</th>";
-            echo "<th>Item Name</th>";
-            echo "<th>Brand</th>";
-            echo "<th>Size</th>";
-            echo "<th>Color</th>";
-            echo "<th>Material</th>";
-            echo "<th>Category</th>";
-            echo "<th>Style</th>";
-            echo "<th>Price</th>";
-            echo "<th>Modify</th>";
+            echo "<th>barcode</th>";
+            echo "<th>name</th>";
+            echo "<th>category</th>";
+            echo "<th>price</th>";
             echo "</tr>";
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
-                echo "<td>" . $row["id"] . "</td>";
-                echo "<td>" . $row["Barcode"] . "</td>";
-                echo "<td>" . $row["ItemName"] . "</td>";
-                echo "<td>" . $row["Brand"] . "</td>";
-                echo "<td>" . $row["Size"] . "</td>";
-                echo "<td>" . $row["Color"] . "</td>";
-                echo "<td>" . $row["Material"] . "</td>";
-                echo "<td>" . $row["Category"] . "</td>";
-                echo "<td>" . $row["Style"] . "</td>";
-                echo "<td>" . $row["Price"] . "</td>";
+                echo "<td>" . $row["barcode"] . "</td>";
+                echo "<td>" . $row["name"] . "</td>";
+                echo "<td>" . $row["category"] . "</td>";
+                echo "<td>" . $row["price"] . "</td>";
                 echo "<td><a href='#'>Update</a> | <a href='#'>Delete</a></td>";
                 echo "</tr>";
             }
