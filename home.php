@@ -156,7 +156,7 @@ try {
 
 
     <div class="button">
-<button id="print" disabled>Print</button>
+<button id="print" >Print</button>
 <button id ="email">Email</button>
 <button id="clear-receipt">Clear</button>
 </div>
@@ -347,56 +347,33 @@ const loadingIndicator = document.getElementById('loadingIndicator');
 
 emailButton.addEventListener("click", () => {
   const receiptContent = document.getElementsByClassName('receipt')[0].innerHTML;
-  const customerEmail = email;
-  const customerName = emailname;
-
-  if (customerEmail === '') {
-    alert("Please provide customer email");
-  } else {
-    // Check if element exists before showing
+    
     if (loadingIndicator) {
       loadingIndicator.style.display = 'block';
     } else {
       console.warn("Loading indicator element not found");
     }
 
-    // Generate PDF receipt content
+   
     const pdfContent = receiptContent;
 
-    // Send email with PDF content
-    sendEmail(customerName, customerEmail, pdfContent);
-  }
+    sendEmail(pdfContent);
+    window.location.href = 'email.php';
+ 
 });
 
-function sendEmail(customerName, customerEmail, pdfContent) {
+function sendEmail(pdfContent) {
   const emailInfo = {
-    name: customerName,
-    email: customerEmail,
     pdfContent: pdfContent
   };
 
-  fetch('sendmail.php', {
+  fetch('email.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(emailInfo)
   })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to send email');
-      }
-      return response.text();
-    })
-    .then(data => {
-      console.log(data);
-      loadingIndicator.style.display = 'none';
-      alert("Email sent successfully");
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      loadingIndicator.style.display = 'none';
-    });
 }
 const productIds = [];
 let receipt;
@@ -416,64 +393,13 @@ function sendbill (receipt) {
   console.error('Error:', error);
 });
 }
-// function fetchLastInsertedId() {
-//     return fetch('process.php')
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json(); // Parse the response as JSON
-//         })
-//         .then(data => {
-//             // Check if the response contains the last inserted ID
-//             if (data.hasOwnProperty('last_inserted_id')) {
-//                 const bill_id = data.last_inserted_id;
-//                 console.log('Last inserted ID:', bill_id);
-//                 return bill_id; // Return the last inserted ID
-//             } else {
-//                 throw new Error('Last inserted ID not found in response');
-//             }
-//         })
-//         .catch(error => {
-//             console.error('There was a problem with the fetch operation:', error);
-//         });
-// }
-// function getreceipt(pay, amount, cchange) {
-    
-//             const receipt = {
-//                 bill: fetchedbill,
-//                 pay: pay,
-//                 amount: amount,
-//                 cchange: cchange
-//             };
-//             console.log(receipt);
-//             return JSON.stringify(receipt);
-       
-// }
 
-// function sendreceipt(receipt) {
-//     fetch('receipt.php', {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json'
-//   },
-//   body: receipt
-// })
-// .then(response => response.text())
-// .then(data => {
-// })
-// .catch(error => {
-//   console.error('Error:', error);
-// });
-// }
 
-function getreceipt(name, email, productIds, subTotal, dis, total,pay,amount,cchange) {
+function getreceipt(productIds, subTotal, dis, total,pay,amount,cchange) {
     let subValue = parseFloat(subTotal.split("₱")[1]);
   let totalValue = parseFloat(total.split("₱")[1]);
   let cchangeValue = parseFloat(total.split("₱")[1]);
     const receipts = {
-    name: name,
-    email: email,
     productIds: productIds,
     subtot: subValue,
     discount: dis,
@@ -514,13 +440,11 @@ function sendlink(bills) {
 
 
 const makeReceipt = document.getElementById('make-receipt');
-let emailname;
-let email;
+
 makeReceipt.addEventListener("click", () => {
     const tableRows = document.querySelectorAll('#product-table-body tr');
     const rowData = [];
-    const customerName = document.getElementById('cfname').value;
-    const customerEmail = document.getElementById('cemail').value;
+ 
     const selectElement = document.getElementById('discount');
     const selectedOption = selectElement.options[selectElement.selectedIndex];
     const selectedOptionText = selectedOption.textContent;
@@ -571,7 +495,7 @@ makeReceipt.addEventListener("click", () => {
     });
 
     // Display customer and payment details
-    document.getElementById('cdetails').textContent = customerName + "  " + customerEmail;
+   
     document.getElementById('mop').textContent = "Pay thru: Cash";
     document.getElementById('amp').textContent = "Amount paid: ₱" + paid;
     document.getElementById('pchange').textContent = cuschange;
@@ -580,9 +504,8 @@ makeReceipt.addEventListener("click", () => {
     document.getElementById('tot').textContent = gTotalElement;
 
     // Generate and send bill
-    emailname = customerName;
-    email = customerEmail;
-    receipt = getreceipt(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement,"Cash",paid,cuschange);
+ 
+    receipt = getreceipt(productIds, totalValueElement, selectedOptionText, gTotalElement,"Cash",paid,cuschange);
     sendbill(receipt);
 
     // Reset form inputs and states

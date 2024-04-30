@@ -10,27 +10,27 @@ require './PHPMailer/src/Exception.php';
 require_once "include/connect/dbcon.php";
 
 
-$emailJson = file_get_contents("php://input");
+// $emailJson = file_get_contents("php://input");
 
-$emailData = json_decode($emailJson, true);
-
-
-if (!isset($emailData['name'], $emailData['email'], $emailData['pdfContent'])) {
-    http_response_code(400);
-    echo "Missing required fields";
-    exit;
-}
-
-$customerName = $emailData['name'];
-$customerEmail = $emailData['email'];
-$pdfContent = $emailData['pdfContent'];
+// $emailData = json_decode($emailJson, true);
 
 
-$emailSent = sendEmailWithAttachment($customerEmail, $customerName, $pdfContent);
+// if (!isset($emailData['name'], $emailData['email'], $emailData['pdfContent'])) {
+//     http_response_code(400);
+//     echo "Missing required fields";
+//     exit;
+// }
 
-if ($emailSent) {
-    echo "Email sent successfully";
-}
+// $customerName = $emailData['name'];
+// $customerEmail = $emailData['email'];
+// $pdfContent = $emailData['pdfContent'];
+
+
+// $emailSent = sendEmailWithAttachment($customerEmail, $customerName, $pdfContent);
+
+// if ($emailSent) {
+//     echo "Email sent successfully";
+// }
 
 function sendEmailWithAttachment($email, $name, $pdfContent) {
     try {
