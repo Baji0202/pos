@@ -21,7 +21,7 @@ try {
                 if($row && password_verify($_POST['pass'], $row['password'])){
                     $_SESSION['fname'] = $row['fname'];
                     $_SESSION['user_id'] = $row['user_id'];
-    
+                    $_SESSION['email'] = $email;
                     $role = $row['role'];
                     
     
