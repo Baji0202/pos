@@ -72,7 +72,7 @@ try {
 
 <nav>
     <div class="logo">
-        <img src="include\image\logo-black.png" alt="Company Logo">
+        <img src="include\image\sadas.png" alt="Company Logo">
         <div class="text_logo">POS System | <?php echo  $loggedemail?></div>
     </div>
     <a href="logout.php" class="logout-btn">Logout</a>

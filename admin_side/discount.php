@@ -21,7 +21,7 @@ if (!isset($_SESSION['user_id'])){
 
 <nav>
     <div class="logo">
-        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <img src="..\include\image\sadas.png" alt="Company Logo">
         <div class="text_logo">POS System</div>
     </div>
     <div> <a href='discount_add.php?id=$discount_id'>Add</a> 

@@ -57,7 +57,7 @@ $stmt->execute(["Inserted a new user,user_id: $lastId",$timestamp,$_SESSION['use
 
 <nav>
     <div class="logo">
-        <img src="..\include\image\logo-black.png" alt="Company Logo">
+        <img src="..\include\image\sadas.png" alt="Company Logo">
         <div class="text_logo">POS System</div>
     </div>
     <div> 
