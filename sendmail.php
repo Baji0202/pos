@@ -10,29 +10,29 @@ require './PHPMailer/src/Exception.php';
 require_once "include/connect/dbcon.php";
 
 
-// $emailJson = file_get_contents("php://input");
-
-// $emailData = json_decode($emailJson, true);
-
-
-// if (!isset($emailData['name'], $emailData['email'], $emailData['pdfContent'])) {
-//     http_response_code(400);
-//     echo "Missing required fields";
-//     exit;
-// }
-
-// $customerName = $emailData['name'];
-// $customerEmail = $emailData['email'];
-// $pdfContent = $emailData['pdfContent'];
+$emailContent = file_get_contents("php://input");
+var_dump($emailContent);
+$emailData = json_decode($emailContent, true);
 
 
-// $emailSent = sendEmailWithAttachment($customerEmail, $customerName, $pdfContent);
+if (!isset($emailData['name'], $emailData['email'], $emailData['body'])) {
+    http_response_code(400);
+    echo "Missing required fields";
+    exit;
+}
 
-// if ($emailSent) {
-//     echo "Email sent successfully";
-// }
+$customerName = $emailData['name'];
+$customerEmail = $emailData['email'];
+$emailbody = $emailData['body'];
 
-function sendEmailWithAttachment($email, $name, $pdfContent) {
+
+$emailSent = sendEmailWithAttachment($customerEmail, $customerName, $emailbody);
+
+if ($emailSent) {
+    echo "Email sent successfully";
+}
+
+function sendEmailWithAttachment($email, $name, $emailbody) {
     try {
         $mail = new PHPMailer(true);
         $mail->SMTPDebug = SMTP::DEBUG_OFF; //Enable verbose debug output
@@ -45,15 +45,15 @@ function sendEmailWithAttachment($email, $name, $pdfContent) {
         $mail->Port = 587; 
 
         // Set email parameters
-        $mail->setFrom('posbsite3e@gmail.com', 'BANANA WEAR?');
+        $mail->setFrom('posbsite3e@gmail.com', 'BANANA GROCERY STORE');
         $mail->addAddress($email, $name);
-        $mail->addReplyTo('posbsite3e@gmail.com', 'BANANA WEAR?');
+        $mail->addReplyTo('posbsite3e@gmail.com', 'BANANA GROCERY STORE');
         $mail->isHTML(true);
-        $mail->Subject = 'THANK YOU FOR YOUR PURCHASE FROM BANANA WEAR';
-        $mail->Body = $pdfContent;
+        $mail->Subject = 'Thank you for purchasing from us. You are BANANAMAZING!!';
+        $mail->Body = $emailbody;
         $mail->AltBody = 'Please find attached your receipt.';
 
-        // $mail->addStringAttachment($pdfContent, 'receipt.pdf', 'base64', 'application/pdf'); // Uncomment to attach PDF
+        // $mail->addStringAttachment($emailbody, 'receipt.pdf', 'base64', 'application/pdf'); // Uncomment to attach PDF
 
         // Send email
         $mail->send();
@@ -64,4 +64,4 @@ function sendEmailWithAttachment($email, $name, $pdfContent) {
         return false; // Indicate error
     }
 }
-?>
+

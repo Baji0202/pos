@@ -141,11 +141,10 @@ try {
     <p id="pchange"></p>
 <h3>***************************</h3>
 
+<h4>Life throws you lemons? We've got bananas!</h4>
+<h4>to make you peel better ;)).</h4> <br>
 <h3>THANK YOU</h3>
-
-
-
-</div class="qr">
+</div>
 
     Barcode: <br>
     <input type="text" name="barsearch" id="barsearch">
@@ -155,13 +154,15 @@ try {
     <button id="start-stop-button">Start Scanning</button>
 
 
-    <div class="button">
+    
 <button id="print" >Print</button>
-<button id ="email">Email</button>
-<button id="clear-receipt">Clear</button>
-</div>
+<input type="text" name="name" id="cname" placeholder="Customer Name">
+<input type="email" name="email" id="cemail" placeholder="Customer Email">
+<button id ="email">Send email</button>
+<button id="clear-receipt">Clear All</button>
 
-    </div>
+
+    
 
     
 </div>
@@ -347,34 +348,62 @@ const loadingIndicator = document.getElementById('loadingIndicator');
 
 emailButton.addEventListener("click", () => {
   const receiptContent = document.getElementsByClassName('receipt')[0].innerHTML;
-    
+  const cname = document.getElementById("cname").value;
+  const cemail = document.getElementById("cemail").value;
+  console.log(cemail,cname);
+  if (!cname && !cemail) {
+    alert("Please enter customer details to send email.");
+  } else {
+    // Show loading indicator
     if (loadingIndicator) {
       loadingIndicator.style.display = 'block';
     } else {
       console.warn("Loading indicator element not found");
     }
 
-   
-    const pdfContent = receiptContent;
-
-    sendEmail(pdfContent);
-    window.location.href = 'email.php';
- 
+    sendEmail(receiptContent, cname, cemail);
+  }
 });
 
-function sendEmail(pdfContent) {
-  const emailInfo = {
-    pdfContent: pdfContent
+function sendEmail(body, name, email) {
+  const emailContent = {
+    body: body,
+    name: name,
+    email: email
   };
 
-  fetch('email.php', {
+  fetch('sendmail.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(emailInfo)
+    body: JSON.stringify(emailContent)
   })
+  .then(response => {
+    // Hide loading indicator
+    if (loadingIndicator) {
+      loadingIndicator.style.display = 'none';
+    }
+
+    if (response.ok) {
+      // Alert user that email has been sent
+      alert("Email has been sent successfully.");
+    } else {
+      // Log an error message if email sending failed
+      console.error("Failed to send email.");
+    }
+  })
+  .catch(error => {
+    // Hide loading indicator
+    if (loadingIndicator) {
+      loadingIndicator.style.display = 'none';
+    }
+
+    console.error("Error sending email:", error);
+  });
 }
+
+
 const productIds = [];
 let receipt;
 function sendbill (receipt) {
@@ -509,8 +538,6 @@ makeReceipt.addEventListener("click", () => {
     sendbill(receipt);
 
     // Reset form inputs and states
-    document.getElementById('cfname').value = '';
-    document.getElementById('cemail').value = '';
     selectElement.selectedIndex = 0;
     document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
     document.getElementById('gtotal').textContent = 'Total: ₱0.00';
@@ -566,7 +593,8 @@ const clearButton = document.getElementById('clear-receipt');
 // Add a click event listener to the clear button
 clearButton.addEventListener('click', () => {
 
-    document.getElementById("cdetails").innerText = "";
+    document.getElementById("cname").value = "";
+    document.getElementById("cemail").value = "";
     document.getElementById("tabless").innerHTML = "";
     document.getElementById("subtot").innerText = "Sub Total: ₱0.00";
     document.getElementById("disc").innerText = "Discount: ";
@@ -598,8 +626,6 @@ const paylaterbtn = document.getElementById('paylater');
 paylaterbtn.addEventListener('click', () => {
     const tableRows = document.querySelectorAll('#product-table-body tr');
 const rowData = [];
-    const customerName = document.getElementById('cfname').value;
-const customerEmail = document.getElementById('cemail').value;
 
 const selectElement = document.getElementById('discount');
 const selectedOption = selectElement.options[selectElement.selectedIndex];
@@ -626,8 +652,6 @@ productIds.push({
     bill = getbills(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement);
     
 
-    document.getElementById('cfname').value = '';
-    document.getElementById('cemail').value = '';
     selectElement.selectedIndex = 0;
 
     // Clear total and grand total
