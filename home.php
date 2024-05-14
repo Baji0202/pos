@@ -24,6 +24,7 @@ try {
     <title>QR Code Scanner</title>
     <link rel="icon" type="image/png" href="include\image\logo.png">
     <link rel="stylesheet" href="include\styles\home.css">
+    <link rel="stylesheet" href="include\styles\global.css">
     <style>
         #loadingIndicator {
            
@@ -72,10 +73,17 @@ try {
 
 <nav>
     <div class="logo">
-        <img src="include\image\sadas.png" alt="Company Logo">
-        <div class="text_logo">POS System | <?php echo  $loggedemail?></div>
+        <img src="include\image\sadas.png" alt="Company Logo" class="logo_pic">
+        <div class="text_logo">POS System</div>
     </div>
-    <a href="logout.php" class="logout-btn">Logout</a>
+    
+    <div class="dropdown">
+        <div class="acc_name" id="acc_name"><?php echo $loggedemail?></div>
+        <!-- Dropdown content -->
+        <div class="dropdown-content" id="logout_dropdown">
+            <a href="logout.php" class="logout-btn">Logout</a>
+        </div>
+    </div>
 </nav>
 
 <div class="maincontainer">
