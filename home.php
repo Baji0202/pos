@@ -103,7 +103,10 @@ try {
         <div class="acc_name" id="acc_name"><?php echo $loggedemail?></div>
         <!-- Dropdown content -->
         <div class="dropdown-content" id="logout_dropdown">
+            <a href="refund.php">Refunds</a>
+            <a href="cashmanagement.php">Cash Management</a>
             <a href="logout.php" class="logout-btn">Logout</a>
+            
         </div>
     </div>
 </nav>

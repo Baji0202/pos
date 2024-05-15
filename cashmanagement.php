@@ -18,15 +18,15 @@ require_once "include\connect\dbcon.php";
 </head>
 <body>
 <div>
-<button>Paid in</button> <button>Paid out</button>
+<button id="paidInbtn">Paid in</button> <button id="paidOutbtn">Paid out</button>
 <h3>Cash Drawer</h3>
-<p id="startcash">Starting Cash: <?php echo $_SESSION['startcash'];?> </p>
+<p id="startcash">Starting Cash: <?php echo $_SESSION['startcash']?> </p>
 <p id="sales">Sales: 0.00</p> 
-<p id="paidIn">Paid in: 0.00</p> 
-<p id="paidOut">Paid out: 0.00</p> 
+<p id="paidIn">Paid in: <?php echo $_SESSION['paidIn'] ??  $_SESSION['paidIn'] = 0?></p> 
+<p id="paidOut">Paid out: <?php echo $_SESSION['paidOut'] ??  $_SESSION['paidOut'] = 0 ?></p> 
 <p id="refunds">Refunds: 0.00</p> 
 <p id="expectedCash">Expected cash: 0.00</p>
-<p id="actualCash">Actual Cash:</p>
+<label>Actual cash: </label>
 <input type="text" placeholder="Input actual cash on hand" pattern="[0-9]*[.]?[0-9]*" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"><br>
 <p>Cash diffrence: 0.00</p>
 </div>
@@ -52,3 +52,17 @@ require_once "include\connect\dbcon.php";
 
 </body>
 </html>
+
+<script>
+const paidInbtn = document.getElementById("paidInbtn");
+const paidOutbtn = document.getElementById("paidOutbtn");
+
+
+paidInbtn.addEventListener("click",  () => {
+    window.location.href = "paidIn.php";
+})
+
+paidOutbtn.addEventListener("click",  () => {
+    window.location.href = "paidOut.php";
+})
+</script>
