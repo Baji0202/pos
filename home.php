@@ -29,6 +29,7 @@ try {
     <title>QR Code Scanner</title>
     <link rel="icon" type="image/png" href="include\image\logo.png">
     <link rel="stylesheet" href="include\styles\home.css">
+    <link rel="stylesheet" href="include\styles\global.css">
     <style>
  #toggleButton {
         background-color: #ddd;
@@ -94,13 +95,10 @@ try {
 
 <nav>
     <div class="logo">
-        
         <img src="include\image\sadas.png" alt="Company Logo">
         <div class="text_logo">POS System | <?php echo  $loggedemail?></div>
     </div>
-    
     <a href="logout.php" class="logout-btn">Logout</a>
-    <button id="shift">Shift</button>
 </nav>
 
 <div class="maincontainer">
