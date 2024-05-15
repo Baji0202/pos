@@ -11,6 +11,11 @@ try {
     $sql = "SELECT * FROM discount";
     $stmt = $pdoConnect->prepare($sql);
     $stmt->execute();
+
+    $sqlTax = "SELECT * FROM tax WHERE tax_name = ?";
+    $stmtTax = $pdoConnect->prepare($sqlTax);
+    $stmtTax->execute(["vat"]);
+    $vat = $stmtTax->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("error select discount").$e->getMessage();
 }
@@ -25,18 +30,35 @@ try {
     <link rel="icon" type="image/png" href="include\image\logo.png">
     <link rel="stylesheet" href="include\styles\home.css">
     <style>
-        #loadingIndicator {
-           
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+ #toggleButton {
+        background-color: #ddd;
+        border: none;
+        color: #000;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    #textInput {
+        display: none;
+        margin-top: 10px;
+    }
+
+    #loadingIndicator {     
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -72,16 +94,20 @@ try {
 
 <nav>
     <div class="logo">
+        
         <img src="include\image\sadas.png" alt="Company Logo">
         <div class="text_logo">POS System | <?php echo  $loggedemail?></div>
     </div>
+    
     <a href="logout.php" class="logout-btn">Logout</a>
+    <button id="shift">Shift</button>
 </nav>
 
 <div class="maincontainer">
 
     <div class="maincontent">
-  
+    <button id="toggleButton" onclick="toggleInput()">Banana Card</button>
+    <input type="text" id="bananacard" style="display: none;">
 <div>
     <table>
         <thead>
@@ -96,29 +122,43 @@ try {
             
      
     </table> 
+    
+
+
     <p id="total-value">Sub Total: ₱0.00</p>
     Discount:
     <select name="discount" id="discount" class="custom-select">
     <?php
     if ($stmt->rowCount()>0) {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo "<option value='" . $row['value'] . "'>" . $row['name']."</option>";
+            echo "<option value='" . $row['value'] . "' data-type='" . $row['type'] . "'>" . $row['name'] . "</option>";
+
         }
     }
     ?>
 </select>
 
-    <p>Tax: 12%</p>
-    <p id="gtotal">Total: ₱0.00</p>
+    <p id="vat">VAT: <?php echo $vat['tax_percent'];?>%</p>
+    
     <button id="total-button" >Total</button>
+    <h2 id="gtotal">Total: ₱0.00</h2>
     </div>
-    <button id="paylater" disabled>Add to Pay Later</button>
+    <p>Payment method:</p>
+    <select name="paymentmethod" id="paymentmethod">
+    <option value="">Select here</option>
+<option value="Cash">Cash</option>
+<option value="Gcash">Gcash</option>
+    </select>
+    
+    <div id="cash" style="display: none;">
     Cash Payment:
     <input type="text" id="cpayment" pattern="[0-9]*" disabled>
     <button id="changebtn" disabled>Change</button>
     <p id="cchange">Change:</p>
-    <button id="gcash" disabled>Gcash</button>
+    </div>
+    <button id="gcash" disabled style="display: none;">Gcash</button> <br><br>
     <button id="make-receipt" disabled>Make a receipt</button>
+    <button id="paylater" disabled>Add to Pay Later</button>
     <button id="opentickets">View Open Tickets</button>
     </div>
 
@@ -127,15 +167,17 @@ try {
 <div class="receipt">
 <h3>***************************</h3>
 <h2>BANANA IS YELLOW</h2>
+<p>CCS Bldg. room CS 101</p>
 <h3>***************************</h3>
-            <p id="curdate">Date:</p>
+    <p id="curdate">Date:</p>
+    <p id="refs">Ref no:</p>
 <h3>***************************</h3>
     <div id="tabless"></div>
 <h3>***************************</h3>
     <p id="subtot">Sub Total: ₱0.00</p>
     <p id="disc">Discount: </p>
     <p id="tot">Total: ₱0.00</p>
-    <p>Tax: VAT 12%</p>
+    <p>VAT: <?php echo $vat['tax_percent'];?>%</p>
     <p id="mop">Pay thru: </p>
     <p id="amp">Amount paid:</p>
     <p id="pchange"></p>
@@ -156,6 +198,7 @@ try {
 
     
 <button id="print" >Print</button>
+<p>To send receipt to customer thru an email.</p>
 <input type="text" name="name" id="cname" placeholder="Customer Name">
 <input type="email" name="email" id="cemail" placeholder="Customer Email">
 <button id ="email">Send email</button>
@@ -180,6 +223,51 @@ try {
     <script src="include\js\qrScript.js"></script>
 
     <script> 
+const paymentMethodSelect = document.getElementById("paymentmethod");
+    const cashDiv = document.getElementById("cash");
+    const gcashButton = document.getElementById("gcash");
+
+    // Add event listener to select element
+    paymentMethodSelect.addEventListener("change", function() {
+        const selectedOption = paymentMethodSelect.value;
+
+        // Hide both cash and gcash elements initially
+        cashDiv.style.display = "none";
+        gcashButton.style.display = "none";
+
+        // Show the respective element based on the selected option
+        if (selectedOption === "Cash") {
+            cashDiv.style.display = "block";
+    document.getElementById('make-receipt').disabled = false;
+
+        } else if (selectedOption === "Gcash") {
+            gcashButton.style.display = "block";
+    document.getElementById('make-receipt').disabled = false;
+
+        }
+    });
+
+var isInputVisible = false;
+
+function toggleInput() {
+    isInputVisible = !isInputVisible;
+    var input = document.getElementById("bananacard");
+    var button = document.getElementById("toggleButton");
+    if (isInputVisible) {
+        button.style.backgroundColor = "#fbcb45"; // Green color when it's on
+        input.style.display = "block"; // Show the input box
+        setTimeout(function() {
+            input.focus(); // Focus after the input box is visible
+        }, 0);
+    } else {
+        input.value = "";
+        button.style.backgroundColor = "#ddd"; // Default color when it's off
+        input.style.display = "none"; // Hide the input box
+    }
+}
+
+
+
         const html5Qrcode = new Html5Qrcode('reader');
         let scannedprice = 0;
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
@@ -201,7 +289,12 @@ try {
                 height: 250,
             },
         };
-        
+        const shift = document.getElementById('shift');
+        shift.addEventListener('click', () => {
+            window.location.href = "cashmanagement.php";
+        });
+
+
         const startStopButton = document.getElementById('start-stop-button');
         let isScanning = false;
 
@@ -307,23 +400,52 @@ totalButton.addEventListener('click', () => {
     let total = 0;
   
     document.querySelectorAll('#product-table-body tr').forEach(row => {
-  
         const price = parseFloat(row.querySelector('td:nth-child(3)').textContent.replace('₱', ''));
         const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
          
         total += price * quantity;
     });
 
-    const discount = parseFloat(document.getElementById('discount').value);
-    
-    document.getElementById('gtotal').textContent = 'Total: ₱' + (discount * total * (1 + 0.12)).toFixed(2);
+    // Round the total to two decimal places after all calculations
+    total = total.toFixed(2);
 
-    document.getElementById('total-value').textContent = 'Sub Total: ₱' + total.toFixed(2);
+    const selectedOption = document.getElementById('discount').options[document.getElementById('discount').selectedIndex];
+
+    // Get the value and data-type attributes of the selected option
+    const discountValue = parseFloat(selectedOption.value).toFixed(2);
+    const discountType = selectedOption.getAttribute('data-type');
+
+    const vatText = document.getElementById('vat').textContent;
+    const vatNum = parseFloat(vatText.match(/\d+/)[0]); 
+    const vatPercent = vatNum / 100;
+
+    console.log(discountType, discountValue, vatText, vatNum, vatPercent);
+
+    let value = "";
+    
+    if (discountType === "percent") {
+        value = ((total - (discountValue / 100 * total)) * (1 + vatPercent)).toFixed(2);
+        console.log(value);
+        value = 'Total: ₱' + value;
+        document.getElementById('gtotal').textContent = value;
+    } else {
+        if (discountValue > total) {
+            console.log("discount higher");
+            document.getElementById('gtotal').textContent = 'Total: ₱0.00'
+        } else {
+            console.log("amount discounted");
+            value = ((total - discountValue) * (1 + vatPercent)).toFixed(2);
+            value = 'Total: ₱' + value;
+            document.getElementById('gtotal').textContent = value;
+        }
+    }
+
+    document.getElementById('total-value').textContent = 'Sub Total: ₱' + total;
     document.getElementById('cpayment').disabled = false;
     document.getElementById('changebtn').disabled = false;
     document.getElementById('paylater').disabled = false;
-   
 });
+
 
 const print = document.getElementById('print');
 print.addEventListener("click", () =>{
@@ -424,11 +546,12 @@ function sendbill (receipt) {
 }
 
 
-function getreceipt(productIds, subTotal, dis, total,pay,amount,cchange) {
+function getreceipt(receiptId,productIds, subTotal, dis, total,pay,amount,cchange) {
     let subValue = parseFloat(subTotal.split("₱")[1]);
   let totalValue = parseFloat(total.split("₱")[1]);
   let cchangeValue = parseFloat(total.split("₱")[1]);
     const receipts = {
+        receiptId:receiptId,
     productIds: productIds,
     subtot: subValue,
     discount: dis,
@@ -481,7 +604,9 @@ makeReceipt.addEventListener("click", () => {
     const gTotalElement = document.getElementById('gtotal').textContent;
     const paid = document.getElementById('cpayment').value;
     const cuschange = document.getElementById('cchange').textContent;
-
+    const receiptID = document.getElementById('refs').textContent;
+    const generatedReceipt = generateReceiptID();
+    console.log(generatedReceipt);
     // Process receipt
     tableRows.forEach(row => {
         const productName = row.cells[1].textContent;
@@ -524,21 +649,37 @@ makeReceipt.addEventListener("click", () => {
     });
 
     // Display customer and payment details
-   
-    document.getElementById('mop').textContent = "Pay thru: Cash";
+    const pm = document.getElementById("paymentmethod").value;
+    if (pm  == "") {
+        alert("select payment method first");
+    }else if(pm == "Gcash") {
+        document.getElementById('refs').textContent = "Ref no: "+generatedReceipt;
+        document.getElementById('mop').textContent = "Pay thru: "+pm;
+        document.getElementById('amp').textContent = "Amount paid: ₱"+gTotalElement;
+        document.getElementById('pchange').textContent = "Change: ₱0.00";
+        document.getElementById('subtot').textContent = totalValueElement;
+    document.getElementById('disc').textContent = selectedOptionText;
+    document.getElementById('tot').textContent = gTotalElement;
+    }else{
+    document.getElementById('refs').textContent = "Ref no: "+generatedReceipt;
+    document.getElementById('mop').textContent = "Pay thru: "+pm;
     document.getElementById('amp').textContent = "Amount paid: ₱" + paid;
     document.getElementById('pchange').textContent = cuschange;
     document.getElementById('subtot').textContent = totalValueElement;
     document.getElementById('disc').textContent = selectedOptionText;
     document.getElementById('tot').textContent = gTotalElement;
+    }
+
+    
 
     // Generate and send bill
  
-    receipt = getreceipt(productIds, totalValueElement, selectedOptionText, gTotalElement,"Cash",paid,cuschange);
-    sendbill(receipt);
+    // receipt = getreceipt(generatedReceipt, productIds, totalValueElement, selectedOptionText, gTotalElement,"Cash",paid,cuschange);
+    // sendbill(receipt);
 
     // Reset form inputs and states
     selectElement.selectedIndex = 0;
+    document.getElementById('refs').textContent = 'Ref no: '
     document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
     document.getElementById('gtotal').textContent = 'Total: ₱0.00';
     document.getElementById('cchange').textContent = "Change: ";
@@ -584,7 +725,6 @@ changecalc.addEventListener("click", () => {
     } else {
         alert("Please enter a valid amount");
     }
-    document.getElementById('make-receipt').disabled = false;
 });
 
 
@@ -669,6 +809,39 @@ const opentickets = document.getElementById('opentickets');
 opentickets.addEventListener('click', () =>{
     window.location.href = 'paylater.php';
 })
+
+function generateReceiptID() {
+    
+    var currentDate = new Date();
+    
+    
+    var year = currentDate.getFullYear();
+    var month = currentDate.getMonth() + 1; 
+    var day = currentDate.getDate();
+    var hours = currentDate.getHours();
+    var minutes = currentDate.getMinutes();
+    var seconds = currentDate.getSeconds();
+
+    // Format date and time components to ensure two digits
+    month = (month < 10) ? '0' + month : month;
+    day = (day < 10) ? '0' + day : day;
+    hours = (hours < 10) ? '0' + hours : hours;
+    minutes = (minutes < 10) ? '0' + minutes : minutes;
+    seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+    // Generate three random digits
+    var randomDigits = '';
+    for (var i = 0; i < 3; i++) {
+        randomDigits += Math.floor(Math.random() * 10);
+    }
+
+    // Concatenate date and time components with random digits to create receipt ID
+    var receiptID = 'R' + year + month + day + hours + minutes + seconds + randomDigits;
+
+    return receiptID;
+}
+
+        
     </script>
    
 </body>

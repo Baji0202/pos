@@ -34,7 +34,7 @@ try {
                         header("Location: admin_side\admindashboard.php");
                         exit;
                     } else {
-                        header("Location: home.php");
+                        header("Location: startingcash.php");
                         exit;
                     }
                 }else{
