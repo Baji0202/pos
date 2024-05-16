@@ -153,7 +153,7 @@ try {
     <h2 id="gtotal">Total: ₱0.00</h2>
     </div>
     <p>Payment method:</p>
-    <select name="paymentmethod" id="paymentmethod">
+    <select name="paymentmethod" id="paymentmethod" class="custom-select">
     <option value="">Select here</option>
 <option value="Cash">Cash</option>
 <option value="Gcash">Gcash</option>
@@ -197,7 +197,7 @@ try {
 <h3>THANK YOU</h3>
 </div>
 Select type of barcode scanner: <br>
-    <select name="scantype" id="scantype">
+    <select name="scantype" id="scantype" class="custom-select">
         <option value="">choose here:</option>
         <option value="barcode_hardware" id="barcode_hardware">Scan using Barcode Scanner</option>
         <option value="cam" id="cam">Scan using Camera</option>
