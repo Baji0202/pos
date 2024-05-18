@@ -26,7 +26,7 @@ if (!isset($_SESSION['user_id'])) {
         <nav class="nav-menu">
             <ul>
                 <li><a href="user_settings.php">User Settings</a></li>
-                <li><a href="cashmanagement.php">Cash Management</a></li>
+                <li><a href="./cashmanagement.php">Cash Management</a></li>
                 <li><a href="audit_trail.php">History logs</a></li>
                 <li><a href="items_settings.php">Item Settings</a></li>
                 <li><a href="discount.php">Discounts</a></li>

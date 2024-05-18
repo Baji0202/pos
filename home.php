@@ -115,7 +115,7 @@ try {
 <div class="maincontainer">
 
     <div class="maincontent">
-    <button id="toggleButton" onclick="toggleInput()">Banana Card</button>
+    <button id="toggleButton" class="main-button" onclick="toggleInput()">Banana Card</button>
     <input type="text" id="bananacard" style="display: none;">
 <div>
     <table>

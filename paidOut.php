@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) {
 <form  method="post">
 <h2 style=" display: block; text-align: center; margin-bottom: 12%; ">Add paid out</h2>
 <input type="text" name="paidOut" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^\d.]/g, '');" required placeholder="0.00">
-<input type="submit" value="submit" name="submit">
+<input type="submit" value="submit" name="submit" class="main-button">
     </form>
 </body>
 </div>

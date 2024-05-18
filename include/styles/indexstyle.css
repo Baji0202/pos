@@ -6,16 +6,16 @@
 }
 
 body{
-background-color: #2f3640;
+background-color: #ffffe7;
 font-family: 'Inter', sans-serif;
 }
 
 
 /* Basic styling for the navigation */
 nav {
-  background-color: #2f3640;
+  background-color: #ffffe7;
   padding: 12px 20px;
-  border-bottom: 1px solid #f5f6fa; /* Add bottom border */
+  border-bottom: 2px solid #1f2021; /* Add bottom border */
   box-shadow: 0 12px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
 }
 
@@ -80,13 +80,13 @@ nav ul {
   margin-left: 35%;
   width:30%;
   height: 458px;
-  background-image: linear-gradient(#f1f5fd, #d0dcf1);
+  background-image: linear-gradient(#fff2c6, #fff2c6);
   padding-left: 50px;
   padding-right: 50px;
   padding-BOTTOM: 30px;
   padding-top: 40px;
   border-radius: 38px;
-  box-shadow: 0 12px 4px rgba(0, 0, 0, 0.1), inset 0 4px 1px rgb(255, 255, 255);
+  box-shadow: 0 12px 4px rgba(0, 0, 0, 0.1) /* , inset 0 4px 1px rgb(255, 255, 255)*/;
   align-content: center;
 }
 
@@ -95,7 +95,7 @@ nav ul {
   margin-bottom: 40px;
   text-align: center;
   font-weight: bold;
-  color:#2f3640;
+  color:#272725;
   font-size: 60px ;
 
 }
@@ -110,7 +110,7 @@ nav ul {
   border: none;
   border-radius: 16px;
   box-shadow: inset 0 3px 2px 1px rgba(0, 0, 0, 0.2);
-  background-color: #e8f0fe;
+  background-color: #ffffe7;
 }
 
 .form input[type="submit"] {
@@ -118,7 +118,7 @@ nav ul {
   margin-bottom: 10px;
   width: 100%;
   padding: 10px 20px;
-  background-image: linear-gradient(to right,#fbcb45,  #e1b12c); /* Gradient background */
+  background-image: linear-gradient(to bottom, #fad675, #e7bd4b); 
   color: #353b48;
   border: none;
   border-radius: 40px;
