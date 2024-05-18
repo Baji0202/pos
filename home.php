@@ -31,6 +31,8 @@ try {
     <link rel="icon" type="image/png" href="include\image\logo.png">
     <link rel="stylesheet" href="include\styles\home.css">
     <link rel="stylesheet" href="include\styles\global.css">
+    <link rel="icon" type="image/png" href="include\image\sadas1.png">
+    
     <style>
  #toggleButton {
         background-color: #ddd;

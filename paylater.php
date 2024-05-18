@@ -91,6 +91,8 @@ if(isset($_GET['billsJson'])) {
     <title>Pay Later</title>
     <link rel="icon" type="image/png" href="..\include\image\logo.png">
     <link rel="stylesheet" href="./include/styles/discount.css">
+    <link rel="icon" type="image/png" href="include\image\sadas1.png">
+    
 </head>
 <body>
 
