@@ -149,7 +149,7 @@ try {
 
     <p id="vat">VAT: <?php echo $vat['tax_percent'];?>%</p>
     
-    <button id="total-button" >Total</button>
+    <button id="total-button" class="main-button" >Total</button>
     <h2 id="gtotal">Total: ₱0.00</h2>
     </div>
     <p>Payment method:</p>

@@ -26,14 +26,31 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Starting Cash</title>
+    <link rel="stylesheet" href="include\styles\indexstyle.css">
+    <link rel="stylesheet" href="include\styles\global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/png" href="include\image\logo.png">
+    
 </head>
 <body>
-    <form action="" method="post">
-        Input starting cash in hand:
-        <input type="text" name="startcash" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^\d.]/g, '');" required placeholder="00.00">
+<nav>
+    <ul>
+    <div class="logo">
+        <img src="include\image\sadas.png" alt="Company Logo">
+        <div class="text_logo">POS System</div>
+    </div>
+    </ul>
+</nav>
 
-        <input type="submit" value="submit" name="submit">
-        
+
+<div class="maincontainer">
+    <div class ="form" style="margin-top:4%">
+    <form action="" method="post" style="padding:3%" >
+    <h2 style=" display: block; text-align: center; margin-bottom: 12%; ">Starting Cash:</h2>
+        <input type="text" name="startcash" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^\d.]/g, '');" required placeholder="00.00">
+        <button type="submit" name="submit" class="main-button">Submit</button>     
     </form>
+</div>
+</div>
 </body>
 </html>

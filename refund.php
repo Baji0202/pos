@@ -74,6 +74,26 @@ if (isset($_POST['search'])) {
     <title>Refund</title>
 </head>
 <body>
+<nav>
+    <div class="logo">
+    <img src="include\image\sadas.png" alt="Company Logo" class="logo_pic">
+        <div class="text_logo">POS System</div>
+        <link rel="stylesheet" href="include\styles\global.css">
+    </div>
+    
+    <div class="dropdown">
+        <div class="acc_name" id="acc_name"><?php echo $loggedemail?></div>
+        <!-- Dropdown content -->
+        <div class="dropdown-content" id="logout_dropdown">
+            <a href="home.php">Home</a>
+            <a href="cashmanagement.php">Cash Management</a>
+            <a href="logout.php" class="logout-btn">Logout</a>
+            
+        </div>
+    </div>
+</nav>
+<div class ="form" style="margin-top:4%">
+<h2 style=" display: block; text-align: center; margin-bottom: 12%; ">Refund:</h2>
     <!-- Form for searching receipts -->
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
         <input type="text" name="receipt" placeholder="Enter receipt id">
@@ -83,12 +103,13 @@ if (isset($_POST['search'])) {
     <!-- Form for refund -->
     <form method="post">
         Reason:
-        <select name="reason" id="reason_id">
+        <select name="reason" id="reason_id" class="custom-select" style="margin: 4%;">
             <option value="Change of mind">Change of mind</option>
             <option value="Defect">Defective Item</option>
             <option value="Others">Others</option>
         </select>
-        <input type="submit" name="refund" value="Refund">
+        
+        <input type="submit" name="refund" value="Submit" class="main-button" style=" color: black;">
     </form>
 
     <!-- Displaying receipt details -->
@@ -111,5 +132,6 @@ if (isset($_POST['search'])) {
         echo "Tax: " . $fetch_data['tax_name'] . "<br>";
     }
     ?>
+    </div>
 </body>
 </html>
