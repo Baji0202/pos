@@ -55,6 +55,8 @@ require_once "include\connect\dbcon.php";
 <p>Cash diffrence: 0.00</p>
 
 <button>Print & Submit</button>
+</div>
+
 <div style="display: none;">
 <p>**************************</p>
 <p id="date">Date: </p>
