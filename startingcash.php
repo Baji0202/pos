@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 
 
 <div class="maincontainer">
-    <div class ="form" style="margin-top:4%">
+    <div class ="form" style="margin-top:4%; margin-left: 35%;">
     <form action="" method="post" style="padding:3%" >
     <h2 style=" display: block; text-align: center; margin-bottom: 12%; ">Starting Cash:</h2>
         <input type="text" name="startcash" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^\d.]/g, '');" required placeholder="00.00">
