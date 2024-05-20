@@ -58,6 +58,8 @@ $(document).ready(function() {
   <p>Product: <span id="product-name"></span></p>
   <p>Price: <span id="price"></span></p>
   <p>Quantity: <span id="quantity"></span></p>
+
+  test
 </div>
 </body>
 </html>
