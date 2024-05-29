@@ -45,22 +45,23 @@ require_once "include\connect\dbcon.php";
 </div>
 <h3>Cash Drawer</h3>
 <p id="startcash">Starting Cash: <?php echo $_SESSION['startcash']?> </p>
-<p id="sales">Sales: 0.00</p> 
+<p id="sales">Sales: <?php echo  $_SESSION['sales'] ?? $_SESSION['sales'] = 0 ?></p> 
 <p id="paidIn">Paid in: <?php echo $_SESSION['paidIn'] ??  $_SESSION['paidIn'] = 0?></p> 
-<p id="paidOut">Paid out: <?php echo $_SESSION['paidOutz'] ??  $_SESSION['paidOut'] = 0 ?></p> 
-<p id="refunds">Refunds: 0.00</p> 
-<p id="expectedCash">Expected cash: 0.00</p>
+<p id="paidOut">Paid out: <?php echo $_SESSION['paidOut'] ??  $_SESSION['paidOut'] = 0 ?></p> 
+<p id="refunds">Refunds: <?php echo  $_SESSION['refunds'] ?? $_SESSION['refunds'] = 0 ?></p> 
+<p id="expectedCash">Expected cash: 0</p>
 <label>Actual cash: </label>
-<input type="text" placeholder="Input actual cash on hand" pattern="[0-9]*[.]?[0-9]*" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"><br>
-<p>Cash diffrence: 0.00</p>
-
-<button>Print & Submit</button>
+<input type="text" id="actualcashtxt" placeholder="Input actual cash on hand" pattern="[0-9]*[.]?[0-9]*" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"><br>
+<button id="actualcashbtn">Total</button>
+<p id="cashdiff">Cash diffrence: 0</p>
+<button id="print">Print</button>
+<button id="submit">Submit & Logout</button>
 </div>
 
-<div style="display: none;">
+<div style="display: none;" id="receipt">
 <p>**************************</p>
 <p id="date">Date: </p>
-<p id="cashier">Cashier:</p>
+<p id="cashier">Cashier: <?php echo $loggedemail;?></p>
 <p>**************************</p>
 <p id="rstartcash">Starting Cash: </p>
 <p id="rsales">Sales: </p> 
@@ -80,10 +81,85 @@ require_once "include\connect\dbcon.php";
 </html>
 
 <script>
+   
 const paidInbtn = document.getElementById("paidInbtn");
 const paidOutbtn = document.getElementById("paidOutbtn");
+const acInput = document.getElementById("actualcashtxt");
+const totalbtn = document.getElementById("actualcashbtn");
+const submitbtn = document.getElementById("submit");
+const printbtn = document.getElementById("print");
+let expectedCash = 0;
+let cashdiff = 0;
+printbtn.addEventListener("click", () => {
+    updateReceipt()
+            const receiptContent = document.getElementById('receipt').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Print Receipt</title>
+                    <style>
+                        /* Add any custom styles here */
+                    </style>
+                </head>
+                <body>
+                    ${receiptContent}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
 
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 1000);
+        });
+//
+submitbtn.addEventListener('click', () => {
+            const startcash = extractNumber('startcash');
+            const sales = extractNumber('sales');
+            const paidIn = extractNumber('paidIn');
+            const paidOut = extractNumber('paidOut');
+            const refunds = extractNumber('refunds');
+            const expectedCash = extractNumber('expectedCash');
+            const actualCash = parseFloat(document.getElementById('actualcashtxt').value);
+            const cashdiff = extractNumber('cashdiff');
 
+            const emailContent = {
+                startcash: startcash,
+                sales: sales,
+                paidIn: paidIn,
+                paidOut: paidOut,
+                refunds: refunds,
+                expectedCash: expectedCash,
+                actualCash: actualCash,
+                cashdiff: cashdiff
+            };
+
+            fetch('cmprocess.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(emailContent)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                alert("Successful transaction");
+                window.location.href = 'logout.php';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+//
+totalbtn.addEventListener("click",  () => {
+   
+    cashdiff = parseFloat(acInput.value - expectedCash).toFixed(2);
+    document.getElementById('cashdiff').textContent = "Cash difference: "+cashdiff;
+})
 paidInbtn.addEventListener("click",  () => {
     window.location.href = "paidIn.php";
 })
@@ -91,4 +167,60 @@ paidInbtn.addEventListener("click",  () => {
 paidOutbtn.addEventListener("click",  () => {
     window.location.href = "paidOut.php";
 })
+updateExpectedCash();
+updateDate();
+setInterval(updateDate, 1000);
+
+//functions
+ function extractNumber(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            const number = parseFloat(text.match(/-?[\d.]+/)[0]);
+            return number;
+        }
+
+        function updateReceipt() {
+
+            const startcash = document.getElementById('startcash').textContent;
+            const sales = document.getElementById('sales').textContent;
+            const paidIn = document.getElementById('paidIn').textContent;
+            const paidOut = document.getElementById('paidOut').textContent;
+            const refunds = document.getElementById('refunds').textContent;
+            const expectedCash = document.getElementById('expectedCash').textContent;
+            const actualcashtxt = "Actual cash:  ₱"+document.getElementById('actualcashtxt').value;
+            const cashdiff = document.getElementById('cashdiff').textContent;
+
+            document.getElementById('rstartcash').textContent = startcash;
+            document.getElementById('rsales').textContent = sales;
+            document.getElementById('rpaidIn').textContent = paidIn;
+            document.getElementById('rpaidOut').textContent =  paidOut;
+            document.getElementById('rrefunds').textContent = refunds;
+            document.getElementById('rexpectedCash').textContent = expectedCash;
+            document.getElementById('ractualCash').textContent = actualcashtxt;
+            document.getElementById('rcashdifference').textContent = cashdiff;
+        }
+        function updateExpectedCash() {
+            const startCash = parseFloat(<?php echo $_SESSION['startcash']; ?>);
+            const sales = parseFloat(<?php echo $_SESSION['sales'] ?? 0; ?>);
+            const paidIn = parseFloat(<?php echo $_SESSION['paidIn'] ?? 0; ?>);
+            const paidOut = parseFloat(<?php echo $_SESSION['paidOut'] ?? 0; ?>);
+            const refunds = parseFloat(<?php echo $_SESSION['refunds'] ?? 0; ?>);
+
+            expectedCash = startCash + sales + paidIn + paidOut - refunds;
+
+            document.getElementById('expectedCash').textContent = 'Expected cash: ₱' + expectedCash.toFixed(2);
+        }
+        function updateDate() {
+    var currentDateElement = document.getElementById("date");
+    var currentDate = new Date();
+    var formattedDate = currentDate.getFullYear() + '-' + 
+                        ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + 
+                        ('0' + currentDate.getDate()).slice(-2) + ' ' + 
+                        ('0' + currentDate.getHours()).slice(-2) + ':' + 
+                        ('0' + currentDate.getMinutes()).slice(-2) + ':' + 
+                        ('0' + currentDate.getSeconds()).slice(-2);
+    currentDateElement.innerText = "Date: " + formattedDate;
+}
+
+
+        
 </script>

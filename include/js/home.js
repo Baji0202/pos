@@ -51,11 +51,12 @@ const manualsearch = document.getElementById("manualsearch");
         // Show the respective element based on the selected option
         if (selectedOption === "Cash") {
             cashDiv.style.display = "block";
-    document.getElementById('make-receipt').disabled = false;
+            document.getElementById('cpayment').disabled = false;
+    document.getElementById('changebtn').disabled = false;
 
         } else if (selectedOption === "Gcash") {
             gcashButton.style.display = "block";
-    document.getElementById('make-receipt').disabled = false;
+            document.getElementById('make-receipt').disabled = false;
 
         }
     });
@@ -269,9 +270,7 @@ totalButton.addEventListener('click', () => {
     }
 
     document.getElementById('total-value').textContent = 'Sub Total: ₱' + total;
-    document.getElementById('cpayment').disabled = false;
-    document.getElementById('changebtn').disabled = false;
-    document.getElementById('paylater').disabled = false;
+    document.getElementById('paymentmethod').disabled = false;
 });
 
 
@@ -354,9 +353,9 @@ function sendEmail(body, name, email) {
 }
 
 
-const productIds = [];
-let receipt;
-function sendbill (receipt) {
+// const productIds = [];
+
+function sendtoprocess(receipt) {
     fetch('process.php', {
   method: 'POST',
   headers: {
@@ -367,6 +366,7 @@ function sendbill (receipt) {
 .then(response => response.text())
 .then(data => {
     console.log(data);
+    alert("successfull transaction")
 })
 .catch(error => {
   console.error('Error:', error);
@@ -374,15 +374,18 @@ function sendbill (receipt) {
 }
 
 
-function getreceipt(receiptId,productIds, subTotal, dis, total,pay,amount,cchange) {
+function getreceipt(receiptId,productIds, subTotal, dis,vat, total,pay,amount,cchange) {
     let subValue = parseFloat(subTotal.split("₱")[1]);
   let totalValue = parseFloat(total.split("₱")[1]);
-  let cchangeValue = parseFloat(total.split("₱")[1]);
+  let cchangeValue = parseFloat(cchange.split("₱")[1]);
+  console.log(cchange+"getreceipt");
+
     const receipts = {
         receiptId:receiptId,
     productIds: productIds,
     subtot: subValue,
     discount: dis,
+    vat:vat,
     tot: totalValue,
     pay:pay,
     amount:amount,
@@ -409,21 +412,30 @@ function getbills(name, email, productIds, subTotal, dis, total) {
   return JSON.stringify(bills);
 }
 
-function sendlink(bills) {
+// function sendlink(bills) {
 
-  const encodedBillsJson = encodeURIComponent(bills);
+//   const encodedBillsJson = encodeURIComponent(bills);
 
-  const url = `paylater.php?billsJson=${encodedBillsJson}`;
+//   const url = `paylater.php?billsJson=${encodedBillsJson}`;
   
-  window.location.href = url;
-}
+//   window.location.href = url;
+// }
 
 //makereceipt Button
+let receipts;
+
 const makeReceipt = document.getElementById('make-receipt');
+
+function generateReceiptID() {
+    // Simple unique ID generation example using current timestamp and a random number
+    return 'REC' + Date.now() + Math.floor(Math.random() * 3);
+}
+
 makeReceipt.addEventListener("click", () => {
     const tableRows = document.querySelectorAll('#product-table-body tr');
     const rowData = [];
- 
+    const productIds = []; // Reset productIds array each time the button is clicked
+
     const selectElement = document.getElementById('discount');
     const selectedOption = selectElement.options[selectElement.selectedIndex];
     const selectedOptionText = selectedOption.textContent;
@@ -431,16 +443,14 @@ makeReceipt.addEventListener("click", () => {
     const gTotalElement = document.getElementById('gtotal').textContent;
     const paid = document.getElementById('cpayment').value;
     const cuschange = document.getElementById('cchange').textContent;
-    const receiptID = document.getElementById('refs').textContent;
-    const generatedReceipt = generateReceiptID();
-    console.log(generatedReceipt);
+
     // Process receipt
     tableRows.forEach(row => {
         const productName = row.cells[1].textContent;
         const idString = row.cells[0].textContent;
-        const id = parseInt(idString.trim()); 
-        const priceString = row.cells[2].textContent.replace('₱', ''); 
-        const productPrice = parseFloat(priceString); 
+        const id = parseInt(idString.trim());
+        const priceString = row.cells[2].textContent.replace('₱', '');
+        const productPrice = parseFloat(priceString);
         const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
 
         productIds.push({
@@ -455,59 +465,67 @@ makeReceipt.addEventListener("click", () => {
             productPrice: productPrice,
             quantity: quantity
         });
+    });
 
-        const displayContainer = document.getElementById('tabless');
+    const displayContainer = document.getElementById('tabless');
+    displayContainer.innerHTML = ''; // Clear previous receipt data
 
-        // Loop through the rowData array
-        rowData.forEach(data => {
-          
-            const itemDiv = document.createElement('div');
-            itemDiv.innerHTML = `
-                <p>Product Name: ${data.productName}</p>
-                <p>Price: ₱${data.productPrice.toFixed(2)}</p>
-                <p>Quantity: ${data.quantity}</p>
-            `;
-            displayContainer.appendChild(itemDiv);
-        });
+    // Loop through the rowData array
+    rowData.forEach(data => {
+        const itemDiv = document.createElement('div');
+        itemDiv.innerHTML = `
+            <p>Product Name: ${data.productName}</p>
+            <p>Price: ₱${data.productPrice.toFixed(2)}</p>
+            <p>Quantity: ${data.quantity}</p>
+        `;
+        displayContainer.appendChild(itemDiv);
     });
 
     // Display customer and payment details
     const pm = document.getElementById("paymentmethod").value;
-    if (pm  == "") {
-        alert("select payment method first");
-    }else if(pm == "Gcash") {
-        document.getElementById('refs').textContent = "Ref no: "+generatedReceipt;
-        document.getElementById('mop').textContent = "Pay thru: "+pm;
-        document.getElementById('amp').textContent = "Amount paid: ₱"+gTotalElement;
-        document.getElementById('pchange').textContent = "Change: ₱0.00";
-        document.getElementById('subtot').textContent = totalValueElement;
-    document.getElementById('disc').textContent = selectedOptionText;
-    document.getElementById('tot').textContent = gTotalElement;
-    }else{
-    document.getElementById('refs').textContent = "Ref no: "+generatedReceipt;
-    document.getElementById('mop').textContent = "Pay thru: "+pm;
-    document.getElementById('amp').textContent = "Amount paid: ₱" + paid;
-    document.getElementById('pchange').textContent = cuschange;
-    document.getElementById('subtot').textContent = totalValueElement;
-    document.getElementById('disc').textContent = selectedOptionText;
-    document.getElementById('tot').textContent = gTotalElement;
-    }
+    const generatedReceipt = generateReceiptID(); // Generate a unique receipt ID each time
+    const vatText = document.getElementById('vat').textContent;
+    const vatNum = parseInt(vatText.match(/\d+/)[0]);
+    console.log(generatedReceipt);
+    const totalValue = parseFloat(gTotalElement.split("₱")[1]);
+    const refsText = "Ref no: " + generatedReceipt;
+    const mopText = "Pay thru: " + pm;
+    const ampText = "Amount paid: ₱" + (pm === "Gcash" ? totalValue : paid);
+    const pchangeText = (pm === "Gcash" ? "Change: ₱0" : cuschange);
+    const subtotText = totalValueElement;
+    const discText = selectedOptionText;
+    const totText = gTotalElement;
 
-    
-//clear after
+    if (pm == "") {
+        alert("Select payment method first");
+    } else {
+        document.getElementById('refs').textContent = refsText;
+        document.getElementById('mop').textContent = mopText;
+        document.getElementById('amp').textContent = ampText;
+        document.getElementById('pchange').textContent = pchangeText;
+        document.getElementById('subtot').textContent = subtotText;
+        document.getElementById('disc').textContent = discText;
+        document.getElementById('tot').textContent = totText;
+
+        receipts = getreceipt(
+            generatedReceipt, productIds, totalValueElement, selectedOptionText,
+            vatNum, gTotalElement, pm, pm === "Gcash" ? gTotalElement : paid, pm === "Gcash" ? 'Change: ₱0' : cuschange
+        );
+    }
+    sendtoprocess(receipts);
+
+    // Clear after processing the receipt
     selectElement.selectedIndex = 0;
-    document.getElementById('refs').textContent = 'Ref no: '
     document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
     document.getElementById('gtotal').textContent = 'Total: ₱0.00';
     document.getElementById('cchange').textContent = "Change: ";
     document.getElementById('product-table-body').innerHTML = '';
     document.getElementById('cpayment').value = '';
     document.getElementById('print').disabled = false;
-    document.getElementById('cpayment').disabled = true;
-    document.getElementById('changebtn').disabled = true;
-    document.getElementById('paylater').disabled = true;
     document.getElementById('make-receipt').disabled = true;
 });
+
+
 
 
 const changecalc = document.getElementById('changebtn');
@@ -538,6 +556,7 @@ changecalc.addEventListener("click", () => {
             const change = payment - gt;
             const cchange = document.getElementById('cchange');
             cchange.textContent = "Change: ₱" + change.toFixed(2);
+            document.getElementById('make-receipt').disabled = false;
         }
     } else {
         alert("Please enter a valid amount");
@@ -551,6 +570,7 @@ const clearButton = document.getElementById('clear-receipt');
 clearButton.addEventListener('click', () => {
 
     document.getElementById("cname").value = "";
+    document.getElementById("refs").textContent = "Ref no: ";
     document.getElementById("cemail").value = "";
     document.getElementById("tabless").innerHTML = "";
     document.getElementById("subtot").innerText = "Sub Total: ₱0.00";
@@ -578,82 +598,53 @@ function updateDate() {
 updateDate();
 setInterval(updateDate, 1000);
 
-const paylaterbtn = document.getElementById('paylater');
+// const paylaterbtn = document.getElementById('paylater');
     
-paylaterbtn.addEventListener('click', () => {
-    const tableRows = document.querySelectorAll('#product-table-body tr');
-const rowData = [];
+// paylaterbtn.addEventListener('click', () => {
+//     const tableRows = document.querySelectorAll('#product-table-body tr');
+// const rowData = [];
 
-const selectElement = document.getElementById('discount');
-const selectedOption = selectElement.options[selectElement.selectedIndex];
-const selectedOptionText = selectedOption.textContent;
+// const selectElement = document.getElementById('discount');
+// const selectedOption = selectElement.options[selectElement.selectedIndex];
+// const selectedOptionText = selectedOption.textContent;
 
-const totalValueElement = document.getElementById('total-value').textContent;
-const gTotalElement = document.getElementById('gtotal').textContent;
+// const totalValueElement = document.getElementById('total-value').textContent;
+// const gTotalElement = document.getElementById('gtotal').textContent;
 
-tableRows.forEach(row => {
-    const productName = row.cells[1].textContent;
-const idString = row.cells[0].textContent;
-const id = parseInt(idString.trim()); 
+// tableRows.forEach(row => {
+//     const productName = row.cells[1].textContent;
+// const idString = row.cells[0].textContent;
+// const id = parseInt(idString.trim()); 
 
-const priceString = row.cells[2].textContent.replace('₱', ''); 
-const productPrice = parseFloat(priceString); 
-const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
-productIds.push({
-      id: id,
-      quantity: quantity,
-      productPrice: productPrice
-    });
+// const priceString = row.cells[2].textContent.replace('₱', ''); 
+// const productPrice = parseFloat(priceString); 
+// const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
+// productIds.push({
+//       id: id,
+//       quantity: quantity,
+//       productPrice: productPrice
+//     });
 
-});
-    bill = getbills(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement);
+// });
+//     bill = getbills(customerName, customerEmail, productIds, totalValueElement, selectedOptionText, gTotalElement);
     
 
-    selectElement.selectedIndex = 0;
+//     selectElement.selectedIndex = 0;
 
-    // Clear total and grand total
-    document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
-document.getElementById('gtotal').textContent = 'Total: ₱0.00';
-document.getElementById('cchange').textContent = "Change: ";
-    // Clear rowData
-    document.getElementById('product-table-body').innerHTML = '';
-    document.getElementById('cpayment').value = '';
-    rowData.length = 0
-    sendlink(bill);
-});
+//     // Clear total and grand total
+//     document.getElementById('total-value').textContent = 'Sub Total: ₱0.00';
+// document.getElementById('gtotal').textContent = 'Total: ₱0.00';
+// document.getElementById('cchange').textContent = "Change: ";
+//     // Clear rowData
+//     document.getElementById('product-table-body').innerHTML = '';
+//     document.getElementById('cpayment').value = '';
+//     rowData.length = 0
+//     sendlink(bill);
+// });
 
-const opentickets = document.getElementById('opentickets');
-opentickets.addEventListener('click', () =>{
-    window.location.href = 'paylater.php';
-})
+// const opentickets = document.getElementById('opentickets');
+// opentickets.addEventListener('click', () =>{
+//     window.location.href = 'paylater.php';
+// })
 
-function generateReceiptID() {
-    
-    var currentDate = new Date();
-    
-    
-    var year = currentDate.getFullYear();
-    var month = currentDate.getMonth() + 1; 
-    var day = currentDate.getDate();
-    var hours = currentDate.getHours();
-    var minutes = currentDate.getMinutes();
-    var seconds = currentDate.getSeconds();
 
-    // Format date and time components to ensure two digits
-    month = (month < 10) ? '0' + month : month;
-    day = (day < 10) ? '0' + day : day;
-    hours = (hours < 10) ? '0' + hours : hours;
-    minutes = (minutes < 10) ? '0' + minutes : minutes;
-    seconds = (seconds < 10) ? '0' + seconds : seconds;
-
-    // Generate three random digits
-    var randomDigits = '';
-    for (var i = 0; i < 3; i++) {
-        randomDigits += Math.floor(Math.random() * 10);
-    }
-
-    // Concatenate date and time components with random digits to create receipt ID
-    var receiptID = 'R' + year + month + day + hours + minutes + seconds + randomDigits;
-
-    return receiptID;
-}

@@ -3,20 +3,26 @@
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("location:index.php");
-
 }
+
 $loggedemail = $_SESSION['email'];
 require_once "include\connect\dbcon.php";
-
-if (isset($_POST['submit'])) {
-    $cash = $_POST['startcash'];
-    if (!isset($cash)) {
-        echo("Please input starting cash");
-    }else {
-        $_SESSION['startcash'] = $cash;
-        header("location:home.php");
+if (!isset($_SESSION['startcash'])) {
+    if (isset($_POST['submit'])) {
+        $cash = $_POST['startcash'];
+        if (!isset($cash)) {
+            echo("Please input starting cash");
+        }else {
+            $_SESSION['startcash'] = $cash;
+            header("location:home.php");
+            exit;
+        }
     }
+}else {
+    header("location:home.php");
+    exit;
 }
+
 ?>
 
 
@@ -49,7 +55,7 @@ if (isset($_POST['submit'])) {
     <div class ="form" style="margin-top:4%; margin-left: 35%;">
     <form action="" method="post" style="padding:3%" >
     <h2 style=" display: block; text-align: center; margin-bottom: 12%; ">Starting Cash:</h2>
-        <input type="text" name="startcash" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^\d.]/g, '');" required placeholder="00.00">
+        <input type="text" name="startcash" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^\d.]/g, '');" required placeholder="0">
         <button type="submit" name="submit" class="main-button">Submit</button>     
     </form>
 </div>

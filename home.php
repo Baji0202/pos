@@ -88,6 +88,10 @@ try {
     transform: rotate(360deg);
   }
 }
+button:disabled{
+    background-color: brown;
+    color:#000;
+}
     </style>
 </head>
 <body>
@@ -155,7 +159,7 @@ try {
     <h2 id="gtotal">Total: ₱0.00</h2>
     </div>
     <p>Payment method:</p>
-    <select name="paymentmethod" id="paymentmethod" class="custom-select">
+    <select name="paymentmethod" id="paymentmethod" class="custom-select" disabled>
     <option value="">Select here</option>
 <option value="Cash">Cash</option>
 <option value="Gcash">Gcash</option>
@@ -169,8 +173,8 @@ try {
     </div>
     <button id="gcash" disabled style="display: none;">Gcash</button> <br><br>
     <button id="make-receipt" disabled>Make a receipt</button>
-    <button id="paylater" disabled>Add to Pay Later</button>
-    <button id="opentickets">View Open Tickets</button>
+    <!-- <button id="paylater" disabled>Add to Pay Later</button>
+    <button id="opentickets">View Open Tickets</button> -->
     </div>
 
 
@@ -188,7 +192,7 @@ try {
     <p id="subtot">Sub Total: ₱0.00</p>
     <p id="disc">Discount: </p>
     <p id="tot">Total: ₱0.00</p>
-    <p>VAT: <?php echo $vat['tax_percent'];?>%</p>
+    <p id="vat">VAT: <?php echo $vat['tax_percent'];?>%</p>
     <p id="mop">Pay thru: </p>
     <p id="amp">Amount paid:</p>
     <p id="pchange"></p>
@@ -215,7 +219,7 @@ Select type of barcode scanner: <br>
 
 
     <br><br><br>
-<button id="print" >Print</button>
+<button id="print" disabled >Print</button>
 <p>To send receipt to customer thru an email.</p>
 <input type="text" name="name" id="cname" placeholder="Customer Name">
 <input type="email" name="email" id="cemail" placeholder="Customer Email">
