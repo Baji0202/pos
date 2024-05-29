@@ -110,6 +110,7 @@ button:disabled{
         <div class="acc_name" id="acc_name"><?php echo $loggedemail?></div>
         <!-- Dropdown content -->
         <div class="dropdown-content" id="logout_dropdown">
+        <a href="customerdisplay.php" target="_blank">Open Customer Display</a>
             <a href="refund.php">Refunds</a>
             <a href="cashmanagement.php">Cash Management</a>
             <a href="logout.php" class="logout-btn">Logout</a>
@@ -121,8 +122,7 @@ button:disabled{
 <div class="maincontainer">
 
     <div class="maincontent">
-    <button id="toggleButton" class="main-button" onclick="toggleInput()">Banana Card</button>
-    <input type="text" id="bananacard" style="display: none;">
+    
 <div>
     <table>
         <thead>
@@ -175,6 +175,8 @@ button:disabled{
     <button id="make-receipt" disabled>Make a receipt</button>
     <!-- <button id="paylater" disabled>Add to Pay Later</button>
     <button id="opentickets">View Open Tickets</button> -->
+    <button id="toggleButton" class="main-button" onclick="toggleInput()">Banana Card</button>
+    <input type="text" id="bananacard" style="display: none;">
     </div>
 
 
@@ -225,6 +227,7 @@ Select type of barcode scanner: <br>
 <input type="email" name="email" id="cemail" placeholder="Customer Email">
 <button id ="email">Send email</button>
 <button id="clear-receipt">Clear All</button>
+<button id="cleardisplay">Clear Customer Display</button>
 </div>
     <script src="include\js\qrScript.js"></script>
 

@@ -280,7 +280,7 @@ totalButton.addEventListener('click', () => {
 const cdtotal = document.getElementById('gtotal').textContent;
 const cdvat = vatText;
 const cddiscount =document.getElementById('discount').selectedIndex;
-
+console.log(cddiscount);
 fetch('cdtotal.php', {
     method: 'POST',
     headers: {
@@ -382,6 +382,21 @@ function sendEmail(body, name, email) {
   });
 }
 
+const cleardisplaybtn = document.getElementById('cleardisplay');
+cleardisplaybtn.addEventListener("click", () => {
+    fetch('clearSessionData.php', {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Session data cleared:', data);
+        
+    })
+    .catch(error => {
+        console.error('Error clearing session data:', error);
+    });
+
+})
 
 // const productIds = [];
 
