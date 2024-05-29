@@ -25,10 +25,17 @@ if (isset($_SESSION['cd']) && is_array($_SESSION['cd'])) {
     }
 } else {
     // Handle case where $_SESSION['cd'] is not set or is not an array
-    echo "No data available.";
+    echo "No Items Scanned. <br>";
 }
 
-
+if (isset($_SESSION['cdsubtotal'], $_SESSION['cdtotal'], $_SESSION['cdvat'], $_SESSION['cddiscount'])) {
+    echo $_SESSION['cdsubtotal'] . '<br>';
+    echo $_SESSION['cddiscount'] . '<br>';
+    echo $_SESSION['cdvat'] . '<br>';
+    echo $_SESSION['cdtotal'] . '<br>';
+} else {
+    echo "Subtotal: <br>Total: <br>VAT: <br>Discount: <br>";
+}
 
 ?>
 

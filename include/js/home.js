@@ -272,9 +272,35 @@ totalButton.addEventListener('click', () => {
             document.getElementById('gtotal').textContent = value;
         }
     }
-
+    
     document.getElementById('total-value').textContent = 'Sub Total: ₱' + total;
     document.getElementById('paymentmethod').disabled = false;
+
+    const cdsubtotal = document.getElementById('total-value').textContent;
+const cdtotal = document.getElementById('gtotal').textContent;
+const cdvat = vatText;
+const cddiscount =document.getElementById('discount').selectedIndex;
+
+fetch('cdtotal.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        cdsubtotal: cdsubtotal,
+        cdtotal: cdtotal,
+        cdvat: cdvat,
+        cddiscount: cddiscount
+    })
+})
+.then(response => response.text())
+.then(data => {
+    console.log("total" + data);
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
 });
 
 
@@ -518,7 +544,7 @@ makeReceipt.addEventListener("click", () => {
     document.getElementById('cpayment').value = '';
     document.getElementById('print').disabled = false;
     document.getElementById('make-receipt').disabled = true;
-    
+
     fetch('clearSessionData.php', {
         method: 'POST'
     })
