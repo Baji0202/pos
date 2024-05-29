@@ -147,7 +147,9 @@ function toggleInput() {
                 console.warn("Invalid barcode");
             }
         });
-  
+        
+        
+        //
         function sendBarcodeToPHP(barcodeData) {
     fetch('barcode.php', {
         method: 'POST',
@@ -157,7 +159,9 @@ function toggleInput() {
     .then(data => {
         console.log('Response from PHP:', data);
 
- 
+
+
+
         const [id, rest] = data.split(' - '); 
 const [productName, priceStr] = rest.split(' ₱');
 const productPrice = parseFloat(priceStr); 
@@ -412,16 +416,7 @@ function getbills(name, email, productIds, subTotal, dis, total) {
   return JSON.stringify(bills);
 }
 
-// function sendlink(bills) {
 
-//   const encodedBillsJson = encodeURIComponent(bills);
-
-//   const url = `paylater.php?billsJson=${encodedBillsJson}`;
-  
-//   window.location.href = url;
-// }
-
-//makereceipt Button
 let receipts;
 
 const makeReceipt = document.getElementById('make-receipt');
@@ -523,6 +518,18 @@ makeReceipt.addEventListener("click", () => {
     document.getElementById('cpayment').value = '';
     document.getElementById('print').disabled = false;
     document.getElementById('make-receipt').disabled = true;
+    
+    fetch('clearSessionData.php', {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Session data cleared:', data);
+        // Optionally, perform any additional actions after clearing session data
+    })
+    .catch(error => {
+        console.error('Error clearing session data:', error);
+    });
 });
 
 
