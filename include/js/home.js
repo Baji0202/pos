@@ -1,3 +1,48 @@
+
+const openTicketButton = document.getElementById('open-ticket-button');
+openTicketButton.addEventListener('click', () => {
+    var customerName = prompt("Enter customer name:");
+    if (customerName === null || customerName.trim() === "") {
+        alert("Customer name cannot be empty.");
+        return;
+    }
+    
+    const productRows = document.querySelectorAll('#product-table-body tr');
+    const ticketData = [];
+    productRows.forEach(row => {
+        const productName = row.dataset.productName;
+        const productPrice = parseFloat(row.querySelector('td:nth-child(3)').textContent.replace('₱', ''));
+        const quantity = parseInt(row.querySelector('input[name="productQuantity"]').value);
+        
+        // Store each item in ticketData array
+        ticketData.push({
+            customerName: customerName,
+            itemName: productName,
+            itemPrice: productPrice,
+            quantity: quantity
+        });
+    });
+console.log(ticketData);
+    // Send ticket data to server
+    fetch('save_table.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ticketData)
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Data stored in session:', data);
+    })
+    .catch(error => {
+        console.error('Error storing data:', error);
+    });
+});
+
+
+
+
 const scantype = document.getElementById("scantype");
     const bh = document.getElementById("barcode_hardware");
     const cam = document.getElementById("cam");
