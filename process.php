@@ -29,7 +29,7 @@ if ($receipt !== null) {
     $stmt = $pdoConnect->prepare($sql);
     $stmt->execute([$receiptId, $subtot, $discount, $vat, $tot, $pay, $amount, $cchange, "sold", $currentDate]);
   
-    $sql = "INSERT INTO `receipt_item` (`receipt_id`, `item_id`, `quantity`) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO `receipt_item` (`receipt_id`, `item_id`, `quantity`,`status`) VALUES (?, ?, ?,?)";
     $stmt = $pdoConnect->prepare($sql);
 
     foreach ($productIds as $item) {
@@ -39,6 +39,7 @@ if ($receipt !== null) {
         $stmt->bindParam(1, $receiptId); // Bind order_id (assuming you have this value)
         $stmt->bindParam(2, $itemId);
         $stmt->bindParam(3,$quantity);
+        $stmt->bindParam(4,"sold");
         $stmt->execute();
     }
     $pdoConnect = null;

@@ -11,6 +11,8 @@ if (isset($_POST['refund'])) {
     // Retrieve form data
     $receipt_item_id = $_POST['receipt_item_id'];
     $reason = $_POST['reason'];
+$quantity = $_POST['quantity'];
+$price = $_POST['sale_price'];
 
     // Update inventory with refunded items
     $sql = "UPDATE products AS p 
@@ -18,10 +20,19 @@ if (isset($_POST['refund'])) {
             SET p.quantity = p.quantity + ri.quantity 
             WHERE ri.id = ?";
     $stmt = $pdoConnect->prepare($sql);
-    
     // Execute the update query
     if ($stmt->execute([$receipt_item_id])) {
-        // Insert refund record into refund table
+        if (!isset($_SESSION['refunds'])) {
+            $_SESSION['refunds'] = 0;
+        }
+        $_SESSION['refunds'] += $quantity*$price ?? $_SESSION['refunds'] = 0;
+        
+        $sqlstatus = "UPDATE receipt_item
+        SET `status` = ? 
+        WHERE id = ?";
+$stmtstatus = $pdoConnect->prepare($sqlstatus);
+$stmtstatus->execute(["refunded",$receipt_item_id]);
+
         $sql_insert_refund = "INSERT INTO refund (receipt_item_id, reason, timestamp) 
                               VALUES (?, ?, NOW())";
         $stmt_insert_refund = $pdoConnect->prepare($sql_insert_refund);

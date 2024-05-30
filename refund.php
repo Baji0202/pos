@@ -7,17 +7,16 @@ if (!isset($_SESSION['user_id'])) {
 $loggedemail = $_SESSION['email'];
 require_once "include/connect/dbcon.php";
 
+
 $fetch_data = []; // Initialize fetch_data as an empty array
-if (isset($_POST['reason'])) {
-    $refund = $_POST['reason'];
-}
+
 if (isset($_POST['search'])) {
     $receipt = $_POST['receipt'];
     if (empty($receipt)) {
         echo "Please input a receipt ID";
     } else {
         // Adjusted SQL query to fetch item name and sale price from the warehouse table
-        $sql = "SELECT ri.id AS receipt_item_id, ri.receipt_id, ri.quantity, p.id AS product_id, p.name, p.sale_price
+        $sql = "SELECT ri.id AS receipt_item_id, ri.receipt_id, ri.quantity AS order_quantity,ri.status, p.id AS product_id, p.name, p.sale_price
         FROM receipt_item AS ri
         JOIN products AS p ON ri.item_id = p.id
         WHERE ri.receipt_id = ?";
@@ -65,7 +64,7 @@ if (isset($_POST['search'])) {
         <input type="submit" name="search" value="Search">
     </div>
     
-    <div>
+    <!-- <div>
         <label for="reason_id">Reason:</label>
         <select name="reason" id="reason_id" class="custom-select" style="margin: 4%;">
             <option value="Expired or spoiled product">Expired or spoiled product</option>
@@ -87,34 +86,58 @@ if (isset($_POST['search'])) {
     </div>
 
     <input type="submit" name="refund" value="Submit" class="main-button" style="color: black; margin-top: 4%;">
-</form>
+</form> -->
 
-    <?php 
-    if (!empty($fetch_data)) {
-        // Display receipt details
-        echo "<h3>Receipt ID: " . htmlspecialchars($receipt) . "</h3>";
-        echo "<table border='1'>
-                <tr>
-                    <th>Item name</th>
-                    <th>Item price</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>";
-        foreach ($fetch_data as $item) {
-            echo "<tr>
-                    <td>" . htmlspecialchars($item['name']) . "</td>
-                    <td>" . htmlspecialchars($item['sale_price']) . "</td>
-                    <td>" . htmlspecialchars($item['quantity']) . "</td>
-                    <td><form action='refundprocess.php' method='POST'>
+<?php
+if (!empty($fetch_data)) {
+    // Display receipt details
+    echo "<h3>Receipt ID: " . htmlspecialchars($receipt) . "</h3>";
+    echo "<table border='1'>
+            <tr>
+                <th>Item name</th>
+                <th>Item price</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>";
+    foreach ($fetch_data as $item) {
+        echo "<tr>
+                <td>" . htmlspecialchars($item['name']) . "</td>
+                <td>" . htmlspecialchars($item['sale_price']) . "</td>
+                <td>" . htmlspecialchars($item['quantity']) . "</td>
+                <td>";
+        if ($item['status'] !== "refunded") {
+            echo "<form action='refundprocess.php' method='POST'>
                     <input type='hidden' name='receipt_item_id' value='" . htmlspecialchars($item['receipt_item_id']) . "'>
-                    <input type='hidden' name='reason' value='".$refund."'>
+                    <input type='hidden' name='quantity' value='" . htmlspecialchars($item['quantity']) . "'>
+                    <input type='hidden' name='price' value='" . htmlspecialchars($item['sale_price']) . "'>
+                    <label for='reason_id'>Reason:</label>
+                    <select name='reason' id='reason_id' class='custom-select' style='margin: 4%;'>
+                        <option value='Expired or spoiled product'>Expired or spoiled product</option>
+                        <option value='Incorrect item received'>Incorrect item received</option>
+                        <option value='Product damaged during transportation'>Product damaged during transportation</option>
+                        <option value='Dissatisfied with product quality'>Dissatisfied with product quality</option>
+                        <option value='Product packaging damaged or tampered'>Product packaging damaged or tampered</option>
+                        <option value='Unwanted or unused item'>Unwanted or unused item</option>
+                        <option value='Product not as described'>Product not as described</option>
+                        <option value='Product past its sell-by date'>Product past its sell-by date</option>
+                        <option value='Product contaminated or foreign object found'>Product contaminated or foreign object found</option>
+                        <option value='Allergic reaction to product'>Allergic reaction to product</option>
+                        <option value='Product missing from order'>Product missing from order</option>
+                        <option value='Overcharged for item'>Overcharged for item</option>
+                        <option value='Change of mind'>Change of mind</option>
+                        <option value='Duplicate purchase'>Duplicate purchase</option>
+                        <option value='Other'>Other</option>
+                    </select>
                     <input type='submit' name='refund' value='Refund'>
-                </form></td>
-                  </tr>";
+                  </form>";
         }
-        echo "</table>";
+        echo "</td></tr>";
     }
-    ?>
+    echo "</table>";
+}
+?>
+
+
 
 
     <!-- Displaying receipt details -->
