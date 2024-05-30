@@ -207,21 +207,31 @@ function toggleInput() {
 
 
 
-        const [id, rest] = data.split(' - '); 
-const [productName, priceStr] = rest.split(' ₱');
-const productPrice = parseFloat(priceStr); 
+//         const [id, rest] = data.split(' - '); 
+// const [productName, priceStr] = rest.split(' ₱');
+// const productPrice = parseFloat(priceStr); 
+const [id, rest] = data.split(' - '); 
+const [productDetails, quantityStr] = rest.split(' - ');
+const [productName, priceStr] = productDetails.split(' ₱');
+const productPrice = parseFloat(priceStr);
+const availableQuantity = parseInt(quantityStr, 10);
 
         const existingProductRow = document.querySelector(`#product-table-body tr[data-product-name="${productName}"]`);
         if (existingProductRow) {
-           
             const quantityInput = existingProductRow.querySelector('input[name="productQuantity"]');
-            const newQuantity = parseInt(quantityInput.value) + 1;
-            quantityInput.value = newQuantity;
-
-            const totalPriceCell = existingProductRow.querySelector('.total-price');
-            const newTotalPrice = parseFloat(totalPriceCell.dataset.price) + productPrice;
-            totalPriceCell.dataset.price = newTotalPrice;
-            totalPriceCell.textContent = '₱' + newTotalPrice.toFixed(2);
+            const currentQuantity = parseInt(quantityInput.value);
+            const newQuantity = currentQuantity + 1;
+    
+            if (newQuantity > availableQuantity) {
+                alert(`Cannot add more ${productName}. Available quantity is only ${availableQuantity}.`);
+            } else {
+                quantityInput.value = newQuantity;
+    
+                const totalPriceCell = existingProductRow.querySelector('.total-price');
+                const newTotalPrice = parseFloat(totalPriceCell.dataset.price) + productPrice;
+                totalPriceCell.dataset.price = newTotalPrice;
+                totalPriceCell.textContent = '₱' + newTotalPrice.toFixed(2);
+            }
         } else {
             
             const tableRow = document.createElement('tr');

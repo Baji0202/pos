@@ -18,12 +18,14 @@ if (isset($_POST['barcode'])) {
 
     try {
         require_once "include/connect/dbcon.php";
-        $sql = "SELECT * FROM warehouse WHERE barcode = ?";
+        $sql = "SELECT * FROM products WHERE barcode = ?";
         $stmt=$pdoConnect->prepare($sql);
         $stmt->execute([$barcodeData]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $count = $stmt->rowCount();
         
+
+
         if ($count == 0) {
             echo "Undefined Item ₱0";
         } else {
@@ -43,7 +45,7 @@ if (isset($_POST['barcode'])) {
 
 // Echo the echoed rows
 foreach ($echoedRows as $row) {
-    echo "{$row['id']} - {$row['name']} ₱{$row['sale_price']} ";
+    echo "{$row['id']} - {$row['name']} ₱{$row['sale_price']} - {$row['quantity']}  ";
 }
 
 
