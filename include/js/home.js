@@ -501,23 +501,23 @@ function getreceipt(receiptId,productIds, subTotal, dis,vat, total,pay,amount,cc
 
   return JSON.stringify(receipts);
 }
-function getbills(name, email, productIds, subTotal, dis, total) {
-  let subValue = parseFloat(subTotal.split("₱")[1]);
-  let totalValue = parseFloat(total.split("₱")[1]);
+// function getbills(name, email, productIds, subTotal, dis, total) {
+//   let subValue = parseFloat(subTotal.split("₱")[1]);
+//   let totalValue = parseFloat(total.split("₱")[1]);
 
-  const bills = {
-    name: name,
-    email: email,
-    productIds: productIds,
-    subtot: subValue,
-    discount: dis,
-    tot: totalValue
-  };
+//   const bills = {
+//     name: name,
+//     email: email,
+//     productIds: productIds,
+//     subtot: subValue,
+//     discount: dis,
+//     tot: totalValue
+//   };
   
  
 
-  return JSON.stringify(bills);
-}
+//   return JSON.stringify(bills);
+// }
 
 
 let receipts;
@@ -633,8 +633,24 @@ makeReceipt.addEventListener("click", () => {
     .catch(error => {
         console.error('Error clearing session data:', error);
     });
-});
 
+    fetch('updateInventory.php', {
+        method: 'POST',  headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+           productIds:productIds
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Session data updated:', data);
+    
+    })
+    .catch(error => {
+        console.error('Error clearing session data:', error);
+    });
+});
 
 
 

@@ -12,10 +12,21 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer</title>
     <link rel="icon" type="image/png" href="include\image\sadas1.png">
-    
+    <link rel="stylesheet" href="include\styles\global.css">
 </head>
 <body>
+<nav>
+    <div class="logo">
+    <img src="include\image\sadas.png" alt="Company Logo" class="logo_pic">
+        <div class="text_logo">Your Selection</div>
+    </div>
+    
 
+</nav>
+
+
+
+<div class="form" style="margin-top:4%">
 <?php
 if (isset($_SESSION['cd']) && is_array($_SESSION['cd'])) {
     // Loop through each element of the array
@@ -38,7 +49,7 @@ if (isset($_SESSION['cdsubtotal'], $_SESSION['cdtotal'], $_SESSION['cdvat'], $_S
 }
 
 ?>
-
+</div>
 <script>
     setInterval(function() {
     window.location.reload();
