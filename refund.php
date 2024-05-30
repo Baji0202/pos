@@ -8,18 +8,19 @@ $loggedemail = $_SESSION['email'];
 require_once "include/connect/dbcon.php";
 
 $fetch_data = []; // Initialize fetch_data as an empty array
-
+if (isset($_POST['refund'])) {
+$refund = $_POST['reason'];
+}
 if (isset($_POST['search'])) {
     $receipt = $_POST['receipt'];
     if (empty($receipt)) {
         echo "Please input a receipt ID";
     } else {
         // Adjusted SQL query to fetch item name and sale price from the warehouse table
-        $sql = "SELECT receipt_item.receipt_id, receipt_item.quantity, products.id, products.name, products.sale_price
-        FROM receipt_item
-        JOIN products ON receipt_item.item_id = products.id
-        WHERE receipt_item.receipt_id = ?";
-
+        $sql = "SELECT ri.id AS receipt_item_id, ri.receipt_id, ri.quantity, p.id AS product_id, p.name, p.sale_price
+        FROM receipt_item AS ri
+        JOIN products AS p ON ri.item_id = p.id
+        WHERE ri.receipt_id = ?";
         
         $stmt = $pdoConnect->prepare($sql);
         $stmt->execute([$receipt]);
@@ -57,7 +58,7 @@ if (isset($_POST['search'])) {
 <div class="form" style="margin-top:4%">
     <h2 style="display: block; text-align: center; margin-bottom: 12%;">Refund:</h2>
     <!-- Form for searching receipts -->
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+    <form method="post">
         <input type="text" name="receipt" placeholder="Enter receipt id">
         <input type="submit" name="search" value="Search">
     </form>
@@ -78,8 +79,8 @@ if (isset($_POST['search'])) {
                     <td>" . htmlspecialchars($item['sale_price']) . "</td>
                     <td>" . htmlspecialchars($item['quantity']) . "</td>
                     <td><form action='refundprocess.php' method='POST'>
-                    <input type='hidden' name='item_id' value='" . htmlspecialchars($item['id']) . "'>
-                    <input type='hidden' name='receipt_id' value='" . htmlspecialchars($receipt) . "'>
+                    <input type='hidden' name='receipt_item_id' value='" . htmlspecialchars($item['receipt_item_id']) . "'>
+                    <input type='hidden' name='reason' value='" . htmlspecialchars($refund) . "'>
                     <input type='submit' name='refund' value='Refund'>
                 </form></td>
                   </tr>";

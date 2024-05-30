@@ -21,7 +21,7 @@ if (isset($_POST['refund'])) {
     // Execute the update query
     if ($stmt->execute()) {
         // Insert refund record into refund table
-        $sql_insert_refund = "INSERT INTO refund (item_id, receipt_id, reason, date) 
+        $sql_insert_refund = "INSERT INTO refund (receipt_item_id, reason, date) 
                       VALUES (?, ?, ?, NOW())";
         $stmt_insert_refund = $pdoConnect->prepare($sql_insert_refund);
         $stmt_insert_refund->execute([$item_id, $receipt_id, $reason]);

@@ -302,4 +302,44 @@ background-image: linear-gradient(to bottom, #d2a62c, #cca230); /* Gradient back
   
 
 
+  .customer-display {
+    width: 300px;
+    height: 400px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    overflow: hidden;
+  }
+  
+  .customer-display-header {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .customer-display-content {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  
+  .customer-display-item {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .customer-display-footer {
+    margin-top: 10px;
+  }
+  
+  .customer-display-subtotal,
+  .customer-display-discount,
+  .customer-display-vat,
+  .customer-display-total {
+    padding: 3px;
+  }
   
