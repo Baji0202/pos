@@ -9,26 +9,31 @@ require_once "include/connect/dbcon.php";
 // Check if the form is submitted
 if (isset($_POST['refund'])) {
     // Retrieve form data
-    $item_id = $_POST['item_id'];
-    $receipt_id = $_POST['receipt_id'];
+    $receipt_item_id = $_POST['receipt_item_id'];
+    $reason = $_POST['reason'];
 
     // Update inventory with refunded items
-    $sql = "UPDATE products SET quantity = quantity + ? WHERE id = ?";
+    $sql = "UPDATE products AS p 
+            JOIN receipt_item AS ri ON p.id = ri.item_id 
+            SET p.quantity = p.quantity + ri.quantity 
+            WHERE ri.id = ?";
     $stmt = $pdoConnect->prepare($sql);
-    $stmt->bindParam(1, $quantity, PDO::PARAM_INT);
-    $stmt->bindParam(2, $item_id, PDO::PARAM_INT);
     
     // Execute the update query
-    if ($stmt->execute()) {
+    if ($stmt->execute([$receipt_item_id])) {
         // Insert refund record into refund table
-        $sql_insert_refund = "INSERT INTO refund (receipt_item_id, reason, date) 
-                      VALUES (?, ?, ?, NOW())";
+        $sql_insert_refund = "INSERT INTO refund (receipt_item_id, reason, timestamp) 
+                              VALUES (?, ?, NOW())";
         $stmt_insert_refund = $pdoConnect->prepare($sql_insert_refund);
-        $stmt_insert_refund->execute([$item_id, $receipt_id, $reason]);
-
-        // Redirect back to the refund page with success message
-        header("location:refund.php?success=1");
-        exit();
+        if ($stmt_insert_refund->execute([$receipt_item_id, $reason])) {
+            // Redirect back to the refund page with success message
+            header("location:refund.php?success=1");
+            exit();
+        } else {
+            // Redirect back to the refund page with error message
+            header("location:refund.php?error=1");
+            exit();
+        }
     } else {
         // Redirect back to the refund page with error message
         header("location:refund.php?error=1");
