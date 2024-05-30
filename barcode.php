@@ -15,7 +15,7 @@ $echoedRows = [];
 if (isset($_POST['barcode'])) {
     // Get the barcode data
     $barcodeData = $_POST['barcode'];
-
+ 
     try {
         require_once "include/connect/dbcon.php";
         $sql = "SELECT * FROM products WHERE barcode = ?";

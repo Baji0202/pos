@@ -210,9 +210,9 @@ function toggleInput() {
 //         const [id, rest] = data.split(' - '); 
 // const [productName, priceStr] = rest.split(' ₱');
 // const productPrice = parseFloat(priceStr); 
-const [id, rest] = data.split(' - '); 
-const [productDetails, quantityStr] = rest.split(' - ');
-const [productName, priceStr] = productDetails.split(' ₱');
+const [id, rest] = data.split(' - ');
+const [productName, priceAndQuantity] = rest.split(' ₱');
+const [priceStr, quantityStr] = priceAndQuantity.split(' - ');
 const productPrice = parseFloat(priceStr);
 const availableQuantity = parseInt(quantityStr, 10);
 
@@ -221,17 +221,24 @@ const availableQuantity = parseInt(quantityStr, 10);
             const quantityInput = existingProductRow.querySelector('input[name="productQuantity"]');
             const currentQuantity = parseInt(quantityInput.value);
             const newQuantity = currentQuantity + 1;
-    
-            if (newQuantity > availableQuantity) {
-                alert(`Cannot add more ${productName}. Available quantity is only ${availableQuantity}.`);
-            } else {
+  
+
                 quantityInput.value = newQuantity;
     
                 const totalPriceCell = existingProductRow.querySelector('.total-price');
                 const newTotalPrice = parseFloat(totalPriceCell.dataset.price) + productPrice;
                 totalPriceCell.dataset.price = newTotalPrice;
                 totalPriceCell.textContent = '₱' + newTotalPrice.toFixed(2);
-            }
+
+                quantityInput.addEventListener('input', function() {
+                    const newQuantity = parseInt(this.value);
+                    if (newQuantity > availableQuantity) {
+                        alert(`Cannot add more ${productName}. Available quantity is only ${availableQuantity}.`);
+                       
+                        this.value = 1;
+                    }
+                });
+    
         } else {
             
             const tableRow = document.createElement('tr');
