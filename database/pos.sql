@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3307
--- Generation Time: May 30, 2024 at 02:43 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: May 31, 2024 at 02:06 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -270,7 +270,21 @@ INSERT INTO `log` (`id`, `action`, `timestamp`, `user_id`) VALUES
 (134, 'logged in', '2024-05-29 05:19:48', 11),
 (135, 'logged in', '2024-05-29 05:48:20', 11),
 (136, 'Logged out, user_id: 11', '2024-05-29 05:54:27', 11),
-(137, 'logged in', '2024-05-29 05:54:38', 11);
+(137, 'logged in', '2024-05-29 05:54:38', 11),
+(138, 'logged in', '2024-05-30 11:05:58', 11),
+(139, 'logged in', '2024-05-30 11:07:15', 11),
+(140, 'logged in', '2024-05-30 11:26:14', 11),
+(141, 'Logged out, user_id: 11', '2024-05-30 11:32:15', 11),
+(142, 'logged in', '2024-05-30 11:32:20', 8),
+(143, 'logged in', '2024-05-30 11:32:51', 11),
+(144, 'logged in', '2024-05-30 11:33:25', 11),
+(145, 'logged in', '2024-05-30 11:53:12', 11),
+(146, 'logged in', '2024-05-30 21:50:23', 11),
+(147, 'logged in', '2024-05-30 22:16:02', 11),
+(148, 'logged in', '2024-05-30 22:19:13', 11),
+(149, 'logged in', '2024-05-30 22:32:30', 11),
+(150, 'Logged out, user_id: 11', '2024-05-30 23:13:43', 11),
+(151, 'logged in', '2024-05-30 23:13:48', 11);
 
 -- --------------------------------------------------------
 
@@ -313,8 +327,8 @@ CREATE TABLE `products` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `barcode` varchar(50) NOT NULL,
-  `quantity` varchar(50) DEFAULT NULL,
-  `low_stock_quantity` varchar(50) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `low_stock_quantity` int(11) DEFAULT NULL,
   `buy_price` decimal(25,2) DEFAULT NULL,
   `sale_price` decimal(25,2) NOT NULL,
   `categorie_id` int(11) UNSIGNED NOT NULL,
@@ -327,7 +341,13 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `barcode`, `quantity`, `low_stock_quantity`, `buy_price`, `sale_price`, `categorie_id`, `media_id`, `date`) VALUES
-(31, 'hotdog', '0000101001', '1', '1', 1.00, 1.00, 2, 0, '2024-04-29 21:17:49');
+(27, 'Hotdog (Tender Juicy Original)', '8PLFZEU96BXR', 10, 1, 100.00, 110.00, 8, 3, '2024-05-29 16:32:20'),
+(28, 'piatos cheese', '0P8OTIJHRV2U', 100, 10, 14.00, 17.00, 11, 0, '2024-05-30 22:48:19'),
+(29, 'piatos roastbeef', 'YX3Z48HXDCTV', 100, 10, 14.00, 17.00, 11, 0, '2024-05-30 22:48:46'),
+(30, 'piatos sourcream and onion', 'XTXYOLVKEFAN', 100, 10, 14.00, 17.00, 11, 0, '2024-05-30 22:49:46'),
+(31, 'piatos nachoscheese', 'WFL1AY60PNXK', 100, 10, 14.00, 17.00, 11, 0, '2024-05-30 22:52:53'),
+(32, 'piatos spicycheese', '6C17R3OBD05V', 100, 10, 14.00, 17.00, 11, 0, '2024-05-30 22:53:13'),
+(33, 'piatos saltedpotato', '6Z2LCAXQ0W1D', 100, 10, 14.00, 17.00, 11, 0, '2024-05-30 22:53:32');
 
 -- --------------------------------------------------------
 
@@ -353,13 +373,7 @@ CREATE TABLE `receipt` (
 --
 
 INSERT INTO `receipt` (`id`, `sub_total`, `discount`, `tax`, `total`, `pay_thru`, `paid_amount`, `change_amount`, `status`, `date`) VALUES
-('REC17169729338892', 15.00, 'No Discount', '12', 16.80, 'Gcash', 0.00, 0.00, 'sold', '2024-05-29'),
-('REC17169736539042', 15.00, 'No Discount', '12', 16.80, 'Gcash', 0.00, 0.00, 'sold', '2024-05-29'),
-('REC17169740490080', 20.00, '10php Summer Discount ', '12', 11.20, 'Gcash', 0.00, 0.00, 'sold', '2024-05-29'),
-('REC17169774281381', 15.00, '10php Summer Discount ', '12', 5.60, 'Gcash', 0.00, 0.00, 'sold', '2024-05-29'),
-('REC17169777017051', 15.00, '5% Student Discount', '12', 15.96, 'Gcash', 0.00, 0.00, 'sold', '2024-05-29'),
-('REC17169816856740', 15.00, '5% Student Discount', '12', 15.96, 'Gcash', 0.00, 0.00, 'sold', '2024-05-29'),
-('REC17169833350102', 15.00, 'No Discount', '12', 16.80, 'Cash', 20.00, 3.20, 'sold', '2024-05-29');
+('REC17171293842620', 4.00, 'No Discount', '12', 4.48, 'Cash', 5.00, 0.52, 'sold', '2024-05-31');
 
 -- --------------------------------------------------------
 
@@ -370,23 +384,10 @@ INSERT INTO `receipt` (`id`, `sub_total`, `discount`, `tax`, `total`, `pay_thru`
 CREATE TABLE `receipt_item` (
   `id` int(11) NOT NULL,
   `receipt_id` varchar(255) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `item_id` int(11) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `status` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `receipt_item`
---
-
-INSERT INTO `receipt_item` (`id`, `receipt_id`, `item_id`, `quantity`) VALUES
-(58, 'REC17169729338892', 26, 1),
-(59, 'REC17169736539042', 26, 1),
-(60, 'REC17169740490080', 26, 1),
-(61, 'REC17169740490080', 27, 1),
-(62, 'REC17169774281381', 26, 1),
-(63, 'REC17169777017051', 26, 1),
-(64, 'REC17169816856740', 26, 1),
-(65, 'REC17169833350102', 26, 1);
 
 -- --------------------------------------------------------
 
@@ -396,10 +397,10 @@ INSERT INTO `receipt_item` (`id`, `receipt_id`, `item_id`, `quantity`) VALUES
 
 CREATE TABLE `refund` (
   `id` int(11) NOT NULL,
-  `receipt_id` int(11) NOT NULL,
+  `receipt_item_id` int(11) NOT NULL,
   `reason` varchar(45) NOT NULL,
   `status` varchar(45) NOT NULL,
-  `date` date NOT NULL
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -604,7 +605,14 @@ ALTER TABLE `receipt`
 --
 ALTER TABLE `receipt_item`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `receipt_id` (`receipt_id`);
+  ADD KEY `receipt_id` (`receipt_id`),
+  ADD KEY `item_id` (`item_id`);
+
+--
+-- Indexes for table `refund`
+--
+ALTER TABLE `refund`
+  ADD KEY `receipt_item_id` (`receipt_item_id`);
 
 --
 -- Indexes for table `sales`
@@ -674,7 +682,7 @@ ALTER TABLE `discount`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT for table `media`
@@ -692,13 +700,13 @@ ALTER TABLE `open_ticket`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `receipt_item`
 --
 ALTER TABLE `receipt_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -747,16 +755,17 @@ ALTER TABLE `log`
   ADD CONSTRAINT `log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `products`
---
-ALTER TABLE `products`
-  ADD CONSTRAINT `FK_products` FOREIGN KEY (`categorie_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `receipt_item`
 --
 ALTER TABLE `receipt_item`
-  ADD CONSTRAINT `receipt_item_ibfk_1` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`);
+  ADD CONSTRAINT `receipt_item_ibfk_1` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`),
+  ADD CONSTRAINT `receipt_item_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `refund`
+--
+ALTER TABLE `refund`
+  ADD CONSTRAINT `refund_ibfk_1` FOREIGN KEY (`receipt_item_id`) REFERENCES `receipt_item` (`id`);
 
 --
 -- Constraints for table `sales`
