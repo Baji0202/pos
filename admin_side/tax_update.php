@@ -6,30 +6,31 @@ if (!isset($_SESSION['user_id'])) {
 
     require_once "..\include\connect\dbcon.php";
 include_once "log.php";
-if (isset($_POST['update'])) {
-    $name = $_POST['name'];
-    $type = $_POST['type'];
-    $value = $_POST['value'];
-    $id = $_GET['id'];
-    if (empty($name)&&empty($type)&&empty($value)) {
-        echo"All fields are required";
-    }
+
+
+if (isset($_POST['update'])) {    
+    $taxpercent = $_POST['tax_percent'];
+    if (empty($taxpercent)) {
+                echo"tax percent shouldnt be empty";
+            }
+
     else {
-        $sql = "UPDATE `discount` SET `name` = ?,`value`= ? ,`type` = ? WHERE discount_id = ?";
+        $id = $_GET['id'];
+        $sql = "UPDATE `tax` SET `tax_percent` = ?WHERE id = ?";
     $stmt = $pdoConnect->prepare($sql);
     
 
-    if ($stmt->execute([$name,$value,$type,$id])) {
-        loghistory($pdoConnect,"Updated discount, discount_id: $id");
-        header("location:discount.php");
+    if ($stmt->execute([$taxpercent,$id])) {
+        loghistory($pdoConnect,"Updated vat, tax_id: $id");
+        header("location:tax.php");
     }else {
         echo"Something went wrong";
     }
-}
+
     }
        
-
-    $sql = "SELECT * FROM discount WHERE discount_id = ?";
+}
+    $sql = "SELECT * FROM tax WHERE id = ?";
     $stmt = $pdoConnect->prepare($sql);
     $stmt->execute([$_GET['id']]);
 
@@ -44,7 +45,7 @@ if (isset($_POST['update'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discount Update</title>
+    <title>Tax Update</title>
     <link rel="icon" type="image/png" href="..\include\image\logo.png">
     <link rel="stylesheet" href="../include/styles/discount_update.css">
 </head>
@@ -56,7 +57,7 @@ if (isset($_POST['update'])) {
         <img src="..\include\image\sadas.png" alt="Company Logo">
         <div class="text_logo">POS System</div>
     </div>
-    <div><a href="discount.php">Back</a>
+    <div><a href="tax.php">Back</a>
 </div>
 
 </nav>
@@ -64,14 +65,10 @@ if (isset($_POST['update'])) {
 
     <form action="" method="post">
 Name:
-<input type="text" value="<?php echo $row[0]['name'];?>" name="name"> <br>
-Type:
-<select name="type"  >
-    <option value="amount">Amount</option>
-    <option value="percent">Percent</option>
-</select>
-Value:
-<input type="text" value="<?php echo $row[0]['value'];?>" name="value"> <br>
+<input type="text" value="<?php echo $row[0]['tax_name'];?>" name="tax_name" disabled> <br>
+
+Tax Percent:
+<input type="text" value="<?php echo $row[0]['tax_percent'];?>" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^\d.]/g, '');" name="tax_percent"> <br>
 
 <input type="submit" value="update" name="update">
     </form>

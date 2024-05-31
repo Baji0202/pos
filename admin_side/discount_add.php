@@ -9,13 +9,14 @@ include_once "log.php";
 if (isset($_POST['add'])) {
     $name = $_POST['name'];
     $value = $_POST['value'];
+    $type = $_POST['type'];
     if (empty($name)&&empty($type)&&empty($value)) {
         echo"All fields are required";
     }
     else {
-        $sql = "INSERT INTO `discount`(`name`, `type`, `value`) VALUES (?,?,?)";
+        $sql = "INSERT INTO `discount`(`name`, `value`, `type`) VALUES (?,?,?)";
     $stmt = $pdoConnect->prepare($sql);
-    if ($stmt->execute([$name,$type,$value])) {
+    if ($stmt->execute([$name,$value,$type])) {
         loghistory($pdoConnect,"Added discount, discount_id: $id");
         header("location:discount.php");
     }
@@ -59,7 +60,11 @@ Name:
 
 Value:
 <input type="text" value="" name="value"> <br>
-
+Type: 
+<select name="type" >
+    <option value="amount">Amount</option>
+    <option value="percent">Percent</option>
+</select>
 <input type="submit" value="Add" name="add">
     </form>
 </body>

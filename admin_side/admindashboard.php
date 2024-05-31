@@ -30,6 +30,7 @@ if (!isset($_SESSION['user_id'])) {
                 <li><a href="audit_trail.php">History logs</a></li>
                 <li><a href="items_settings.php">Item Settings</a></li>
                 <li><a href="discount.php">Discounts</a></li>
+                <li><a href="tax.php">Tax</a></li>
                 <li><a href="../logout.php">Logout</a></li>
             </ul>
         </nav>
