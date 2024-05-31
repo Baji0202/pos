@@ -64,29 +64,7 @@ if (isset($_POST['search'])) {
         <input type="submit" name="search" value="Search">
     </div>
     
-    <!-- <div>
-        <label for="reason_id">Reason:</label>
-        <select name="reason" id="reason_id" class="custom-select" style="margin: 4%;">
-            <option value="Expired or spoiled product">Expired or spoiled product</option>
-            <option value="Incorrect item received">Incorrect item received</option>
-            <option value="Product damaged during transportation">Product damaged during transportation</option>
-            <option value="Dissatisfied with product quality">Dissatisfied with product quality</option>
-            <option value="Product packaging damaged or tampered">Product packaging damaged or tampered</option>
-            <option value="Unwanted or unused item">Unwanted or unused item</option>
-            <option value="Product not as described">Product not as described</option>
-            <option value="Product past its sell-by date">Product past its sell-by date</option>
-            <option value="Product contaminated or foreign object found">Product contaminated or foreign object found</option>
-            <option value="Allergic reaction to product">Allergic reaction to product</option>
-            <option value="Product missing from order">Product missing from order</option>
-            <option value="Overcharged for item">Overcharged for item</option>
-            <option value="Change of mind">Change of mind</option>
-            <option value="Duplicate purchase">Duplicate purchase</option>
-            <option value="Other">Other</option>
-        </select>
-    </div>
 
-    <input type="submit" name="refund" value="Submit" class="main-button" style="color: black; margin-top: 4%;">
-</form> -->
 
 <?php
 if (!empty($fetch_data)) {
@@ -103,12 +81,12 @@ if (!empty($fetch_data)) {
         echo "<tr>
                 <td>" . htmlspecialchars($item['name']) . "</td>
                 <td>" . htmlspecialchars($item['sale_price']) . "</td>
-                <td>" . htmlspecialchars($item['quantity']) . "</td>
+                <td>" . htmlspecialchars($item['order_quantity']) . "</td>
                 <td>";
         if ($item['status'] !== "refunded") {
             echo "<form action='refundprocess.php' method='POST'>
                     <input type='hidden' name='receipt_item_id' value='" . htmlspecialchars($item['receipt_item_id']) . "'>
-                    <input type='hidden' name='quantity' value='" . htmlspecialchars($item['quantity']) . "'>
+                    <input type='hidden' name='quantity' value='" . htmlspecialchars($item['order_quantity']) . "'>
                     <input type='hidden' name='price' value='" . htmlspecialchars($item['sale_price']) . "'>
                     <label for='reason_id'>Reason:</label>
                     <select name='reason' id='reason_id' class='custom-select' style='margin: 4%;'>

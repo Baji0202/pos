@@ -27,7 +27,7 @@ if ($receipt !== null) {
     $sql = "INSERT INTO `receipt` (`id`, `sub_total`, `discount`, `tax`, `total`, `pay_thru`, `paid_amount`, `change_amount`, `status`, `date`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $pdoConnect->prepare($sql);
-    $stmt->execute([$receiptId, $subtot, $discount, $vat, $tot, $pay, $amount, $cchange, "sold", $currentDate]);
+    $stmt->execute([$receiptId, $subtot, $discount, $vat, $tot, $pay, $amount, $cchange,"sold",$currentDate]);
   
     $sql = "INSERT INTO `receipt_item` (`receipt_id`, `item_id`, `quantity`,`status`) VALUES (?, ?, ?,?)";
     $stmt = $pdoConnect->prepare($sql);
@@ -35,11 +35,12 @@ if ($receipt !== null) {
     foreach ($productIds as $item) {
         $itemId = $item['id'];
         $quantity = $item['quantity'];
+        $status = "sold";
         // $subTotal = $item['productPrice'] * $quantity; // Calculate subtotal directly
         $stmt->bindParam(1, $receiptId); // Bind order_id (assuming you have this value)
         $stmt->bindParam(2, $itemId);
         $stmt->bindParam(3,$quantity);
-        $stmt->bindParam(4,"sold");
+        $stmt->bindParam(4,$status);
         $stmt->execute();
     }
     $pdoConnect = null;
