@@ -1,6 +1,8 @@
 <?php
 // Start PHP session
 session_start();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +86,44 @@ session_start();
         echo '<div class="highlight">Total:</div><div class="highlight value">N/A</div>';
     }
     ?>
+    <canvas id="qr-code" ></canvas>
 </div>
+<input type="text" name="link" id="link" disabled value="<?php echo $_SESSION['url'] ?? ""?> ">
+
+
+<script src="https://cdn.jsdelivr.net/npm/qrious"></script>
+
+<script>
+    // Get the input element
+    
+    
+
+    // Function to generate QR code
+    function generateQRCode() {
+    
+        const linkInput = document.getElementById('link');
+        console.log(linkInput);
+        if (linkInput !== "") {
+            // Display the canvas
+            document.getElementById('qr-code').style.display = 'block';
+            
+            // Generate QR code
+            var qr = new QRious({
+                element: document.getElementById('qr-code'),
+                value: linkInput.value, // Using the value of the input field
+                size: 250
+            });
+        } else {
+            // Hide the canvas if the input is empty
+            document.getElementById('qr-code').style.display = 'none';
+        }
+    }
+    
+    // Call the function when the page is loaded
+    window.onload = function() {
+        generateQRCode();
+    };
+</script>
 
 <script>
     setInterval(function() {

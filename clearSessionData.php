@@ -8,6 +8,7 @@ unset ($_SESSION['cdsubtotal']);
 unset($_SESSION['cdtotal']);
 unset($_SESSION['cdvat']);
 unset($_SESSION['cddiscount']);
+unset($_SESSION['url']);
 // Optionally, perform any additional actions or logic
 
 // Respond with a success message

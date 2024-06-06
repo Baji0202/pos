@@ -35,7 +35,7 @@ if (isset($_POST['barcode'])) {
                 $_SESSION['cd'][] = "{$row['name']} ₱{$row['sale_price']}";
                 
                 // Store the row in the array of echoed rows
-                $echoedRows[] = $row;
+                echo "{$row['id']} - {$row['name']} ₱{$row['sale_price']} - {$row['quantity']}";
             }
         }
     } catch (PDOException $e) {
@@ -44,9 +44,9 @@ if (isset($_POST['barcode'])) {
 }
 
 // Echo the echoed rows
-foreach ($echoedRows as $row) {
-    echo "{$row['id']} - {$row['name']} ₱{$row['sale_price']} - {$row['quantity']}  ";
-}
+// foreach ($echoedRows as $row) {
+//     echo "{$row['id']} - {$row['name']} ₱{$row['sale_price']} - {$row['quantity']}  ";
+// }
 
 
 

@@ -27,7 +27,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner</title>
+    <title>Point of Sales</title>
     <link rel="icon" type="image/png" href="include\image\logo.png">
     <link rel="stylesheet" href="include\styles\home.css">
     <link rel="stylesheet" href="include\styles\global.css">
@@ -154,7 +154,7 @@ button:disabled{
 </select>
 
     <p id="vat">VAT: <?php echo $vat['tax_percent'];?>%</p>
-    <button id="open-ticket-button">Save Table</button>
+    <!-- <button id="open-ticket-button">Save Table</button> -->
     <button id="total-button" class="main-button" >Total</button>
     <h2 id="gtotal">Total: ₱0.00</h2>
     </div>
@@ -162,7 +162,7 @@ button:disabled{
     <select name="paymentmethod" id="paymentmethod" class="custom-select" disabled>
     <option value="">Select here</option>
 <option value="Cash">Cash</option>
-<option value="Gcash">Gcash</option>
+<option value="epay">E-pay</option>
     </select>
     
     <div id="cash" style="display: none;">
@@ -171,8 +171,11 @@ button:disabled{
     <button id="changebtn" disabled>Change</button>
     <p id="cchange">Change:</p>
     </div>
-    <button id="gcash" disabled style="display: none;">Gcash</button> <br><br>
-    <button id="make-receipt" disabled>Make a receipt</button>
+
+   <button id="epay" style="display: none;">E - wallet</button> <br><br> 
+    
+   <button id="make-receipt" disabled>Make a receipt</button>
+
     <!-- <button id="paylater" disabled>Add to Pay Later</button>
     <button id="opentickets">View Open Tickets</button> -->
     <button id="toggleButton" class="main-button" onclick="toggleInput()">Banana Card</button>
@@ -183,7 +186,7 @@ button:disabled{
     <div class="sidebar">
 <div class="receipt">
 <h3>***************************</h3>
-<h2>BANANA IS YELLOW</h2>
+<h2>BananaCart</h2>
 <p>CCS Bldg. room CS 101</p>
 <h3>***************************</h3>
     <p id="curdate">Date:</p>
