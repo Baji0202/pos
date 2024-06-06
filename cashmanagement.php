@@ -205,7 +205,7 @@ setInterval(updateDate, 1000);
             const paidOut = parseFloat(<?php echo $_SESSION['paidOut'] ?? 0; ?>);
             const refunds = parseFloat(<?php echo $_SESSION['refunds'] ?? 0; ?>);
 
-            expectedCash = startCash + sales + paidIn + paidOut + refunds;
+            expectedCash = startCash + sales + paidIn + paidOut - refunds;
 
             document.getElementById('expectedCash').textContent = 'Expected cash: ₱' + expectedCash.toFixed(2);
         }

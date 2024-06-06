@@ -7,16 +7,14 @@ if (!isset($_SESSION['user_id'])) {
 $loggedemail = $_SESSION['email'];
 require_once "include/connect/dbcon.php";
 
-
-$fetch_data = []; // Initialize fetch_data as an empty array
+$cashier = $_SESSION['user_id'];
 
 if (isset($_POST['search'])) {
     $receipt = $_POST['receipt'];
     if (empty($receipt)) {
         echo "Please input a receipt ID";
     } else {
-        // Adjusted SQL query to fetch item name and sale price from the warehouse table
-        $sql = "SELECT ri.id AS receipt_item_id, ri.receipt_id, ri.quantity AS order_quantity,ri.status, p.id AS product_id, p.name, p.sale_price
+        $sql = "SELECT ri.id AS receipt_item_id, ri.receipt_id, ri.quantity AS order_quantity, ri.status, p.id AS product_id, p.name, p.sale_price, p.quantity AS available_quantity
         FROM receipt_item AS ri
         JOIN products AS p ON ri.item_id = p.id
         WHERE ri.receipt_id = ?";
@@ -26,6 +24,54 @@ if (isset($_POST['search'])) {
         $fetch_data = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all matching rows
     }
 }
+
+if (isset($_POST['refundbtn'])) {
+    if (isset($_POST['receipt_item_id']) && isset($_POST['reason']) && isset($_POST['quantity']) && isset($_POST['price']) && isset($_POST['available']) && isset($_POST['product_id'])  && isset($_POST['order_quantity'])) {
+        $receipt_item_id = $_POST['receipt_item_id'];
+        $reason = $_POST['reason'];
+        $quantity = $_POST['order_quantity'];
+        $user_quantity = $_POST['quantity'];
+        $price = $_POST['price'];
+        $available_quantity = $_POST['available'];
+        $product_id =$_POST['product_id'];
+        $timestamp = date('Y-m-d H:i:s');
+
+        if ($user_quantity > $quantity || $user_quantity == 0) {
+            echo "Invalid quantity. Please check your inputted quantity";
+        } else {
+            $update_quantity = $available_quantity + $user_quantity;
+
+            // Update product quantity
+            $sql_update_products = "UPDATE products
+                                    SET quantity = ?
+                                    WHERE id = ?";
+            $stmt_update_products = $pdoConnect->prepare($sql_update_products);
+            $stmt_update_products->execute([$update_quantity, $product_id]);
+
+            // Store in session
+            $total =  $user_quantity * $price;
+            $_SESSION['refunds'] += $total ?? 0; 
+
+            // Update item refunded
+            $sqlstatus = "UPDATE receipt_item
+                          SET `status` = ? 
+                          WHERE id = ?";
+            $stmtstatus = $pdoConnect->prepare($sqlstatus);
+            $stmtstatus->execute(["refunded", $receipt_item_id]);
+
+            // Insert into refund_items
+            $sql_insert_refund = "INSERT INTO refund_items (receipt_item_id, refund_quantity, cashier_id, timestamps, reason) 
+                                  VALUES (?,?,?,?,?)";
+            $stmt_insert_refund = $pdoConnect->prepare($sql_insert_refund);
+            $stmt_insert_refund->execute([$receipt_item_id, $user_quantity, $cashier, $timestamp, $reason]);
+
+            echo "Success: Refund completed";
+        }
+    } else {
+        echo "Error: Missing required data for refund.";
+    }
+} 
+
 ?>
 
 <!DOCTYPE html>
@@ -63,10 +109,8 @@ if (isset($_POST['search'])) {
         <input type="text" name="receipt" id="receipt" placeholder="Enter receipt id">
         <input type="submit" name="search" value="Search">
     </div>
-    
 
-
-<?php
+    <?php
 if (!empty($fetch_data)) {
     // Display receipt details
     echo "<h3>Receipt ID: " . htmlspecialchars($receipt) . "</h3>";
@@ -77,16 +121,23 @@ if (!empty($fetch_data)) {
                 <th>Quantity</th>
                 <th>Action</th>
             </tr>";
+    
     foreach ($fetch_data as $item) {
         echo "<tr>
                 <td>" . htmlspecialchars($item['name']) . "</td>
                 <td>" . htmlspecialchars($item['sale_price']) . "</td>
                 <td>" . htmlspecialchars($item['order_quantity']) . "</td>
                 <td>";
+                
         if ($item['status'] !== "refunded") {
-            echo "<form action='refundprocess.php' method='POST'>
+            echo "<form method='POST' >
                     <input type='hidden' name='receipt_item_id' value='" . htmlspecialchars($item['receipt_item_id']) . "'>
-                    <input type='hidden' name='quantity' value='" . htmlspecialchars($item['order_quantity']) . "'>
+                    <input type='hidden' name='available' value='" . htmlspecialchars($item['available_quantity']) . "'>
+                    <input type='hidden' name='product_id' value='" . htmlspecialchars($item['product_id']) . "'>
+                    
+                    Modify desired refund quantity.
+                    <input type='hidden' name='order_quantity' value='" . htmlspecialchars($item['order_quantity']) . "'>
+                    <input type='text' name='quantity' value='" . htmlspecialchars($item['order_quantity']) . "' pattern='\d+(\.\d{1,2})?' oninput='this.value = this.value.replace(/[^\d.]/g, \"\");'>
                     <input type='hidden' name='price' value='" . htmlspecialchars($item['sale_price']) . "'>
                     <label for='reason_id'>Reason:</label>
                     <select name='reason' id='reason_id' class='custom-select' style='margin: 4%;'>
@@ -106,20 +157,22 @@ if (!empty($fetch_data)) {
                         <option value='Duplicate purchase'>Duplicate purchase</option>
                         <option value='Other'>Other</option>
                     </select>
-                    <input type='submit' name='refund' value='Refund'>
+                    <input type='submit' name='refundbtn' value='Refund'>
                   </form>";
+        } else {
+            echo "Item already refunded";
         }
+        
         echo "</td></tr>";
     }
+    
     echo "</table>";
 }
+else {
+    echo "Search for a receipt to display data";
+}
 ?>
-
-
-
-
     <!-- Displaying receipt details -->
-   
 </div>
 </body>
 </html>
